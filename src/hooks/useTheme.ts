@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-// Used to detect the theme of the RR
+// Used to detect the theme of the RR (Might need adjustments in prod)
 export function useTheme() {
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [isDarkTheme, setIsDarkTheme] = useState<"light" | "dark">("dark");
 
   useEffect(() => {
     const checkParentTheme = () => {
       const isDark = document.body.classList.contains("theme-dark");
-      setIsDarkTheme(isDark);
+      setIsDarkTheme(isDark ? "dark" : "light");
     };
 
     checkParentTheme();
