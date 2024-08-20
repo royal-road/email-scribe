@@ -99,7 +99,7 @@ $max-line-length: 70ch;
   }
 
   // Color classes
-  @include generate-color-classes(bg);
+  @include generate-color-classes(background);
   @include generate-color-classes(text);
 
   @import "/src/components/Panels/blocks/styles";
