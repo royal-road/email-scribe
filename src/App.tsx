@@ -11,8 +11,8 @@ function App() {
       className="newsletterDesigner bg-background text-foreground"
     >
       <div className="container">
-        <PreviewPanel />
         <BlocksPanel />
+        <PreviewPanel />
       </div>
     </div>
   );

@@ -1,6 +1,15 @@
 .BlocksPanel {
   display: flex;
   height: 100%;
-  flex: 1;
+  // padding: 1rem;
+  justify-content: center;
+  align-items: center;
+
+  flex: 2;
   background-color: var(--primary);
+  min-width: 20rem;
+  border-bottom: 1px var(--foreground) solid;
+  @include breakpoint("md") {
+    border-right: 1px hsl(var(--foreground)) solid;
+  }
 }

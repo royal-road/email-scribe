@@ -2,6 +2,14 @@ $font-family-body: "Roboto", "Helvetica Neue", Arial, sans-serif;
 $font-family-heading: "Montserrat", "Helvetica Neue", Arial, sans-serif;
 $max-line-length: 70ch;
 
+$breakpoints: (
+  "sm": 640px,
+  "md": 768px,
+  "lg": 1024px,
+  "xl": 1280px,
+  "2xl": 1536px,
+);
+
 @mixin theme-colors($theme: "light") {
   @if $theme == "light" {
     --background: 0 0% 97%;
@@ -67,6 +75,17 @@ $max-line-length: 70ch;
   }
 }
 
+@mixin breakpoint($size) {
+  @if map-has-key($breakpoints, $size) {
+    @media (min-width: map-get($breakpoints, $size)) {
+      @content;
+    }
+  } @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$size}`. "
+        + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
 @mixin responsive-font-sizes {
   body {
     font-size: 14px;
@@ -111,7 +130,7 @@ $max-line-length: 70ch;
     color: hsl(var(--foreground));
     font-family: $font-family-body;
     display: flex;
-    height: 100vh;
+    height: 100dvh;
     // padding: 1rem;
     line-height: 1.6;
     font-size: 16px;
@@ -119,9 +138,11 @@ $max-line-length: 70ch;
 
   .container {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1rem;
+    width: 100%;
+    flex-direction: column;
+    @include breakpoint("md") {
+      flex-direction: row;
+    }
   }
 
   // Border and ring styles
@@ -140,16 +161,16 @@ $max-line-length: 70ch;
 
   // Hover, focus, and active states
   @each $state in (hover, focus, active) {
-    .#{$state}\:bg-primary:#{$state} {
+    .#{$state}\:background-primary:#{$state} {
       background-color: hsl(var(--primary));
     }
-    .#{$state}\:bg-secondary:#{$state} {
+    .#{$state}\:background-secondary:#{$state} {
       background-color: hsl(var(--secondary));
     }
-    .#{$state}\:bg-accent:#{$state} {
+    .#{$state}\:background-accent:#{$state} {
       background-color: hsl(var(--accent));
     }
-    .#{$state}\:bg-destructive:#{$state} {
+    .#{$state}\:background-destructive:#{$state} {
       background-color: hsl(var(--destructive));
     }
   }
