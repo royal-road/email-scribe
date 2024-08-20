@@ -11,6 +11,7 @@ export default function BreakpointToggleGroup({
   return (
     <div className="BreakpointToggleGroup">
       <Button
+        title="Mobile"
         variant="outline"
         onClick={() => onBreakpointChange("mobile")}
         className={`${breakpoint === "mobile" && "active"} `}
@@ -23,6 +24,7 @@ export default function BreakpointToggleGroup({
         />
       </Button>
       <Button
+        title="Tablet"
         variant="outline"
         onClick={() => onBreakpointChange("tablet")}
         className={`${breakpoint === "tablet" && "active"} `}
@@ -39,6 +41,7 @@ export default function BreakpointToggleGroup({
         />
       </Button>
       <Button
+        title="Desktop"
         variant="outline"
         onClick={() => onBreakpointChange("desktop")}
         className={`${breakpoint === "desktop" && "active"} `}

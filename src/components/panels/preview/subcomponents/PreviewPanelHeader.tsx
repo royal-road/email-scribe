@@ -16,15 +16,16 @@ export default function PreviewPanelHeader() {
 
   return (
     <div className="PreviewPanelHeader">
-      <div title="leftHeader" style={{ display: "flex", gap: "0.5rem" }}>
+      <div style={{ display: "flex", gap: "0.5rem" }}>
         <h4>Preview</h4>
       </div>
-      <div title="rightHeader" style={{ display: "flex", gap: "0.5rem" }}>
+      <div style={{ display: "flex", gap: "0.5rem" }}>
         <BreakpointToggleGroup
           breakpoint={breakpoint}
           onBreakpointChange={(breakpoint) => setBreakpoint(breakpoint)}
         />
         <Button
+          title="Toggle Theme"
           onClick={() => handleThemeChange()}
           variant="outline"
           size="icon"
