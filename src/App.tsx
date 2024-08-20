@@ -7,6 +7,7 @@ function App() {
   const theme = useTheme();
   return (
     <div
+      id="newsletterDesignerRoot"
       data-theme={theme}
       className="newsletterDesigner bg-background text-foreground"
     >
