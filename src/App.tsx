@@ -1,5 +1,5 @@
-import BlocksPanel from "./components/Panels/blocks";
-import PreviewPanel from "./components/Panels/preview";
+import BlocksPanel from "./components/panels/blocks";
+import PreviewPanel from "./components/panels/preview";
 import { useTheme } from "./hooks/useTheme";
 import "./styles/styles.scss";
 

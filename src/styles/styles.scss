@@ -14,45 +14,45 @@ $breakpoints: (
 
 @mixin theme-colors($theme: "light") {
   @if $theme == "light" {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 204 70% 54%;
-    --primary-foreground: 204 85.7% 97.3%;
-    --secondary: 204 0% 96.1%;
-    --secondary-foreground: 204 0% 9%;
-    --muted: 204 0% 96.1%;
-    --muted-foreground: 204 0% 45.1%;
-    --accent: 204 0% 96.1%;
-    --accent-foreground: 204 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 204 0% 89.8%;
-    --input: 204 0% 89.8%;
-    --ring: 204 70% 54%;
+    --background: hsl(0, 0%, 100%);
+    --foreground: hsl(0, 0%, 3.9%);
+    --card: hsl(0, 0%, 97%);
+    --card-foreground: hsl(0, 0%, 3.9%);
+    --popover: hsl(0, 0%, 100%);
+    --popover-foreground: hsl(0, 0%, 3.9%);
+    --primary: hsl(204, 70%, 54%);
+    --primary-foreground: hsl(204, 85.7%, 97.3%);
+    --secondary: hsl(204, 0%, 96.1%);
+    --secondary-foreground: hsl(204, 0%, 9%);
+    --muted: hsl(204, 0%, 96.1%);
+    --muted-foreground: hsl(204, 0%, 45.1%);
+    --accent: hsl(204, 0%, 96.1%);
+    --accent-foreground: hsl(204, 0%, 9%);
+    --destructive: hsl(0, 84.2%, 60.2%);
+    --destructive-foreground: hsl(0, 0%, 98%);
+    --border: hsl(204, 0%, 89.8%);
+    --input: hsl(204, 0%, 89.8%);
+    --ring: hsl(204, 70%, 54%);
   } @else {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 204 70% 54%;
-    --primary-foreground: 204 85.7% 97.3%;
-    --secondary: 204 0% 14.9%;
-    --secondary-foreground: 204 0% 98%;
-    --muted: 204 0% 14.9%;
-    --muted-foreground: 204 0% 63.9%;
-    --accent: 204 0% 14.9%;
-    --accent-foreground: 204 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 204 0% 14.9%;
-    --input: 204 0% 14.9%;
-    --ring: 204 70% 54%;
+    --background: hsl(0, 0%, 3.9%);
+    --foreground: hsl(0, 0%, 98%);
+    --card: hsl(0, 0%, 6.9%);
+    --card-foreground: hsl(0, 0%, 98%);
+    --popover: hsl(0, 0%, 3.9%);
+    --popover-foreground: hsl(0, 0%, 98%);
+    --primary: hsl(204, 70%, 54%);
+    --primary-foreground: hsl(204, 85.7%, 97.3%);
+    --secondary: hsl(204, 0%, 14.9%);
+    --secondary-foreground: hsl(0, 0%, 98%);
+    --muted: hsl(204, 0%, 14.9%);
+    --muted-foreground: hsl(204, 0%, 63.9%);
+    --accent: hsl(204, 0%, 14.9%);
+    --accent-foreground: hsl(0, 0%, 98%);
+    --destructive: hsl(0, 62.8%, 30.6%);
+    --destructive-foreground: hsl(0, 0%, 98%);
+    --border: hsl(204, 0%, 14.9%);
+    --input: hsl(204, 0%, 14.9%);
+    --ring: hsl(204, 70%, 54%);
   }
   --radius: 0.5rem;
 }
@@ -72,7 +72,7 @@ $breakpoints: (
 
   @each $color in $colors {
     .#{$prefix}-#{$color} {
-      #{$prefix}-color: hsl(var(--#{$color}));
+      #{$prefix}-color: var(--#{$color});
     }
   }
 }
@@ -123,13 +123,13 @@ $breakpoints: (
   @include generate-color-classes(background);
   @include generate-color-classes(text);
 
-  @import "/src/components/Panels/blocks/styles";
-  @import "/src/components/Panels/preview/styles";
+  @import "/src/components/panels/blocks/styles";
+  @import "/src/components/panels/preview/styles";
 
   // Base styles
   & {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+    background-color: var(--background);
+    color: var(--foreground);
     font-family: $font-family-body;
     display: flex;
     height: 100dvh;
@@ -150,13 +150,13 @@ $breakpoints: (
 
   // Border and ring styles
   .border-base {
-    border-color: hsl(var(--border));
+    border-color: var(--border);
   }
   .border-input {
-    border-color: hsl(var(--input));
+    border-color: var(--input);
   }
   .ring-base {
-    --tw-ring-color: hsl(var(--ring));
+    --tw-ring-color: var(--ring);
   }
   .rounded-base {
     border-radius: var(--radius);
@@ -165,16 +165,16 @@ $breakpoints: (
   // Hover, focus, and active states
   @each $state in (hover, focus, active) {
     .#{$state}\:background-primary:#{$state} {
-      background-color: hsl(var(--primary));
+      background-color: var(--primary);
     }
     .#{$state}\:background-secondary:#{$state} {
-      background-color: hsl(var(--secondary));
+      background-color: var(--secondary);
     }
     .#{$state}\:background-accent:#{$state} {
-      background-color: hsl(var(--accent));
+      background-color: var(--accent);
     }
     .#{$state}\:background-destructive:#{$state} {
-      background-color: hsl(var(--destructive));
+      background-color: var(--destructive);
     }
   }
 

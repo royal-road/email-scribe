@@ -5,12 +5,12 @@
   justify-content: center;
   align-items: start;
 
-  flex: 3;
-  @extend .background-accent;
-  min-width: 20rem;
-  border-bottom: 1px hsl(var(--foreground)) solid;
+  flex: 4;
+  @extend .background-card;
+  min-width: 26rem;
+  border-bottom: 1px var(--foreground) solid;
   @include breakpoint("md") {
-    border-right: 1px hsl(var(--foreground)) solid;
+    border-right: 1px var(--foreground) solid;
   }
 
   h2 {
