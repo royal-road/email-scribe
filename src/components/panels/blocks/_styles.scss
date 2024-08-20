@@ -8,9 +8,11 @@
   flex: 4;
   @extend .background-card;
   min-width: 26rem;
-  border-bottom: 1px var(--foreground) solid;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--foreground) 30%, transparent);
   @include breakpoint("md") {
-    border-right: 1px var(--foreground) solid;
+    border-right: 1px solid
+      color-mix(in srgb, var(--foreground) 30%, transparent);
   }
 
   h2 {
