@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@css-inline/css-inline": "^0.14.1",
     "@radix-ui/react-collapsible": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "@rjsf/core": "5.20.0",
+    "@rjsf/utils": "5.20.0",
+    "@rjsf/validator-ajv8": "5.20.0",
+    "handlebars": "^4.7.8",
     "lucide-react": "^0.428.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
