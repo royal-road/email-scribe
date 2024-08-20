@@ -16,7 +16,9 @@ export default function PreviewPanelHeader() {
 
   return (
     <div className="PreviewPanelHeader">
-      Hello From Header! {breakpoint}
+      <div title="leftHeader" style={{ display: "flex", gap: "0.5rem" }}>
+        <h4>Preview</h4>
+      </div>
       <div title="rightHeader" style={{ display: "flex", gap: "0.5rem" }}>
         <BreakpointToggleGroup
           breakpoint={breakpoint}
