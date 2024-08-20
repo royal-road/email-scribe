@@ -31,7 +31,11 @@
     color: var(--background);
 
     &:hover {
-      background-color: color-mix(in srgb, var(--foreground) 90%, white);
+      background-color: color-mix(
+        in srgb,
+        var(--foreground) 80%,
+        var(--background)
+      );
     }
   }
   &--primary {
@@ -39,7 +43,7 @@
     color: var(--primary-foreground);
 
     &:hover {
-      background-color: color-mix(in srgb, var(--primary) 90%, black);
+      background-color: color-mix(in srgb, var(--primary) 80%, black);
     }
   }
 
@@ -48,7 +52,7 @@
     color: var(--destructive-foreground);
 
     &:hover {
-      background-color: color-mix(in srgb, var(--destructive) 90%, black);
+      background-color: color-mix(in srgb, var(--destructive) 80%, black);
     }
   }
 
