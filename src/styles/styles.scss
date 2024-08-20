@@ -101,8 +101,9 @@ $max-line-length: 70ch;
   // Color classes
   @include generate-color-classes(bg);
   @include generate-color-classes(text);
-  @import url(/src/components/Panels/blocks/styles.scss);
-  @import url(/src/components/Panels/preview/styles.scss);
+
+  @import "/src/components/Panels/blocks/styles";
+  @import "/src/components/Panels/preview/styles";
 
   // Base styles
   & {
