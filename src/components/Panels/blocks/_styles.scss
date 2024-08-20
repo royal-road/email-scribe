@@ -3,13 +3,17 @@
   height: 100%;
   padding: 1rem;
   justify-content: center;
-  align-items: center;
+  align-items: start;
 
-  flex: 2;
-  background-color: var(--primary);
+  flex: 3;
+  @extend .background-accent;
   min-width: 20rem;
-  border-bottom: 1px var(--foreground) solid;
+  border-bottom: 1px hsl(var(--foreground)) solid;
   @include breakpoint("md") {
     border-right: 1px hsl(var(--foreground)) solid;
+  }
+
+  h2 {
+    font-weight: 300;
   }
 }
