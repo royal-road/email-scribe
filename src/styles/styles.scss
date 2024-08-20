@@ -1,0 +1,174 @@
+$font-family-body: "Roboto", "Helvetica Neue", Arial, sans-serif;
+$font-family-heading: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+$max-line-length: 70ch;
+
+@mixin theme-colors($theme: "light") {
+  @if $theme == "light" {
+    --background: 0 0% 97%;
+    --foreground: 0 0% 0%;
+    --card: 0 0% 95%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 97%;
+    --popover-foreground: 0 0% 0%;
+    --primary: 204 70.5% 53.5%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 204 30% 70%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 166 30% 85%;
+    --muted-foreground: 0 0% 35%;
+    --accent: 166 30% 80%;
+    --accent-foreground: 0 0% 10%;
+    --destructive: 0 100% 30%;
+    --destructive-foreground: 0 0% 90%;
+    --border: 0 0% 80%;
+    --input: 0 0% 90%;
+    --ring: 204 70.5% 53.5%;
+  } @else {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 90%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 90%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 90%;
+    --primary: 204 70.5% 53.5%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 204 30% 20%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 166 30% 15%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 166 30% 15%;
+    --accent-foreground: 0 0% 90%;
+    --destructive: 0 100% 30%;
+    --destructive-foreground: 0 0% 90%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 204 70.5% 53.5%;
+  }
+  --radius: 0.5rem;
+}
+
+@mixin generate-color-classes($prefix) {
+  $colors: (
+    background,
+    foreground,
+    card,
+    popover,
+    primary,
+    secondary,
+    muted,
+    accent,
+    destructive
+  );
+
+  @each $color in $colors {
+    .#{$prefix}-#{$color} {
+      #{$prefix}-color: hsl(var(--#{$color}));
+    }
+  }
+}
+
+@mixin responsive-font-sizes {
+  body {
+    font-size: 14px;
+  }
+  h1 {
+    font-size: 2em;
+  }
+  h2 {
+    font-size: 1.75em;
+  }
+  h3 {
+    font-size: 1.5em;
+  }
+  h4 {
+    font-size: 1.25em;
+  }
+  h5,
+  h6 {
+    font-size: 1em;
+  }
+}
+
+.newsletterDesigner {
+  // Light theme by default
+  @include theme-colors("light");
+
+  // Dark theme
+  &[data-theme="dark"] {
+    @include theme-colors("dark");
+  }
+
+  // Color classes
+  @include generate-color-classes(bg);
+  @include generate-color-classes(text);
+
+  // Base styles
+  & {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: $font-family-body;
+    display: flex;
+    height: 100vh;
+    // padding: 1rem;
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  // Border and ring styles
+  .border-base {
+    border-color: hsl(var(--border));
+  }
+  .border-input {
+    border-color: hsl(var(--input));
+  }
+  .ring-base {
+    --tw-ring-color: hsl(var(--ring));
+  }
+  .rounded-base {
+    border-radius: var(--radius);
+  }
+
+  // Hover, focus, and active states
+  @each $state in (hover, focus, active) {
+    .#{$state}\:bg-primary:#{$state} {
+      background-color: hsl(var(--primary));
+    }
+    .#{$state}\:bg-secondary:#{$state} {
+      background-color: hsl(var(--secondary));
+    }
+    .#{$state}\:bg-accent:#{$state} {
+      background-color: hsl(var(--accent));
+    }
+    .#{$state}\:bg-destructive:#{$state} {
+      background-color: hsl(var(--destructive));
+    }
+  }
+
+  // Typography
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: $font-family-heading;
+    font-weight: 700;
+  }
+
+  @for $i from 1 through 6 {
+    h#{$i} {
+      font-size: 2.5em - ($i - 1) * 0.25em;
+    }
+  }
+
+  p,
+  ul,
+  ol {
+    max-width: $max-line-length;
+  }
+
+  // Media query
+  @media (max-width: 768px) {
+    @include responsive-font-sizes;
+  }
+}
