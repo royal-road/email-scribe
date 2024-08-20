@@ -30,3 +30,18 @@
   justify-content: center;
   align-items: center;
 }
+
+.BreakpointToggleGroup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .active {
+    background-color: var(--foreground);
+    color: var(--background);
+  }
+  .active:hover {
+    background-color: var(--foreground);
+    color: var(--background);
+  }
+}

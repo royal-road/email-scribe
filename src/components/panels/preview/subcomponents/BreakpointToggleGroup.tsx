@@ -1,0 +1,55 @@
+import { Monitor, Smartphone, Tablet } from "lucide-react";
+import { Button } from "../../../ui/Button";
+
+export default function BreakpointToggleGroup({
+  breakpoint,
+  onBreakpointChange,
+}: {
+  breakpoint: "mobile" | "tablet" | "desktop";
+  onBreakpointChange: (breakpoint: "mobile" | "tablet" | "desktop") => void;
+}) {
+  return (
+    <div className="BreakpointToggleGroup">
+      <Button
+        variant="outline"
+        onClick={() => onBreakpointChange("mobile")}
+        className={`${breakpoint === "mobile" && "active"} `}
+        style={{ borderBottomRightRadius: 0, borderTopRightRadius: 0 }}
+        size="icon"
+      >
+        <Smartphone
+          className="ToggleGroupIcon"
+          style={{ marginRight: "0.125rem", marginLeft: "0.125rem" }}
+        />
+      </Button>
+      <Button
+        variant="outline"
+        onClick={() => onBreakpointChange("tablet")}
+        className={`${breakpoint === "tablet" && "active"} `}
+        style={{ borderRadius: 0 }}
+        size="icon"
+      >
+        <Tablet
+          style={{
+            transform: "rotate(90deg)",
+            marginRight: "0.125rem",
+            marginLeft: "0.125rem",
+          }}
+          className="ToggleGroupIcon"
+        />
+      </Button>
+      <Button
+        variant="outline"
+        onClick={() => onBreakpointChange("desktop")}
+        className={`${breakpoint === "desktop" && "active"} `}
+        style={{ borderBottomLeftRadius: 0, borderTopLeftRadius: 0 }}
+        size="icon"
+      >
+        <Monitor
+          className="ToggleGroupIcon"
+          style={{ marginRight: "0.125rem", marginLeft: "0.125rem" }}
+        />
+      </Button>
+    </div>
+  );
+}
