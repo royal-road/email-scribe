@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "../../../ui/Button";
+import { Button } from "../../../ui/button";
 import { MoonStar, Sun } from "lucide-react";
 import BreakpointToggleGroup from "./BreakpointToggleGroup";
 

@@ -3,9 +3,9 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "../../ui/Collapsible";
+} from "../../ui/collapsible";
 import { ChevronsUpDown, X } from "lucide-react";
-import { Button } from "../../ui/Button";
+import { Button } from "../../ui/button";
 
 export default function BlocksPanel() {
   const [open, setOpen] = useState(false);
