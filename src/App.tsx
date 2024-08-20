@@ -1,3 +1,5 @@
+import BlocksPanel from "./components/Panels/blocks";
+import PreviewPanel from "./components/Panels/preview";
 import { useTheme } from "./hooks/useTheme";
 import "./styles/styles.scss";
 
@@ -7,7 +9,12 @@ function App() {
     <div
       data-theme={theme}
       className="newsletterDesigner bg-background text-foreground"
-    ></div>
+    >
+      <div className="container">
+        <PreviewPanel />
+        <BlocksPanel />
+      </div>
+    </div>
   );
 }
 

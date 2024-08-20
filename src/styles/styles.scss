@@ -101,6 +101,8 @@ $max-line-length: 70ch;
   // Color classes
   @include generate-color-classes(bg);
   @include generate-color-classes(text);
+  @import url(/src/components/Panels/blocks/styles.scss);
+  @import url(/src/components/Panels/preview/styles.scss);
 
   // Base styles
   & {
@@ -112,6 +114,13 @@ $max-line-length: 70ch;
     // padding: 1rem;
     line-height: 1.6;
     font-size: 16px;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 
   // Border and ring styles
