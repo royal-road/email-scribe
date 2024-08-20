@@ -1,9 +1,10 @@
 .BlocksPanel {
   display: flex;
+  flex-direction: column;
   height: 100%;
   padding: 1rem;
-  justify-content: center;
-  align-items: start;
+  justify-content: start;
+  align-items: center;
 
   flex: 4;
   @extend .background-card;
@@ -17,5 +18,17 @@
 
   h2 {
     font-weight: 300;
+  }
+  .blocks {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    .collapsibleTrigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
   }
 }

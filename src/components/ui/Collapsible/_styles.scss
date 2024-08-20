@@ -1,0 +1,55 @@
+.CollapsibleRoot {
+  width: 100%;
+}
+
+.CollapsibleIconButton {
+  font-family: inherit;
+  border-radius: 100%;
+  padding: 0px;
+  height: 2rem;
+  width: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.CollapsibleRepository {
+  background-color: var(--background);
+  border-radius: var(--radius);
+  margin: 10px 0;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.CollapsibleContent {
+  overflow: hidden;
+}
+.CollapsibleContent[data-state="open"] {
+  animation: slideDown 300ms ease-out;
+}
+.CollapsibleContent[data-state="closed"] {
+  animation: slideUp 300ms ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
