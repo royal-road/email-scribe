@@ -125,6 +125,13 @@ $breakpoints: (
 
   @import "/src/components/panels/blocks/styles";
   @import "/src/components/panels/preview/styles";
+  @import "/src/components/ui/Button/styles";
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
   // Base styles
   & {
@@ -141,7 +148,6 @@ $breakpoints: (
   .container {
     display: flex;
     width: 100%;
-    overflow: hidden;
     flex-direction: column;
     @include breakpoint("md") {
       flex-direction: row;
