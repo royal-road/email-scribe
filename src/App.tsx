@@ -1,10 +1,12 @@
-import BlocksPanel from "./components/panels/blocks";
+import { useState } from "react";
+import { BlocksPanel } from "./components/panels/blocks";
 import PreviewPanel from "./components/panels/preview";
 import { useTheme } from "./hooks/useTheme";
 import "./styles/styles.scss";
 
 function App() {
   const theme = useTheme();
+  const [html, setHtml] = useState("");
   return (
     <div
       id="newsletterDesignerRoot"
@@ -12,8 +14,8 @@ function App() {
       className="newsletterDesigner bg-background text-foreground"
     >
       <div className="container">
-        <BlocksPanel />
-        <PreviewPanel />
+        <BlocksPanel onUpdateFinalHtml={setHtml} />
+        <PreviewPanel htmlToPreview={html} />
       </div>
     </div>
   );

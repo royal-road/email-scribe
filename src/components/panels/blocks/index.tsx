@@ -1,40 +1,75 @@
-import { useState } from "react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "../../ui/collapsible";
-import { ChevronsUpDown, X } from "lucide-react";
+import { BlockRenderer } from "./subcomponents/BlockRenderer";
+import { useState, useCallback } from "react";
+import { BlockType, BlockDataMap } from "../../../blocks/setup/Types";
+import { BlockFactory } from "../../../blocks/setup/Factory";
+import { BlockInterface } from "../../../blocks/setup/Types";
+import debounce from "debounce";
 import { Button } from "../../ui/button";
+import { PlusCircle } from "lucide-react";
 
-export default function BlocksPanel() {
-  const [open, setOpen] = useState(false);
+interface BlockState {
+  instance: BlockInterface<BlockType>;
+  data: BlockDataMap[BlockType];
+}
+
+interface BlockPanelProps {
+  onUpdateFinalHtml: (html: string) => void;
+}
+
+export const BlocksPanel: React.FC<BlockPanelProps> = ({
+  onUpdateFinalHtml,
+}) => {
+  const [blocks, setBlocks] = useState<BlockState[]>([]);
+
+  const updateBlockData = useCallback(
+    debounce((index: number, newData: Partial<BlockDataMap[BlockType]>) => {
+      setBlocks((prevBlocks) =>
+        prevBlocks.map((block, i) => {
+          if (i === index) {
+            const updatedData = { ...block.data, ...newData };
+            block.instance.updateFormData(updatedData);
+            onUpdateFinalHtml(block.instance.generateHTML());
+            return { ...block, data: updatedData };
+          }
+          return block;
+        })
+      );
+    }, 300),
+    []
+  );
+
+  const addBlock = (type: BlockType) => {
+    const newBlockInstance = BlockFactory.createBlock(type);
+    setBlocks((prev) => [
+      ...prev,
+      {
+        instance: newBlockInstance,
+        data: newBlockInstance.formData,
+      },
+    ]);
+  };
+
   return (
     <div className="BlocksPanel">
       <h2>Newsletter Designer</h2>
-
+      <Button
+        onClick={() => addBlock(BlockType.Scaffolding)}
+        variant="ghost"
+        size="icon"
+      >
+        <PlusCircle />
+      </Button>
       <div className="blocks">
-        <Collapsible open={open} onOpenChange={setOpen}>
-          <div className="collapsibleTrigger CollapsibleRepository">
-            <span>Block A</span>
-            <CollapsibleTrigger asChild>
-              <Button variant="outline">
-                {open ? <X /> : <ChevronsUpDown />}
-              </Button>
-            </CollapsibleTrigger>
-          </div>
-          {/* This is where the stuff I want to pre-display goes */}
-          <CollapsibleContent>
-            {/* This css class comes from Collapsible's own styles.scss*/}
-            <div className="CollapsibleRepository">
-              <span className="Text">Block A Option 1</span>
-            </div>
-            <div className="CollapsibleRepository">
-              <span className="Text">Block B Option 2</span>
-            </div>
-          </CollapsibleContent>
-        </Collapsible>
+        {blocks.map((block, index) => (
+          <BlockRenderer
+            key={index}
+            block={block.instance}
+            data={block.data}
+            onChange={(newData) => updateBlockData(index, newData)}
+          />
+        ))}
       </div>
+      {/* <button onClick={() => addBlock(BlockType.Image)}>Add Image Block</button> */}
     </div>
   );
-}
+};
