@@ -1,13 +1,15 @@
 import { Monitor, Smartphone, Tablet } from "lucide-react";
 import { Button } from "../../../ui/button";
 
+export interface Breakpoints {
+  breakpoint: "mobile" | "tablet" | "desktop";
+  onBreakpointChange: (breakpoint: "mobile" | "tablet" | "desktop") => void;
+}
+
 export default function BreakpointToggleGroup({
   breakpoint,
   onBreakpointChange,
-}: {
-  breakpoint: "mobile" | "tablet" | "desktop";
-  onBreakpointChange: (breakpoint: "mobile" | "tablet" | "desktop") => void;
-}) {
+}: Breakpoints) {
   return (
     <div className="BreakpointToggleGroup">
       <Button

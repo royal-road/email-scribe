@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Button } from "../../../ui/button";
 import { MoonStar, Sun } from "lucide-react";
-import BreakpointToggleGroup from "./BreakpointToggleGroup";
+import BreakpointToggleGroup, { Breakpoints } from "./BreakpointToggleGroup";
 
-export default function PreviewPanelHeader() {
+const PreviewPanelHeader: React.FC<Breakpoints> = ({
+  breakpoint,
+  onBreakpointChange,
+}) => {
   const [theme, setTheme] = useState<boolean>(false);
-  const [breakpoint, setBreakpoint] = useState<"mobile" | "tablet" | "desktop">(
-    "desktop"
-  );
   const handleThemeChange = () => {
     const root = document.querySelector("#newsletterDesignerRoot");
     root?.setAttribute("data-theme", !theme ? "light" : "dark");
@@ -22,7 +22,7 @@ export default function PreviewPanelHeader() {
       <div style={{ display: "flex", gap: "0.5rem" }}>
         <BreakpointToggleGroup
           breakpoint={breakpoint}
-          onBreakpointChange={(breakpoint) => setBreakpoint(breakpoint)}
+          onBreakpointChange={(breakpoint) => onBreakpointChange(breakpoint)}
         />
         <Button
           title="Toggle Theme"
@@ -35,4 +35,6 @@ export default function PreviewPanelHeader() {
       </div>
     </div>
   );
-}
+};
+
+export default PreviewPanelHeader;
