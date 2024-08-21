@@ -49,6 +49,26 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     ]);
   };
 
+  const removeBlock = (index: number) => {
+    console.log("remove block", index);
+    setBlocks((prev) => {
+      const newBlocks = [...prev];
+      newBlocks.splice(index, 1);
+      return newBlocks;
+    });
+  };
+
+  const moveBlock = (index: number, direction: "up" | "down") => {
+    console.log("move block", index, direction);
+    setBlocks((prev) => {
+      const newBlocks = [...prev];
+      const block = newBlocks[index];
+      newBlocks.splice(index, 1);
+      newBlocks.splice(direction === "up" ? index - 1 : index + 1, 0, block);
+      return newBlocks;
+    });
+  };
+
   return (
     <div className="BlocksPanel">
       <h2>Newsletter Designer</h2>
@@ -62,7 +82,11 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       <div className="blocks">
         {blocks.map((block, index) => (
           <BlockRenderer
+            onDelete={() => removeBlock(index)}
+            onUp={() => moveBlock(index, "up")}
+            onDown={() => moveBlock(index, "down")}
             key={index}
+            index={index}
             block={block.instance}
             data={block.data}
             onChange={(newData) => updateBlockData(index, newData)}
