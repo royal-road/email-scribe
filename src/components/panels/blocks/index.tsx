@@ -6,6 +6,8 @@ import { BlockInterface } from "../../../blocks/setup/Types";
 import debounce from "debounce";
 import { Button } from "../../ui/button";
 import { PlusCircle } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+import { ScrollArea } from "../../ui/scrollArea";
 
 interface BlockState {
   instance: BlockInterface<BlockType>;
@@ -72,14 +74,33 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   return (
     <div className="BlocksPanel">
       <h2>Newsletter Designer</h2>
-      <Button
-        onClick={() => addBlock(BlockType.Scaffolding)}
-        variant="ghost"
-        size="icon"
-      >
-        <PlusCircle />
-      </Button>
-      <div className="blocks">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="default"
+            size="icon"
+            style={{
+              padding: 0,
+              minWidth: "3rem",
+              maxWidth: "3rem",
+              minHeight: "3rem",
+              maxHeight: "3rem",
+            }}
+          >
+            <PlusCircle />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <Button
+            variant="default"
+            onClick={() => addBlock(BlockType.Scaffolding)}
+            size="icon"
+          >
+            <PlusCircle />
+          </Button>
+        </PopoverContent>
+      </Popover>
+      <ScrollArea className="blocks">
         {blocks.map((block, index) => (
           <BlockRenderer
             onDelete={() => removeBlock(index)}
@@ -92,7 +113,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             onChange={(newData) => updateBlockData(index, newData)}
           />
         ))}
-      </div>
+      </ScrollArea>
       {/* <button onClick={() => addBlock(BlockType.Image)}>Add Image Block</button> */}
     </div>
   );
