@@ -12,6 +12,8 @@
   "dependencies": {
     "@css-inline/css-inline": "^0.14.1",
     "@radix-ui/react-collapsible": "^1.1.0",
+    "@radix-ui/react-popover": "^1.1.1",
+    "@radix-ui/react-scroll-area": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@rjsf/core": "5.20.0",
     "@rjsf/utils": "5.20.0",
