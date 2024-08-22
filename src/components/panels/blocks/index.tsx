@@ -8,6 +8,7 @@ import { Button } from "../../ui/button";
 import { PlusCircle } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { ScrollArea } from "../../ui/scrollArea";
+import BlockMeta from "./subcomponents/BlockMeta";
 
 interface BlockState {
   instance: BlockInterface<BlockType>;
@@ -91,12 +92,12 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           </Button>
         </PopoverTrigger>
         <PopoverContent>
-          <Button
-            variant="default"
-            onClick={() => addBlock(BlockType.Scaffolding)}
-            size="icon"
-          >
-            <PlusCircle />
+          <Button asChild onClick={() => addBlock(BlockType.Scaffolding)}>
+            <BlockMeta
+              {...BlockFactory.getClassForBlockType(
+                BlockType.Scaffolding
+              ).getMeta()}
+            />
           </Button>
         </PopoverContent>
       </Popover>
