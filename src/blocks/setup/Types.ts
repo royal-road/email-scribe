@@ -1,18 +1,13 @@
 import type { RJSFSchema, UiSchema } from "@rjsf/utils";
 import { ScaffoldingBlockData } from "../Scaffolding";
 import { BaseBlock } from "./Base";
+import { HeaderBlockData } from "../Header";
 
 export enum BlockType {
   Scaffolding = "scaffolding",
   Header = "header",
-  Banner = "banner",
+  // Banner = "banner",
   // Add other block types as needed
-}
-
-export interface ImageBlockData {
-  src: string;
-  alt: string;
-  width: number;
 }
 
 export interface ButtonBlockData {
@@ -22,8 +17,8 @@ export interface ButtonBlockData {
 
 export type BlockDataMap = {
   [BlockType.Scaffolding]: ScaffoldingBlockData;
-  [BlockType.Header]: ImageBlockData;
-  [BlockType.Banner]: ButtonBlockData;
+  [BlockType.Header]: HeaderBlockData;
+  // [BlockType.Banner]: ButtonBlockData;
   // Add other mappings as needed
 };
 
@@ -42,6 +37,7 @@ export interface BlockMetadata {
 }
 
 export interface BlockInterface<T extends BlockType> {
+  id: string;
   type: T;
   schema: RJSFSchema;
   uiSchema: UiSchema;
