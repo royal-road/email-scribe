@@ -1,5 +1,5 @@
 import { BlockRenderer } from "./subcomponents/BlockRenderer";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { BlockType, BlockDataMap } from "../../../blocks/setup/Types";
 import { BlockFactory } from "../../../blocks/setup/Factory";
 import { BlockInterface } from "../../../blocks/setup/Types";
@@ -8,7 +8,7 @@ import { Button } from "../../ui/button";
 import { PlusCircle } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { ScrollArea } from "../../ui/scrollArea";
-import BlockMeta from "./subcomponents/BlockMeta";
+import autoAnimate from "@formkit/auto-animate";
 
 interface BlockState {
   instance: BlockInterface<BlockType>;
@@ -23,6 +23,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   onUpdateFinalHtml,
 }) => {
   const [blocks, setBlocks] = useState<BlockState[]>([]);
+  const animateParent = useRef(null);
 
   const updateBlockData = useCallback(
     debounce((index: number, newData: Partial<BlockDataMap[BlockType]>) => {
@@ -71,6 +72,11 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       return newBlocks;
     });
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    animateParent.current && autoAnimate(animateParent.current);
+  }, [animateParent]);
 
   return (
     <div className="BlocksPanel">

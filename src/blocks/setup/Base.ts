@@ -12,6 +12,7 @@ export interface BlockConfig<T extends BlockType> {
 export abstract class BaseBlock<T extends BlockType>
   implements BlockInterface<T>
 {
+  id: string;
   type: T;
   schema: object;
   uiSchema: object;
@@ -24,6 +25,7 @@ export abstract class BaseBlock<T extends BlockType>
     this.uiSchema = config.uiSchema;
     this.formData = { ...config.defaultValues };
     this.meta = config.meta;
+    this.id = Math.random().toString(36).substr(2, 9);
   }
 
   static getMeta(): BlockMetadata {
