@@ -17,7 +17,8 @@ import ReorderDeleteGroup from "./ReorderDeleteGroup";
 import { camelToTitleCase } from "../../../../../lib/utils";
 
 interface BlockRendererProps {
-  index: number;
+  isTop: boolean;
+  isBottom: boolean;
   block: BlockInterface<BlockType>;
   data: BlockDataMap[BlockType];
   onChange: (newData: Partial<BlockDataMap[BlockType]>) => void;
@@ -27,7 +28,8 @@ interface BlockRendererProps {
 }
 
 export const BlockRenderer: React.FC<BlockRendererProps> = ({
-  index,
+  isTop,
+  isBottom,
   block,
   data,
   onChange,
@@ -43,7 +45,13 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
         className="collapsibleTrigger CollapsibleRepository"
         style={{ height: "3rem", paddingTop: "2rem", paddingBottom: "2rem" }}
       >
-        <ReorderDeleteGroup onDelete={onDelete} onUp={onUp} onDown={onDown} />
+        <ReorderDeleteGroup
+          isBottom={isBottom}
+          isTop={isTop}
+          onDelete={onDelete}
+          onUp={onUp}
+          onDown={onDown}
+        />
         <span>{camelToTitleCase(block.type)}</span>
         <CollapsibleTrigger asChild>
           <Button variant="outline">

@@ -104,6 +104,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       <ScrollArea className="blocks">
         {blocks.map((block, index) => (
           <BlockRenderer
+              isTop={index === 0}
             onDelete={() => removeBlock(index)}
             onUp={() => moveBlock(index, "up")}
             onDown={() => moveBlock(index, "down")}
