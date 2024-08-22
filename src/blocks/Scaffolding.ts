@@ -8,10 +8,12 @@ export interface ScaffoldingBlockData {
   content: string;
 }
 
-const meta = {
+const meta: BlockMetadata = {
   label: "Scaffolding",
-  thumbnailUrl: "https://google.com",
+  thumbnailUrl: "/images/200x150.webp",
   description: "For scaffolding everything",
+  tags: ["scaffolding", "layout"],
+  group: "layout",
 };
 
 const schema = {
@@ -93,7 +95,12 @@ export class ScaffoldingBlock extends BaseBlock<BlockType.Scaffolding> {
       schema: schema,
       uiSchema: uiSchema,
       defaultValues: defaultValues,
+      meta: meta,
     });
+  }
+
+  static override getMeta(): BlockMetadata {
+    return meta;
   }
 
   generateHTML(): string {

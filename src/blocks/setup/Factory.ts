@@ -1,5 +1,5 @@
 // src/blocks/factory/index.ts
-import { BlockType } from "./Types";
+import { BlockClassMap, BlockType } from "./Types";
 import { BlockInterface } from "./Types";
 import { ScaffoldingBlock } from "../Scaffolding";
 // import { ImageBlock } from '../ImageBlock';
@@ -14,6 +14,19 @@ export class BlockFactory {
       //   return new ImageBlock() as BlockInterface<T>;
       // case BlockType.Button:
       //   return new ButtonBlock() as BlockInterface<T>;
+      default:
+        throw new Error(`Unsupported block type: ${type}`);
+    }
+  }
+
+  static getClassForBlockType<T extends BlockType>(type: T): BlockClassMap[T] {
+    switch (type) {
+      case BlockType.Scaffolding:
+        return ScaffoldingBlock as unknown as BlockClassMap[T];
+      // case BlockType.Header:
+      //   return ImageBlock as BlockClassMap[T];
+      // case BlockType.Banner:
+      //   return ButtonBlock as BlockClassMap[T];
       default:
         throw new Error(`Unsupported block type: ${type}`);
     }

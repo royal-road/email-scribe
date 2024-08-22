@@ -26,6 +26,17 @@ export abstract class BaseBlock<T extends BlockType>
     this.meta = config.meta;
   }
 
+  static getMeta(): BlockMetadata {
+    // Doing it this way so extending classes can override this method (static methods cannot be abstract in js sadly)
+    return {
+      label: "NOT_OVERRIDEN",
+      thumbnailUrl: "NOT_OVERRIDEN",
+      description: "NOT_OVERRIDEN",
+      tags: ["NOT_OVERRIDEN"],
+      group: "NOT_OVERRIDEN",
+    };
+  }
+
   abstract generateHTML(): string;
 
   validateData(): boolean {

@@ -1,5 +1,6 @@
 import type { RJSFSchema, UiSchema } from "@rjsf/utils";
 import { ScaffoldingBlockData } from "../Scaffolding";
+import { BaseBlock } from "./Base";
 
 export enum BlockType {
   Scaffolding = "scaffolding",
@@ -26,10 +27,18 @@ export type BlockDataMap = {
   // Add other mappings as needed
 };
 
+export type BlockClassMap = {
+  [K in BlockType]: typeof BaseBlock & {
+    new (): BlockInterface<K>;
+  };
+};
+
 export interface BlockMetadata {
   label: string;
   thumbnailUrl: string;
   description: string;
+  tags: string[]; // In case we want to add tag based filtering
+  group: string; // To group blocks in the UI
 }
 
 export interface BlockInterface<T extends BlockType> {
