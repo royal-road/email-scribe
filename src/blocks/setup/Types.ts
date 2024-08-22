@@ -26,11 +26,18 @@ export type BlockDataMap = {
   // Add other mappings as needed
 };
 
+export interface BlockMetadata {
+  label: string;
+  thumbnailUrl: string;
+  description: string;
+}
+
 export interface BlockInterface<T extends BlockType> {
   type: T;
   schema: RJSFSchema;
   uiSchema: UiSchema;
   formData: BlockDataMap[T];
+  meta: BlockMetadata;
 
   generateHTML(): string;
   validateData(): boolean;

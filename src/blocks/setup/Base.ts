@@ -1,11 +1,12 @@
 import { customizeValidator } from "@rjsf/validator-ajv8";
-import { BlockType, BlockDataMap } from "./Types";
+import { BlockType, BlockDataMap, BlockMetadata } from "./Types";
 import { BlockInterface } from "./Types";
 
 export interface BlockConfig<T extends BlockType> {
   schema: object;
   uiSchema: object;
   defaultValues: BlockDataMap[T];
+  meta: BlockMetadata;
 }
 
 export abstract class BaseBlock<T extends BlockType>
@@ -15,12 +16,14 @@ export abstract class BaseBlock<T extends BlockType>
   schema: object;
   uiSchema: object;
   formData: BlockDataMap[T];
+  meta: BlockMetadata;
 
   constructor(type: T, config: BlockConfig<T>) {
     this.type = type;
     this.schema = config.schema;
     this.uiSchema = config.uiSchema;
     this.formData = { ...config.defaultValues };
+    this.meta = config.meta;
   }
 
   abstract generateHTML(): string;

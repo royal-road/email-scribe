@@ -1,4 +1,4 @@
-import { BlockType } from "./setup/Types";
+import { BlockMetadata, BlockType } from "./setup/Types";
 import { BaseBlock } from "./setup/Base";
 import { templatify } from "./utils/templater";
 
@@ -7,6 +7,12 @@ export interface ScaffoldingBlockData {
   backgroundColor: string;
   content: string;
 }
+
+const meta = {
+  label: "Scaffolding",
+  thumbnailUrl: "https://google.com",
+  description: "For scaffolding everything",
+};
 
 const schema = {
   type: "object",
