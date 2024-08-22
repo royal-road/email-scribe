@@ -51,6 +51,26 @@
     }
   }
 }
+.BlockSelector {
+  .BlockMetaClickable {
+    &:hover {
+      box-shadow: 0 4px 8px rgba(var(--foreground), 0.5);
+      transform: scale(1.02);
+      transition: all 0.2s;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+  .ScrollAreaViewport {
+    & > div {
+      display: flex !important;
+      flex-direction: row !important;
+      gap: 1rem;
+    }
+  }
+}
 
 .BlockMeta {
   background-color: var(--card);
@@ -69,10 +89,11 @@
   }
 
   .label {
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: 400;
     margin: 1rem 1rem 0.5rem;
-    color: var(--primary);
+    color: var(--foreground);
   }
 
   .description {

@@ -4,10 +4,8 @@ import { BlockType, BlockDataMap } from "../../../blocks/setup/Types";
 import { BlockFactory } from "../../../blocks/setup/Factory";
 import { BlockInterface } from "../../../blocks/setup/Types";
 import debounce from "debounce";
-import { Button } from "../../ui/button";
-import { PlusCircle } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { ScrollArea } from "../../ui/scrollArea";
+import { BlockSelector } from "./subcomponents/BlockSelector";
 import autoAnimate from "@formkit/auto-animate";
 
 interface BlockState {
@@ -81,46 +79,23 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   return (
     <div className="BlocksPanel">
       <h2>Newsletter Designer</h2>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant="default"
-            size="icon"
-            style={{
-              padding: 0,
-              minWidth: "3rem",
-              maxWidth: "3rem",
-              minHeight: "3rem",
-              maxHeight: "3rem",
-            }}
-          >
-            <PlusCircle />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          <Button asChild onClick={() => addBlock(BlockType.Scaffolding)}>
-            <BlockMeta
-              {...BlockFactory.getClassForBlockType(
-                BlockType.Scaffolding
-              ).getMeta()}
-            />
-          </Button>
-        </PopoverContent>
-      </Popover>
+      <BlockSelector addBlock={addBlock} />
       <ScrollArea className="blocks">
-        {blocks.map((block, index) => (
-          <BlockRenderer
+        <div ref={animateParent}>
+          {blocks.map((block, index) => (
+            <BlockRenderer
               isTop={index === 0}
-            onDelete={() => removeBlock(index)}
-            onUp={() => moveBlock(index, "up")}
-            onDown={() => moveBlock(index, "down")}
-            key={index}
-            index={index}
-            block={block.instance}
-            data={block.data}
-            onChange={(newData) => updateBlockData(index, newData)}
-          />
-        ))}
+              isBottom={index === blocks.length - 1}
+              onDelete={() => removeBlock(index)}
+              onUp={() => moveBlock(index, "up")}
+              onDown={() => moveBlock(index, "down")}
+              key={`block${block.instance.id}`}
+              block={block.instance}
+              data={block.data}
+              onChange={(newData) => updateBlockData(index, newData)}
+            />
+          ))}
+        </div>
       </ScrollArea>
       {/* <button onClick={() => addBlock(BlockType.Image)}>Add Image Block</button> */}
     </div>
