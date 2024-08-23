@@ -61,7 +61,7 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
               flexDirection: "row",
               flexWrap: "wrap",
               width: "100%",
-              justifyContent: "center",
+              justifyContent: "start",
               alignItems: "center",
               height: "100%",
               gap: "1rem",
