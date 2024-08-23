@@ -56,21 +56,8 @@
       }
     }
   }
-  .BlockSelector {
-    .BlockMetaClickable {
-      &:hover {
-        box-shadow: 0 4px 8px rgba(var(--foreground), 0.5);
-        transform: scale(1.02);
-        transition: all 0.2s;
-      }
 
-      &:focus {
-        transform: scale(0.98);
-      }
-      &:active {
-        transform: scale(0.98);
-      }
-    }
+  .BlockSelector {
     .ScrollAreaViewport {
       & > div {
         display: flex !important;
@@ -78,6 +65,22 @@
         gap: 1rem;
       }
     }
+  }
+}
+
+.BlockMetaClickable {
+  transform: scale(1.5);
+  &:hover {
+    box-shadow: 0 4px 8px rgba(var(--foreground), 0.5);
+    transform: scale(1.02) !important;
+    transition: all 0.2s !important;
+  }
+
+  &:focus {
+    transform: scale(0.98) !important;
+  }
+  &:active {
+    transform: scale(0.98) !important;
   }
 }
 

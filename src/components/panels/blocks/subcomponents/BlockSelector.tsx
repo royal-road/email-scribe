@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Button } from "../../../ui/button";
 import { PlusCircle } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover";
@@ -5,7 +6,6 @@ import BlockMeta from "../subcomponents/BlockMeta";
 import { ScrollArea } from "../../../ui/scrollArea";
 import { BlockFactory } from "../../../../blocks/setup/Factory";
 import { BlockType } from "../../../../blocks/setup/Types";
-import React from "react";
 import { useMediaQuery } from "../../../../hooks/useMediaQuery";
 import { camelToTitleCase } from "../../../../../lib/utils";
 
@@ -15,6 +15,16 @@ interface BlockSelectorProps {
 
 export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const handleTouchStart = (index: number) => {
+    setActiveIndex(index);
+  };
+
+  const handleTouchEnd = () => {
+    setActiveIndex(null);
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -50,7 +60,6 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
           style={{
             width: "100%",
             height: "100%",
-
             display: "flex",
             flexDirection: "column",
           }}
@@ -71,7 +80,7 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
               .filter(
                 (key) =>
                   key != camelToTitleCase(BlockType.Scaffolding.toString())
-              ) // Don't show the scaffolding block (Title case coz the key is in title case where defined)
+              )
               ?.map((key, index) => {
                 const blockType = BlockType[key as keyof typeof BlockType];
                 return (
@@ -79,8 +88,14 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
                     key={blockType}
                     onClick={() => addBlock(blockType)}
                     id={`blockMeta${index}`}
-                    style={{ width: "fit-content" }}
+                    style={{
+                      width: "fit-content",
+                      transform: activeIndex === index ? "scale(0.98)" : "none",
+                      transition: "transform 0.2s",
+                    }}
                     className="BlockMetaClickable"
+                    onTouchStart={() => handleTouchStart(index)}
+                    onTouchEnd={handleTouchEnd}
                   >
                     <BlockMeta
                       {...BlockFactory.getClassForBlockType(
