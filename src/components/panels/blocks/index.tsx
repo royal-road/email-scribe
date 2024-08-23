@@ -7,10 +7,12 @@ import debounce from "debounce";
 import { ScrollArea } from "../../ui/scrollArea";
 import { BlockSelector } from "./subcomponents/BlockSelector";
 import autoAnimate from "@formkit/auto-animate";
+import { BlockGlobalSettings } from "./subcomponents/BlockGlobalSettings";
 
-interface BlockState {
+export interface BlockState {
   instance: BlockInterface<BlockType>;
   data: BlockDataMap[BlockType];
+  cachedHtml: string;
 }
 
 interface BlockPanelProps {
@@ -21,7 +23,38 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   onUpdateFinalHtml,
 }) => {
   const [blocks, setBlocks] = useState<BlockState[]>([]);
+  const [scaffoldSettings, setScaffoldSettings] = useState<BlockState>(() => {
+    const instance = BlockFactory.createBlock(BlockType.Scaffolding);
+    return {
+      instance,
+      data: instance.formData,
+      cachedHtml: instance.generateHTML(),
+    };
+  });
+
   const animateParent = useRef(null);
+
+  const updateRenderedHtml = () => {
+    const blockContent: string[] = [];
+    blocks.map((block) => blockContent.push(block.cachedHtml));
+    const finHtml = blockContent.join("");
+    scaffoldSettings.instance.updateFormData({
+      ...scaffoldSettings.data,
+      blocks: finHtml,
+    });
+    onUpdateFinalHtml(scaffoldSettings.instance.generateHTML());
+  };
+
+  useEffect(() => {
+    updateRenderedHtml();
+  }, [blocks]);
+
+  const debouncedSetScaffoldSettings = useCallback(
+    debounce((newSettings) => {
+      setScaffoldSettings(newSettings);
+    }, 300),
+    []
+  );
 
   const updateBlockData = useCallback(
     debounce((index: number, newData: Partial<BlockDataMap[BlockType]>) => {
@@ -30,7 +63,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           if (i === index) {
             const updatedData = { ...block.data, ...newData };
             block.instance.updateFormData(updatedData);
-            onUpdateFinalHtml(block.instance.generateHTML());
+            block.cachedHtml = block.instance.generateHTML(); // This ensures only the block that was updated is re-rendered
             return { ...block, data: updatedData };
           }
           return block;
@@ -47,6 +80,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       {
         instance: newBlockInstance,
         data: newBlockInstance.formData,
+        cachedHtml: newBlockInstance.generateHTML(),
       },
     ]);
   };
@@ -69,6 +103,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       newBlocks.splice(direction === "up" ? index - 1 : index + 1, 0, block);
       return newBlocks;
     });
+    // updateBlockData(index, {});
   };
 
   useEffect(() => {
@@ -90,7 +125,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         }}
       >
         <h2 className="PanelHeading">Newsletter Designer</h2>
-      <BlockSelector addBlock={addBlock} />
+        <BlockSelector addBlock={addBlock} />
         <BlockGlobalSettings
           scaffoldSettings={scaffoldSettings}
           setScalfoldSettings={debouncedSetScaffoldSettings}
