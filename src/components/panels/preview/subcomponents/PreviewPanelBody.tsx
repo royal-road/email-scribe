@@ -48,7 +48,7 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
         } else {
           // On desktop devices
           if (breakpoint === "mobile") {
-            zoomFactor = 1.5; // Slight zoom in for mobile view on desktop
+            zoomFactor = 1.25; // Slight zoom in for mobile view on desktop
           }
           // For tablet and desktop breakpoints on desktop, keep zoom at 1
         }
