@@ -1,7 +1,15 @@
 # Newsletter Builder
 
-![Update Aug 21.5](public/readme/update22Aug.png)
+![Update Aug 23](public/readme/update23Aug.png)
 This is a simple SPA to build an email newsletter from Block-like UI.
+
+## How to run
+
+- Clone the repo
+- Run `bun i`
+- Run `bun run dev` (or `bun run build` + `bun run preview`)
+
+# Deprecated
 
 ## TO DO/IDEAS
 
