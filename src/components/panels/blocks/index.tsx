@@ -8,6 +8,7 @@ import { ScrollArea } from "../../ui/scrollArea";
 import { BlockSelector } from "./subcomponents/BlockSelector";
 import autoAnimate from "@formkit/auto-animate";
 import { BlockGlobalSettings } from "./subcomponents/BlockGlobalSettings";
+import { RRLogo } from "../../ui/RRLogo";
 
 export interface BlockState {
   instance: BlockInterface<BlockType>;
@@ -113,6 +114,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 
   return (
     <div className="BlocksPanel">
+      <RRLogo style={{ width: "4rem", marginBottom: "2rem" }} />
       <div
         style={{
           display: "flex",
@@ -142,7 +144,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
               width: "100%",
             }}
           >
-            <p style={{ fontWeight: 200, fontSize: "1.4cqw" }}>
+            <p style={{ fontWeight: 200, fontSize: "1.4rem" }}>
               Click the "+" button to add a block
             </p>
           </div>
