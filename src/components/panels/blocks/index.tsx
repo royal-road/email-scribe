@@ -47,7 +47,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 
   useEffect(() => {
     updateRenderedHtml();
-  }, [blocks]);
+  }, [blocks, scaffoldSettings]);
 
   const debouncedSetScaffoldSettings = useCallback(
     debounce((newSettings) => {
@@ -132,6 +132,21 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         />
       </div>
       <ScrollArea className="blocks">
+        {blocks.length === 0 && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+              width: "100%",
+            }}
+          >
+            <p style={{ fontWeight: 200, fontSize: "1.4cqw" }}>
+              Click the "+" button to add a block
+            </p>
+          </div>
+        )}
         <div ref={animateParent}>
           {blocks.map((block, index) => (
             <BlockRenderer

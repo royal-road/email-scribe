@@ -32,6 +32,9 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
         const parser = new DOMParser();
         const htmlDoc = parser.parseFromString(htmlToPreview, "text/html");
 
+        if (htmlDoc.body.innerText.trim() === "") {
+          htmlDoc.body.innerHTML = `<div style = "display: flex; font-family:'Helvetica Neue', Arial, sans-serif; justify-content: center; font-weight:100; align-items: center; height: 100%; font-family: sans-serif; font-size: 1.5rem; color: #737373;">~Wow, so empty~</div>`;
+        }
         // Determine zoom factor
         let zoomFactor = 1;
         if (isMobile) {
