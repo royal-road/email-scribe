@@ -1,3 +1,19 @@
+@mixin rjsfForm {
+  #root {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    border: 0 !important;
+    .hidden {
+      display: none;
+    }
+    gap: 1rem;
+    .field {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
 .BlocksPanel {
   display: flex;
   flex-direction: column;
@@ -12,6 +28,18 @@
   border-bottom: 1px solid var(--border);
   @include breakpoint("md") {
     border-right: 1px solid var(--border);
+  }
+
+  .PanelHeading {
+    flex: 1;
+    font-size: 1.8rem;
+    container-type: inline-size;
+    @include breakpoint("md") {
+      font-size: 1.5rem;
+    }
+    @include breakpoint("xl") {
+      font-size: 1.6rem;
+    }
   }
 
   .blocks {
@@ -34,44 +62,35 @@
         margin-left: 1rem;
       }
     }
+  }
+  .BlockSelector {
+    .BlockMetaClickable {
+      &:hover {
+        box-shadow: 0 4px 8px rgba(var(--foreground), 0.5);
+        transform: scale(1.02);
+        transition: all 0.2s;
+      }
 
-    .blockForm {
-      // @extend .background-card;
-      #root {
-        font-family: "Poppins", Arial, Helvetica, sans-serif;
-        display: flex;
-        flex-direction: column;
-        border: 0 !important;
+      &:focus {
+        transform: scale(0.98);
+      }
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+    .ScrollAreaViewport {
+      & > div {
+        display: flex !important;
+        flex-direction: row !important;
         gap: 1rem;
-        .field {
-          display: flex;
-          flex-direction: column;
-        }
       }
     }
   }
 }
-.BlockSelector {
-  .BlockMetaClickable {
-    &:hover {
-      box-shadow: 0 4px 8px rgba(var(--foreground), 0.5);
-      transform: scale(1.02);
-      transition: all 0.2s;
-    }
 
-    &:active {
-      transform: scale(0.98);
-    }
-  }
-  .ScrollAreaViewport {
-    & > div {
-      display: flex !important;
-      flex-direction: row !important;
-      gap: 1rem;
-    }
-  }
+.blockForm {
+  @include rjsfForm;
 }
-
 .BlockMeta {
   background-color: var(--card);
   color: var(--card-foreground);
@@ -80,19 +99,21 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  max-width: 300px;
+  max-width: 200px;
 
   .thumbnail {
-    width: 100%;
+    width: 200px;
     height: 150px;
-    object-fit: cover;
+    object-fit: contain;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
   }
 
   .label {
     font-size: 1.4rem;
     text-align: center;
     font-weight: 400;
-    margin: 1rem 1rem 0.5rem;
+    margin: 0.25rem 0.5rem 0.25rem;
     color: var(--foreground);
   }
 
@@ -100,11 +121,11 @@
     font-size: 0.9rem;
     margin: 0 1rem 1rem;
     flex-grow: 1;
+    max-height: 100px;
   }
 
   .tags {
     padding: 1rem;
-    border-top: 1px solid var(--border);
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
