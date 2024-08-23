@@ -19,18 +19,17 @@
   padding-left: 1rem;
   padding-right: 1rem;
   align-items: center;
-  border-bottom: 1px solid
-    color-mix(in srgb, var(--foreground) 30%, transparent);
+  border-bottom: 1px solid var(--border);
 }
 
 .PreviewPanelBody {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // width: 100%;
+  // height: 100%;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
   .PreviewPanelBodyScreen {
-    border: 1px solid color-mix(in srgb, var(--foreground) 30%, transparent);
+    border: 1px solid var(--border) !important;
   }
 }
 
