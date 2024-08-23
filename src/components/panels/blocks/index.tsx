@@ -9,6 +9,7 @@ import { BlockSelector } from "./subcomponents/BlockSelector";
 import autoAnimate from "@formkit/auto-animate";
 import { BlockGlobalSettings } from "./subcomponents/BlockGlobalSettings";
 import { RRLogo } from "../../ui/RRLogo";
+import { templateHandler } from "../../../blocks/parser";
 
 export interface BlockState {
   instance: BlockInterface<BlockType>;
@@ -53,7 +54,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   const debouncedSetScaffoldSettings = useCallback(
     debounce((newSettings) => {
       setScaffoldSettings(newSettings);
-    }, 300),
+    }, blocks.length + 5),
     []
   );
 
@@ -70,7 +71,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           return block;
         })
       );
-    }, 300),
+    }, blocks.length + 5), // Debounce more based on whether there's more blocks
     []
   );
 
@@ -114,7 +115,10 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 
   return (
     <div className="BlocksPanel">
-      <RRLogo style={{ width: "4rem", marginBottom: "2rem" }} />
+      <RRLogo
+        style={{ width: "4rem", marginBottom: "2rem" }}
+        onClick={() => templateHandler()}
+      />
       <div
         style={{
           display: "flex",
