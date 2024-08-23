@@ -3,15 +3,19 @@ import { BaseBlock } from "./setup/Base";
 import { templatify } from "./utils/templater";
 
 export interface ScaffoldingBlockData {
-  title: string;
-  backgroundColor: string;
-  content: string;
+  mainBgColor: string;
+  fontFamily: string;
+  textColor: string;
+  linkColor: string;
+  buttonColor: string;
+  buttonTextColor: string;
+  blocks: string;
 }
 
 const meta: BlockMetadata = {
   label: "Scaffolding",
-  thumbnailUrl: "/images/200x150.webp",
-  description: "For scaffolding everything",
+  thumbnailUrl: "/images/scaffolding.png",
+  description: "Main structure for the email template",
   tags: ["scaffolding", "layout"],
   group: "layout",
 };
@@ -19,73 +23,109 @@ const meta: BlockMetadata = {
 const schema = {
   type: "object",
   properties: {
-    title: { type: "string" },
-    backgroundColor: { type: "string" },
-    content: { type: "string" },
+    mainBgColor: { type: "string" },
+    fontFamily: { type: "string" },
+    textColor: { type: "string" },
+    linkColor: { type: "string" },
+    buttonColor: { type: "string" },
+    buttonTextColor: { type: "string" },
+    blocks: { type: "string" },
   },
-  required: ["title", "backgroundColor", "content"],
+  required: [
+    "mainBgColor",
+    "fontFamily",
+    "textColor",
+    "linkColor",
+    "buttonColor",
+    "buttonTextColor",
+    "blocks",
+  ],
 };
 
 const uiSchema = {
-  title: {
-    "ui:widget": "text",
-    "ui:title": "Title",
-  },
-  backgroundColor: {
+  mainBgColor: {
     "ui:widget": "color",
-    "ui:title": "Background Color",
+    "ui:title": "Main Background Color",
   },
-  content: {
-    "ui:widget": "textarea",
-    "ui:title": "Content",
+  fontFamily: {
+    "ui:widget": "text",
+    "ui:title": "Font Family",
+  },
+  textColor: {
+    "ui:widget": "color",
+    "ui:title": "Text Color",
+  },
+  linkColor: {
+    "ui:widget": "color",
+    "ui:title": "Link Color",
+  },
+  buttonColor: {
+    "ui:widget": "color",
+    "ui:title": "Button Color",
+  },
+  buttonTextColor: {
+    "ui:widget": "color",
+    "ui:title": "Button Text Color",
+  },
+  blocks: {
+    "ui:widget": "hidden",
   },
 };
 
 const defaultValues: ScaffoldingBlockData = {
-  title: "Enter your title here",
-  backgroundColor: "#ffffff",
-  content: "",
+  mainBgColor: "#eceff3",
+  fontFamily: "'Open Sans', Arial, sans-serif",
+  textColor: "#7f8c8d",
+  linkColor: "#6ec8c7",
+  buttonColor: "#6ec8c7",
+  buttonTextColor: "#FFFFFF",
+  blocks: "",
 };
 
 const htmlTemplate = `
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{title}}</title>
-    <style type="text/css">
-      body {
-        margin: 0;
-      }
-      table {
-        border-spacing: 0;
-      }
-      td {
-        padding: 0;
-        border: 0;
-      }
-      img {
-        border: 0;
-      }
-      .wrapper {
-        width: 100%;
-        table-layout: fixed;
-        background-color: {{backgroundColor}};
-        padding-bottom: 60px;
-        font-family: "Poppins", Arial, Helvetica, sans-serif;
-        }        
-      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
-    </style>
-  </head>
-  <body>
-    <center class="wrapper">
-      {{content}}
-      <!-- End Main Class -->
-    </center>
-    <!-- End Wrapper -->
-  </body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <!--[if !mso]><!-->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!--<![endif]-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>*|MC:SUBJECT|*</title>
+  <style type="text/css">
+    .ReadMsgBody { width: 100%; background-color: {{mainBgColor}}; }
+    .ExternalClass { width: 100%; background-color: {{mainBgColor}}; }
+    .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; }
+    html { width: 100%; }
+    body { -webkit-text-size-adjust: none; -ms-text-size-adjust: none; margin: 0; padding: 0; }
+    table { border-spacing: 0; table-layout: fixed; margin: 0 auto; }
+    table table table { table-layout: auto; }
+    .yshortcuts a { border-bottom: none !important; }
+    img:hover { opacity: 0.9 !important; }
+    a { color: {{linkColor}}; text-decoration: none; }
+    .textbutton a { font-family: {{fontFamily}} !important;}
+    .btn-link a { color:{{buttonTextColor}} !important;}
+
+    /*Responsive*/
+    @media only screen and (max-width: 640px) {
+      body { margin: 0px; width: auto !important; font-family: {{fontFamily}} !important;}
+      .table-inner { width: 90% !important;  max-width: 90%!important;}
+      .table-full { width: 100%!important; max-width: 100%!important;}
+    }
+
+    @media only screen and (max-width: 479px) {
+      body { width: auto !important; font-family: {{fontFamily}} !important;}
+      .table-inner{ width: 90% !important;}
+      .table-full { width: 100%!important; max-width: 100%!important;}
+      /*gmail*/
+      u + .body .full { width:100% !important; width:100vw !important;}
+    }
+  </style>
+</head>
+
+<body class="body">
+  {{{blocks}}}
+</body>
 </html>
 `;
 
