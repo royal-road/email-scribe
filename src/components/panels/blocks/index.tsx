@@ -78,8 +78,24 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 
   return (
     <div className="BlocksPanel">
-      <h2>Newsletter Designer</h2>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          height: "3rem",
+          gap: "0.5rem",
+          width: "100%",
+          justifyContent: "space-between",
+        }}
+      >
+        <h2 className="PanelHeading">Newsletter Designer</h2>
       <BlockSelector addBlock={addBlock} />
+        <BlockGlobalSettings
+          scaffoldSettings={scaffoldSettings}
+          setScalfoldSettings={debouncedSetScaffoldSettings}
+        />
+      </div>
       <ScrollArea className="blocks">
         <div ref={animateParent}>
           {blocks.map((block, index) => (
