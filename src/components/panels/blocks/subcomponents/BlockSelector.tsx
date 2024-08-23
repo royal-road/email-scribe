@@ -7,6 +7,7 @@ import { BlockFactory } from "../../../../blocks/setup/Factory";
 import { BlockType } from "../../../../blocks/setup/Types";
 import React from "react";
 import { useMediaQuery } from "../../../../hooks/useMediaQuery";
+import { camelToTitleCase } from "../../../../../lib/utils";
 
 interface BlockSelectorProps {
   addBlock: (type: BlockType) => void;
@@ -34,15 +35,17 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
       <PopoverContent
         side={isMobile ? "bottom" : "right"}
         style={{
-          width: `${isMobile ? "90vw" : "50vw"}`,
+          width: `${isMobile ? "85vw" : "50vw"}`,
           height: "50vh",
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
           gap: "1rem",
         }}
         className="BlockSelector"
       >
+        <h3 style={{ margin: "0" }}>Add Block</h3>
         <ScrollArea
           style={{
             width: "100%",
@@ -64,22 +67,29 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
               gap: "1rem",
             }}
           >
-            {Object.keys(BlockType).map((key, index) => {
-              const blockType = BlockType[key as keyof typeof BlockType];
-              return (
-                <div
-                  key={blockType}
-                  onClick={() => addBlock(blockType)}
-                  id={`blockMeta${index}`}
-                  style={{ width: "fit-content" }}
-                  className="BlockMetaClickable"
-                >
-                  <BlockMeta
-                    {...BlockFactory.getClassForBlockType(blockType).getMeta()}
-                  />
-                </div>
-              );
-            })}
+            {Object.keys(BlockType)
+              .filter(
+                (key) =>
+                  key != camelToTitleCase(BlockType.Scaffolding.toString())
+              ) // Don't show the scaffolding block (Title case coz the key is in title case where defined)
+              ?.map((key, index) => {
+                const blockType = BlockType[key as keyof typeof BlockType];
+                return (
+                  <div
+                    key={blockType}
+                    onClick={() => addBlock(blockType)}
+                    id={`blockMeta${index}`}
+                    style={{ width: "fit-content" }}
+                    className="BlockMetaClickable"
+                  >
+                    <BlockMeta
+                      {...BlockFactory.getClassForBlockType(
+                        blockType
+                      ).getMeta()}
+                    />
+                  </div>
+                );
+              })}
           </div>
         </ScrollArea>
       </PopoverContent>

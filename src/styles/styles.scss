@@ -211,7 +211,7 @@ $breakpoints: (
   }
 
   // Media query
-  @media (max-width: 768px) {
+  @include breakpoint("md") {
     @include responsive-font-sizes;
   }
 }
