@@ -1,15 +1,15 @@
 import { Button } from "../../../ui/button";
 import { Settings2 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover";
-import Form from "@rjsf/core";
-import validator from "@rjsf/validator-ajv8";
+// import Form from "@rjsf/core";
+// import validator from "@rjsf/validator-ajv8";
 import React from "react";
 import { useMediaQuery } from "../../../../hooks/useMediaQuery";
 import { BlockState } from "..";
 
 interface BlockGlobalSettingsProps {
   scaffoldSettings: BlockState;
-  setScalfoldSettings: React.Dispatch<React.SetStateAction<BlockState>>;
+  setScalfoldSettings?: React.Dispatch<React.SetStateAction<BlockState>>;
 }
 
 export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
@@ -49,6 +49,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
       >
         <h3 style={{ margin: "0" }}>Block Settings</h3>
         <h6>Not Available Right Now...</h6>
+        {scaffoldSettings && setScalfoldSettings && ": )"}
         {/* <Form
           schema={scaffoldSettings.instance.schema}
           uiSchema={scaffoldSettings.instance.uiSchema}
