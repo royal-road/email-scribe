@@ -16,8 +16,7 @@ export abstract class BaseBlock implements BlockInterface {
   formData: object;
   meta: BlockMetadata;
 
-  constructor(config: BlockConfig, id?: string) {
-    this.id = id || Math.random().toString(36).substr(2, 9);
+  constructor(config: BlockConfig) {
     this.schema = config.schema;
     this.uiSchema = config.uiSchema;
     this.formData = { ...config.defaultValues };
@@ -28,6 +27,7 @@ export abstract class BaseBlock implements BlockInterface {
   static getMeta(): BlockMetadata {
     // Doing it this way so extending classes can override this method (static methods cannot be abstract in js sadly)
     return {
+      id: "NOT_OVERRIDEN",
       label: "NOT_OVERRIDEN",
       thumbnailUrl: "NOT_OVERRIDEN",
       description: "NOT_OVERRIDEN",

@@ -13,6 +13,7 @@ export interface ScaffoldingBlockData {
 }
 
 const meta: BlockMetadata = {
+  id: Math.random().toString(36).substr(2, 9),
   label: "Scaffolding",
   thumbnailUrl: "/images/scaffolding.png",
   description: "Main structure for the email template",
@@ -131,15 +132,12 @@ const htmlTemplate = `
 
 export class ScaffoldingBlock extends BaseBlock {
   constructor() {
-    super(
-      {
-        schema: schema,
-        uiSchema: uiSchema,
-        defaultValues: defaultValues,
-        meta: meta,
-      },
-      "0"
-    );
+    super({
+      schema: schema,
+      uiSchema: uiSchema,
+      defaultValues: defaultValues,
+      meta: meta,
+    });
   }
 
   static override getMeta(): BlockMetadata {

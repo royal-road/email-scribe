@@ -19,7 +19,7 @@ function parseTemplate(content: string) {
     const fin: BlockInterface[] = [];
     (dom.body.querySelectorAll("[data-module]") as NodeListOf<Element>).forEach(
       (node) => {
-        fin.push(node.outerHTML);
+        fin.push(parseModule(node));
       }
     );
     return fin;
@@ -28,7 +28,7 @@ function parseTemplate(content: string) {
   }
 }
 
-function parseModule(): BlockInterface {}
+function parseModule(node: Element): BlockInterface {}
 
 async function processTemplate(url: string): Promise<void> {
   try {

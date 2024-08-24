@@ -27,6 +27,7 @@ export interface HeaderBlockData {
 }
 
 const meta: BlockMetadata = {
+  id: Math.random().toString(36).substr(2, 9),
   label: "Header",
   thumbnailUrl: "/thumbnails/main-1_header.png",
   description: "Main header with logo, slogan, and call-to-action button",
@@ -312,15 +313,12 @@ const htmlTemplate = `
 
 export class HeaderBlock extends BaseBlock {
   constructor() {
-    super(
-      {
-        schema: schema,
-        uiSchema: uiSchema,
-        defaultValues: defaultValues,
-        meta: meta,
-      },
-      "1"
-    );
+    super({
+      schema: schema,
+      uiSchema: uiSchema,
+      defaultValues: defaultValues,
+      meta: meta,
+    });
   }
 
   static override getMeta(): BlockMetadata {

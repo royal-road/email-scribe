@@ -30,6 +30,7 @@ export interface BlockMetadata {
   label: string;
   thumbnailUrl: string;
   description: string;
+  id: string;
   tags: string[]; // In case we want to add tag based filtering
   group: string; // To group blocks in the UI
 }
