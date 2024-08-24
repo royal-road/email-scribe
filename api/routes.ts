@@ -1,3 +1,5 @@
+import sharp from "sharp";
+
 type Path = "/upload" | "/auth" | "/template";
 type Method = "GET" | "POST";
 type ApiEndpoint = `${Method} ${Path}`;
@@ -34,10 +36,55 @@ Bun.serve({
 
       switch (apiEndpoint) {
         case "POST /upload":
-          response = new Response(JSON.stringify({ message: `File saved` }), {
-            headers: { "Content-Type": "application/json" },
-            status: 200,
-          });
+          console.log("Trying to upload");
+          if (
+            req.headers.get("Content-Type")?.includes("multipart/form-data")
+          ) {
+            console.log("Uploading file");
+            const formData = await req.formData();
+            const file = formData.get("file") as File;
+            const width = formData.get("width");
+
+            if (file) {
+              // Generate a unique filename
+              const filename = `${Date.now()}-${file.name}`;
+              const filePath = `public/uploads/${filename}`;
+
+              // Read the file
+              const buffer = await file.arrayBuffer();
+
+              // Resize the image (if no width is provided, it will just convert to webp for smaller size)
+              const resizedBuffer = await resizeImage(
+                buffer,
+                parseInt(width as string)
+              );
+              await Bun.write(filePath, resizedBuffer);
+
+              // Generate a URL for the saved file
+              const fileUrl = `http://localhost:5173/public/uploads/${filename}`;
+
+              response = new Response(JSON.stringify({ url: fileUrl }), {
+                headers: { "Content-Type": "application/json" },
+                status: 200,
+              });
+            } else {
+              response = new Response(
+                JSON.stringify({ error: "No file uploaded" }),
+                {
+                  headers: { "Content-Type": "application/json" },
+                  status: 400,
+                }
+              );
+            }
+          } else {
+            response = new Response(
+              JSON.stringify({ error: "Invalid Content-Type" }),
+              {
+                headers: { "Content-Type": "application/json" },
+                status: 400,
+              }
+            );
+          }
           break;
         case "GET /auth":
           response = new Response(
@@ -63,7 +110,6 @@ Bun.serve({
           );
       }
 
-      // Add CORS headers to the response
       Object.entries(corsHeaders).forEach(([key, value]) => {
         response.headers.set(key, value);
       });
@@ -84,3 +130,11 @@ Bun.serve({
     }
   },
 });
+async function resizeImage(
+  buffer: ArrayBuffer,
+  width?: number
+): Promise<Buffer> {
+  console.log("Resizing image to width: ", width);
+  if (!width) return sharp(buffer).toFormat("webp").toBuffer();
+  return sharp(buffer).resize({ width: width }).toFormat("webp").toBuffer();
+}

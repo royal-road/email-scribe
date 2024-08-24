@@ -11,6 +11,8 @@ import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
 import ReorderDeleteGroup from "./ReorderDeleteGroup";
 import { camelToTitleCase } from "../../../../../lib/utils";
+import { RegistryWidgetsType } from "@rjsf/utils";
+import { FileUploadWidget } from "../../../ui/fileUploadWidget";
 
 interface BlockRendererProps {
   isTop: boolean;
@@ -34,7 +36,9 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
   onDelete,
 }) => {
   const [open, setOpen] = useState(false);
-
+  const widgets: RegistryWidgetsType = {
+    FileWidget: FileUploadWidget,
+  };
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
       <div
@@ -67,6 +71,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
             onChange={(e) => onChange(e.formData)}
             className="blockForm"
             children={true}
+            widgets={widgets}
           ></Form>
         </div>
       </CollapsibleContent>

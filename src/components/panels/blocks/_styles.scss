@@ -137,25 +137,48 @@
   }
 }
 
-input[type="text"] {
-  // Custom input styles
-  border: 1px solid;
-  border-color: color-mix(in srgb, var(--foreground) 50%, transparent);
-  border-radius: 0.25rem;
-  padding: 0.5rem;
-  font-size: 1rem;
+
+.FileUploadWidget {
+  input[type="file"] {
+    &::-webkit-file-upload-button {
+      display: none;
+    }
+
+    &::before {
+      margin-right: 0.5rem;
+      content: "Select files";
+      display: inline-block;
+      background: var(--background);
   color: var(--foreground);
-  background-color: var(--background);
-  &:focus {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.5rem 1rem;
     outline: none;
+      white-space: nowrap;
+      user-select: none;
+      cursor: pointer;
+      font-family: $font-family-heading;
+      font-weight: 400;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    &:hover::before {
+      background: var(--secondary);
     border-color: color-mix(in srgb, var(--foreground) 90%, transparent);
+  }
+
+    &:active::before {
+      background: var(--card);
+      transform: scale(0.98);
+    }
+
+    &:focus::before {
+      box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--border);
+    }
   }
 }
 
-textArea {
-  // Custom textarea styles
-  border: 1px solid;
-  border-color: color-mix(in srgb, var(--foreground) 50%, transparent);
   border-radius: 0.25rem;
   padding: 0.5rem;
   font-size: 1rem;
