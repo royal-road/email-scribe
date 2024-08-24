@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../../ui/button";
 import { PlusCircle } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover";
@@ -6,7 +6,8 @@ import BlockMeta from "../subcomponents/BlockMeta";
 import { ScrollArea } from "../../../ui/scrollArea";
 import { useMediaQuery } from "../../../../hooks/useMediaQuery";
 import { BlockInterface } from "../../../../blocks/setup/Types";
-import { HeaderBlock } from "../../../../blocks/Header";
+import { templateHandler } from "../../../../blocks/parser";
+import { ConcreteBlockClass } from "../../../../blocks/setup/Base";
 
 interface BlockSelectorProps {
   addBlock: (type: BlockInterface) => void;
@@ -15,7 +16,18 @@ interface BlockSelectorProps {
 export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const availableBlocks: BlockInterface[] = [new HeaderBlock()];
+  const [availableBlocks, setAvailableBlocks] = useState<ConcreteBlockClass[]>(
+    []
+  );
+
+  useEffect(() => {
+    async function getBlocks() {
+      const parsedBlocks = await templateHandler();
+      const fullBlocks = [...availableBlocks, ...(parsedBlocks || [])];
+      setAvailableBlocks(fullBlocks);
+    }
+    getBlocks();
+  }, []);
 
   const handleTouchStart = (index: number) => {
     setActiveIndex(index);
@@ -70,17 +82,18 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
               flexDirection: "row",
               flexWrap: "wrap",
               width: "100%",
-              justifyContent: "start",
+              justifyContent: "space-around",
               alignItems: "center",
               height: "100%",
               gap: "1rem",
             }}
           >
-            {availableBlocks.map((block, index) => {
+            {availableBlocks.map((BlockClass, index) => {
+              const meta = BlockClass.getMeta();
               return (
                 <div
                   key={`blockMeta${index}`}
-                  onClick={() => addBlock(block)}
+                  onClick={() => addBlock(new BlockClass())}
                   id={`blockMeta${index}`}
                   style={{
                     width: "fit-content",
@@ -91,7 +104,7 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
                   onTouchStart={() => handleTouchStart(index)}
                   onTouchEnd={handleTouchEnd}
                 >
-                  <BlockMeta {...block.meta} />
+                  <BlockMeta {...meta} />
                 </div>
               );
             })}
