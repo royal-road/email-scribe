@@ -7,7 +7,8 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 
 - Clone the repo
 - Run `bun i`
-- Run `bun run dev` (or `bun run build` + `bun run preview`)
+- First run `bun serve` to start mock api (tho it really handles image uploads and resizing)
+- Then in a new terminal, run `bun run dev` (or `bun run build` + `bun run preview`)
 
 # Deprecated
 
