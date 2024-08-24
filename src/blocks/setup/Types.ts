@@ -29,7 +29,7 @@ import type { RJSFSchema, UiSchema } from "@rjsf/utils";
 export interface BlockMetadata {
   label: string;
   thumbnailUrl: string;
-  description: string;
+  description?: string;
   id: string;
   tags: string[]; // In case we want to add tag based filtering
   group: string; // To group blocks in the UI
@@ -39,10 +39,10 @@ export interface BlockInterface {
   id: string;
   schema: RJSFSchema;
   uiSchema: UiSchema;
-  formData: object;
+  formData: Record<string, unknown>;
   meta: BlockMetadata;
 
   generateHTML(): string;
   validateData(): boolean;
-  updateFormData(newData: object): void;
+  updateFormData(newData: Record<string, unknown>): void;
 }

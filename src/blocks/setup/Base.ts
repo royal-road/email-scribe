@@ -1,19 +1,25 @@
 import { customizeValidator } from "@rjsf/validator-ajv8";
 import { BlockMetadata } from "./Types";
 import { BlockInterface } from "./Types";
+import { RJSFSchema, UiSchema } from "@rjsf/utils";
 
 export interface BlockConfig {
-  schema: object;
-  uiSchema: object;
-  defaultValues: unknown;
+  schema: RJSFSchema;
+  uiSchema: UiSchema;
+  defaultValues: Record<string, unknown>;
   meta: BlockMetadata;
 }
 
+export type ConcreteBlockClass = {
+  new (): BaseBlock;
+  getMeta(): BlockMetadata;
+};
+
 export abstract class BaseBlock implements BlockInterface {
   id: string;
-  schema: object;
-  uiSchema: object;
-  formData: object;
+  schema: RJSFSchema;
+  uiSchema: UiSchema;
+  formData: Record<string, unknown>;
   meta: BlockMetadata;
 
   constructor(config: BlockConfig) {
@@ -22,6 +28,7 @@ export abstract class BaseBlock implements BlockInterface {
     this.formData = { ...config.defaultValues };
     this.meta = config.meta;
     this.id = Math.random().toString(36).substr(2, 9);
+    console.log(this.meta.label, this);
   }
 
   static getMeta(): BlockMetadata {
