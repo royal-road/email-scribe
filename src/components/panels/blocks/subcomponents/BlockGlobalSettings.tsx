@@ -48,7 +48,8 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
         className=""
       >
         <h3 style={{ margin: "0" }}>Block Settings</h3>
-        <Form
+        <h6>Not Available Right Now...</h6>
+        {/* <Form
           schema={scaffoldSettings.instance.schema}
           uiSchema={scaffoldSettings.instance.uiSchema}
           formData={scaffoldSettings.data}
@@ -58,7 +59,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
           }
           className="blockForm"
           children={true}
-        ></Form>
+        ></Form> */}
       </PopoverContent>
     </Popover>
   );
