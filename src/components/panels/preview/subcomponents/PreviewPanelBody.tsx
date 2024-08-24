@@ -25,16 +25,31 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   useEffect(() => {
+    // console.log("htmlToPreview", htmlToPreview);
     if (iframeRef.current) {
       const doc = iframeRef.current.contentDocument;
       if (doc) {
         // Parse the HTML string
         const parser = new DOMParser();
-        const htmlDoc = parser.parseFromString(htmlToPreview, "text/html");
+        let htmlDoc;
+        try {
+          htmlDoc = parser.parseFromString(htmlToPreview, "text/html");
+        } catch (error) {
+          console.error(`Error parsing file content: ${error}`);
+          return;
+        }
+        // console.log("htmlDoc", htmlDoc.body.innerText);
 
-        if (htmlDoc.body.innerText.trim() === "") {
+        if (htmlDoc.body.innerHTML.trim() === "") {
           htmlDoc.body.innerHTML = `<div style = "display: flex; font-family:'Helvetica Neue', Arial, sans-serif; justify-content: center; font-weight:100; align-items: center; height: 100%; font-family: sans-serif; font-size: 1.5rem; color: #737373;">~Wow, so empty~</div>`;
         }
+
+        // Inject target="_blank" attribute to all links
+        const links = htmlDoc.querySelectorAll("a");
+        links.forEach((link) => {
+          link.setAttribute("target", "_blank");
+        });
+
         // Determine zoom factor
         let zoomFactor = 1;
         if (isMobile) {
