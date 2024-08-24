@@ -40,6 +40,7 @@
     flex-direction: column;
     border: 1px solid var(--border);
     margin-top: 1rem;
+    margin-bottom: 1rem;
     padding: 1.5rem;
     width: 100%;
     height: 100%;
@@ -137,6 +138,20 @@
   }
 }
 
+.text-danger {
+  // Saturate the destructive color
+  color: #ff0000;
+  // Make the text bigger
+  font-size: 1.1rem;
+  font-family: $font-family-heading;
+  font-weight: 100;
+  // Make it glow
+  text-shadow: 0 0 0.5rem #ff0000;
+}
+
+.control-label {
+  font-family: $font-family-heading;
+}
 
 .FileUploadWidget {
   input[type="file"] {
@@ -149,11 +164,11 @@
       content: "Select files";
       display: inline-block;
       background: var(--background);
-  color: var(--foreground);
+      color: var(--foreground);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 0.5rem 1rem;
-    outline: none;
+      outline: none;
       white-space: nowrap;
       user-select: none;
       cursor: pointer;
@@ -165,8 +180,8 @@
 
     &:hover::before {
       background: var(--secondary);
-    border-color: color-mix(in srgb, var(--foreground) 90%, transparent);
-  }
+      border-color: color-mix(in srgb, var(--foreground) 90%, transparent);
+    }
 
     &:active::before {
       background: var(--card);
@@ -179,35 +194,67 @@
   }
 }
 
+input[type="text"],
+input[type="url"],
+textarea {
+  font-family: $font-family-heading;
+  border: 1px solid var(--border);
   border-radius: 0.25rem;
   padding: 0.5rem;
   font-size: 1rem;
   color: var(--foreground);
   background-color: var(--background);
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--foreground) 20%, var(--border));
+    box-shadow: 0 2px 4px rgba(var(--foreground-rgb), 0.05);
+  }
+
   &:focus {
     outline: none;
     border-color: color-mix(in srgb, var(--foreground) 90%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--foreground) 10%, transparent);
   }
 }
 
 input[type="color"] {
-  // Custom color input styles
-  border: 1px solid;
-  border-color: color-mix(in srgb, var(--foreground) 50%, transparent);
-  border-radius: 35rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   width: 3rem;
   height: 3rem;
-  padding: 0rem;
-  font-size: 1rem;
-  color: var(--foreground);
-  background-color: var(--background);
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(var(--foreground-rgb), 0.2);
+  }
+
   &:focus {
     outline: none;
     border-color: var(--foreground);
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--border);
   }
 
   &::-webkit-color-swatch-wrapper {
     padding: 0;
-    border-radius: 35rem;
+  }
+
+  &::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+  }
+
+  &::-moz-color-swatch {
+    border: none;
+    border-radius: 50%;
+    padding: 0;
   }
 }
