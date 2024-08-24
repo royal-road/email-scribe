@@ -9,6 +9,7 @@ import { BlockGlobalSettings } from "./subcomponents/BlockGlobalSettings";
 import { RRLogo } from "../../ui/RRLogo";
 import { templateHandler } from "../../../blocks/parser";
 import { ScaffoldingBlock } from "../../../blocks/Scaffolding";
+import CopyToClip from "./subcomponents/CopyToClip";
 
 export interface BlockState {
   instance: BlockInterface;
@@ -43,7 +44,10 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       ...scaffoldSettings.data,
       blocks: finHtml,
     });
-    onUpdateFinalHtml(scaffoldSettings.instance.generateHTML());
+    const finalHtml = scaffoldSettings.instance.generateHTML();
+    // console.log("final html", finalHtml);
+    onUpdateFinalHtml(finalHtml);
+    return finalHtml;
   };
 
   useEffect(() => {
@@ -112,6 +116,15 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     animateParent.current && autoAnimate(animateParent.current);
   }, [animateParent]);
 
+  const handleCallToAction = () => {
+    // For now, copy the final HTML to the clipboard
+    if (blocks.length === 0) {
+      navigator.clipboard.writeText("");
+      return;
+    }
+    navigator.clipboard.writeText(updateRenderedHtml());
+  };
+
   return (
     <div className="BlocksPanel">
       <RRLogo
@@ -168,7 +181,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           ))}
         </div>
       </ScrollArea>
-      {/* <button onClick={() => addBlock(BlockType.Image)}>Add Image Block</button> */}
+      <CopyToClip onClick={handleCallToAction} />
     </div>
   );
 };
