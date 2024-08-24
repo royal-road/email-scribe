@@ -2,30 +2,6 @@ import { BlockMetadata } from "./setup/Types";
 import { BaseBlock } from "./setup/Base";
 import { templatify } from "./utils/templater";
 
-export interface HeaderBlockData {
-  mainBgColor: string;
-  headerBgColor: string;
-  headerBgImage: string;
-  topLogoImage: string;
-  slogan: string;
-  sloganColor: string;
-  sloganFontFamily: string;
-  sloganFontSize: string;
-  headerLogoImage: string;
-  headerLogoWidth: string;
-  dottedColor: string;
-  subHeadline: string;
-  subHeadlineColor: string;
-  subHeadlineFontFamily: string;
-  subHeadlineFontSize: string;
-  buttonText: string;
-  buttonBgColor: string;
-  buttonTextColor: string;
-  buttonFontFamily: string;
-  buttonFontSize: string;
-  buttonLink: string;
-}
-
 const meta: BlockMetadata = {
   id: Math.random().toString(36).substr(2, 9),
   label: "Header",
@@ -109,7 +85,7 @@ const uiSchema = {
   buttonLink: { "ui:widget": "text" },
 };
 
-const defaultValues: HeaderBlockData = {
+const defaultValues = {
   mainBgColor: "#eceff3",
   headerBgColor: "#262d32",
   headerBgImage: "images/header-bg-1.png",

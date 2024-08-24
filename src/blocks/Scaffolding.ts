@@ -2,16 +2,6 @@ import { BlockMetadata } from "./setup/Types";
 import { BaseBlock } from "./setup/Base";
 import { templatify } from "./utils/templater";
 
-export interface ScaffoldingBlockData {
-  mainBgColor: string;
-  fontFamily: string;
-  textColor: string;
-  linkColor: string;
-  buttonColor: string;
-  buttonTextColor: string;
-  blocks: string;
-}
-
 const meta: BlockMetadata = {
   id: Math.random().toString(36).substr(2, 9),
   label: "Scaffolding",
@@ -73,7 +63,7 @@ const uiSchema = {
   },
 };
 
-const defaultValues: ScaffoldingBlockData = {
+const defaultValues = {
   mainBgColor: "#eceff3",
   fontFamily: "'Open Sans', Arial, sans-serif",
   textColor: "#7f8c8d",
@@ -84,7 +74,6 @@ const defaultValues: ScaffoldingBlockData = {
 };
 
 const htmlTemplate = `
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -94,8 +83,8 @@ const htmlTemplate = `
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>*|MC:SUBJECT|*</title>
   <style type="text/css">
-    .ReadMsgBody { width: 100%; background-color: {{mainBgColor}}; }
-    .ExternalClass { width: 100%; background-color: {{mainBgColor}}; }
+    .ReadMsgBody { width: 100%; background-color: {{{mainBgColor}}}; }
+    .ExternalClass { width: 100%; background-color: {{{mainBgColor}}}; }
     .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div { line-height: 100%; }
     html { width: 100%; }
     body { -webkit-text-size-adjust: none; -ms-text-size-adjust: none; margin: 0; padding: 0; }
@@ -103,19 +92,19 @@ const htmlTemplate = `
     table table table { table-layout: auto; }
     .yshortcuts a { border-bottom: none !important; }
     img:hover { opacity: 0.9 !important; }
-    a { color: {{linkColor}}; text-decoration: none; }
-    .textbutton a { font-family: {{fontFamily}} !important;}
-    .btn-link a { color:{{buttonTextColor}} !important;}
+    a { color: {{{linkColor}}}; text-decoration: none; }
+    .textbutton a { font-family: {{{fontFamily}}} !important;}
+    .btn-link a { color:{{{buttonTextColor}}} !important;}
 
     /*Responsive*/
     @media only screen and (max-width: 640px) {
-      body { margin: 0px; width: auto !important; font-family: {{fontFamily}} !important;}
+      body { margin: 0px; width: auto !important; font-family: {{{fontFamily}}} !important;}
       .table-inner { width: 90% !important;  max-width: 90%!important;}
       .table-full { width: 100%!important; max-width: 100%!important;}
     }
 
     @media only screen and (max-width: 479px) {
-      body { width: auto !important; font-family: {{fontFamily}} !important;}
+      body { width: auto !important; font-family: {{{fontFamily}}} !important;}
       .table-inner{ width: 90% !important;}
       .table-full { width: 100%!important; max-width: 100%!important;}
       /*gmail*/
