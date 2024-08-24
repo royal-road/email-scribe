@@ -8,7 +8,13 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 - Clone the repo
 - Run `bun i`
 - First run `bun serve` to start mock api (tho it really handles image uploads and resizing)
-- Then in a new terminal, run `bun run dev` (or `bun run build` + `bun run preview`)
+- Then in a new terminal, run `bun run dev`
+- `bun run build` + `bun run preview` doesn't play well with api right now bcoz of relative paths.
+
+## ISSUES TO SOLVE
+
+- Remove all Stampready data-attributes from the final HTML because they're not valid html attributes and might cause issues. (Same for singleline, multiline tags)
+- Header BG-color stops working if a new Header-BG is provided.
 
 # Deprecated
 
@@ -67,7 +73,3 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 - Global Settings:
   - Might be worth having a way to 'select' blocks in frontend and have their common props (same name and type) be populated to edit in global settings UI.
   - The way Stampready does it is unituitive, and leaves me unsure as to what exactly changes when updating after selecting 'Effect all Modules.' (Coz most of the things don't work as u'd expect)
-
-## ISSUES TO SOLVE
-
-- Remove all Stampready data-attributes from the final HTML because they're not valid html attributes and might cause issues. (Same for singleline, multiline tags)

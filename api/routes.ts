@@ -61,7 +61,7 @@ Bun.serve({
               await Bun.write(filePath, resizedBuffer);
 
               // Generate a URL for the saved file
-              const fileUrl = `http://localhost:5173/public/uploads/${filename}`;
+              const fileUrl = `/uploads/${filename}`;
 
               response = new Response(JSON.stringify({ url: fileUrl }), {
                 headers: { "Content-Type": "application/json" },
@@ -135,6 +135,6 @@ async function resizeImage(
   width?: number
 ): Promise<Buffer> {
   console.log("Resizing image to width: ", width);
-  if (!width) return sharp(buffer).toFormat("webp").toBuffer();
+  if (!width || isNaN(width)) return sharp(buffer).toFormat("webp").toBuffer();
   return sharp(buffer).resize({ width: width }).toFormat("webp").toBuffer();
 }
