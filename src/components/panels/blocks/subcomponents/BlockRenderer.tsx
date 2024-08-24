@@ -69,8 +69,10 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
             formData={data}
             validator={validator}
             onChange={(e) => onChange(e.formData)}
+            liveValidate={true}
             className="blockForm"
             children={true}
+            onError={(e) => console.error(e)}
             widgets={widgets}
           ></Form>
         </div>
