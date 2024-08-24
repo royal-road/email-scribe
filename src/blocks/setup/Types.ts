@@ -1,32 +1,30 @@
 import type { RJSFSchema, UiSchema } from "@rjsf/utils";
-import { ScaffoldingBlockData } from "../Scaffolding";
-import { BaseBlock } from "./Base";
-import { HeaderBlockData } from "../Header";
+// import { BaseBlock } from "./Base";
 
-export enum BlockType {
-  Scaffolding = "scaffolding",
-  Header = "header",
-  // Banner = "banner",
-  // Add other block types as needed
-}
+// export enum BlockType {
+//   Scaffolding = "scaffolding",
+//   Header = "header",
+//   // Banner = "banner",
+//   // Add other block types as needed
+// }
 
-export interface ButtonBlockData {
-  text: string;
-  url: string;
-}
+// export interface ButtonBlockData {
+//   text: string;
+//   url: string;
+// }
 
-export type BlockDataMap = {
-  [BlockType.Scaffolding]: ScaffoldingBlockData;
-  [BlockType.Header]: HeaderBlockData;
-  // [BlockType.Banner]: ButtonBlockData;
-  // Add other mappings as needed
-};
+// export type BlockDataMap = {
+//   [BlockType.Scaffolding]: ScaffoldingBlockData;
+//   [BlockType.Header]: HeaderBlockData;
+//   // [BlockType.Banner]: ButtonBlockData;
+//   // Add other mappings as needed
+// };
 
-export type BlockClassMap = {
-  [K in BlockType]: typeof BaseBlock & {
-    new (): BlockInterface<K>;
-  };
-};
+// export type BlockClassMap = {
+//   [K in BlockType]: typeof BaseBlock & {
+//     new (): BlockInterface<K>;
+//   };
+// };
 
 export interface BlockMetadata {
   label: string;
@@ -36,15 +34,14 @@ export interface BlockMetadata {
   group: string; // To group blocks in the UI
 }
 
-export interface BlockInterface<T extends BlockType> {
+export interface BlockInterface {
   id: string;
-  type: T;
   schema: RJSFSchema;
   uiSchema: UiSchema;
-  formData: BlockDataMap[T];
+  formData: object;
   meta: BlockMetadata;
 
   generateHTML(): string;
   validateData(): boolean;
-  updateFormData(newData: Partial<BlockDataMap[T]>): void;
+  updateFormData(newData: object): void;
 }

@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  BlockDataMap,
-  BlockInterface,
-  BlockType,
-} from "../../../../blocks/setup/Types";
+import { BlockInterface } from "../../../../blocks/setup/Types";
 import {
   Collapsible,
   CollapsibleContent,
@@ -19,9 +15,9 @@ import { camelToTitleCase } from "../../../../../lib/utils";
 interface BlockRendererProps {
   isTop: boolean;
   isBottom: boolean;
-  block: BlockInterface<BlockType>;
-  data: BlockDataMap[BlockType];
-  onChange: (newData: Partial<BlockDataMap[BlockType]>) => void;
+  block: BlockInterface;
+  data: object;
+  onChange: (newData: object) => void;
   onUp: () => void;
   onDown: () => void;
   onDelete: () => void;
@@ -52,7 +48,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
           onUp={onUp}
           onDown={onDown}
         />
-        <span>{camelToTitleCase(block.type)}</span>
+        <span>{camelToTitleCase(block.meta.label)}</span>
         <CollapsibleTrigger asChild>
           <Button variant="outline">
             {open ? <ChevronUp /> : <ChevronDown />}

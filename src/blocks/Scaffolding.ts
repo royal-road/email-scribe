@@ -1,4 +1,4 @@
-import { BlockMetadata, BlockType } from "./setup/Types";
+import { BlockMetadata } from "./setup/Types";
 import { BaseBlock } from "./setup/Base";
 import { templatify } from "./utils/templater";
 
@@ -129,14 +129,17 @@ const htmlTemplate = `
 </html>
 `;
 
-export class ScaffoldingBlock extends BaseBlock<BlockType.Scaffolding> {
+export class ScaffoldingBlock extends BaseBlock {
   constructor() {
-    super(BlockType.Scaffolding, {
-      schema: schema,
-      uiSchema: uiSchema,
-      defaultValues: defaultValues,
-      meta: meta,
-    });
+    super(
+      {
+        schema: schema,
+        uiSchema: uiSchema,
+        defaultValues: defaultValues,
+        meta: meta,
+      },
+      "0"
+    );
   }
 
   static override getMeta(): BlockMetadata {

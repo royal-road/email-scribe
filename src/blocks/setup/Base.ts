@@ -1,26 +1,23 @@
 import { customizeValidator } from "@rjsf/validator-ajv8";
-import { BlockType, BlockDataMap, BlockMetadata } from "./Types";
+import { BlockMetadata } from "./Types";
 import { BlockInterface } from "./Types";
 
-export interface BlockConfig<T extends BlockType> {
+export interface BlockConfig {
   schema: object;
   uiSchema: object;
-  defaultValues: BlockDataMap[T];
+  defaultValues: unknown;
   meta: BlockMetadata;
 }
 
-export abstract class BaseBlock<T extends BlockType>
-  implements BlockInterface<T>
-{
+export abstract class BaseBlock implements BlockInterface {
   id: string;
-  type: T;
   schema: object;
   uiSchema: object;
-  formData: BlockDataMap[T];
+  formData: object;
   meta: BlockMetadata;
 
-  constructor(type: T, config: BlockConfig<T>) {
-    this.type = type;
+  constructor(config: BlockConfig, id?: string) {
+    this.id = id || Math.random().toString(36).substr(2, 9);
     this.schema = config.schema;
     this.uiSchema = config.uiSchema;
     this.formData = { ...config.defaultValues };
@@ -42,12 +39,12 @@ export abstract class BaseBlock<T extends BlockType>
   abstract generateHTML(): string;
 
   validateData(): boolean {
-    const validator = customizeValidator<BlockDataMap[T]>();
+    const validator = customizeValidator();
     return validator.isValid(this.schema, this.formData, this.schema);
     // return true;
   }
 
-  updateFormData(newData: Partial<BlockDataMap[T]>): void {
+  updateFormData(newData: object): void {
     this.formData = { ...this.formData, ...newData };
   }
 }

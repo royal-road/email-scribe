@@ -1,7 +1,5 @@
 import { BlockRenderer } from "./subcomponents/BlockRenderer";
 import { useState, useCallback, useRef, useEffect } from "react";
-import { BlockType, BlockDataMap } from "../../../blocks/setup/Types";
-import { BlockFactory } from "../../../blocks/setup/Factory";
 import { BlockInterface } from "../../../blocks/setup/Types";
 import debounce from "debounce";
 import { ScrollArea } from "../../ui/scrollArea";
@@ -10,10 +8,11 @@ import autoAnimate from "@formkit/auto-animate";
 import { BlockGlobalSettings } from "./subcomponents/BlockGlobalSettings";
 import { RRLogo } from "../../ui/RRLogo";
 import { templateHandler } from "../../../blocks/parser";
+import { ScaffoldingBlock } from "../../../blocks/Scaffolding";
 
 export interface BlockState {
-  instance: BlockInterface<BlockType>;
-  data: BlockDataMap[BlockType];
+  instance: BlockInterface;
+  data: object;
   cachedHtml: string;
 }
 
@@ -26,7 +25,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 }) => {
   const [blocks, setBlocks] = useState<BlockState[]>([]);
   const [scaffoldSettings, setScaffoldSettings] = useState<BlockState>(() => {
-    const instance = BlockFactory.createBlock(BlockType.Scaffolding);
+    const instance = new ScaffoldingBlock() as BlockInterface;
     return {
       instance,
       data: instance.formData,
@@ -59,7 +58,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   );
 
   const updateBlockData = useCallback(
-    debounce((index: number, newData: Partial<BlockDataMap[BlockType]>) => {
+    debounce((index: number, newData: object) => {
       setBlocks((prevBlocks) =>
         prevBlocks.map((block, i) => {
           if (i === index) {
@@ -75,14 +74,14 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     []
   );
 
-  const addBlock = (type: BlockType) => {
-    const newBlockInstance = BlockFactory.createBlock(type);
+  const addBlock = (block: BlockInterface) => {
+    // const newBlockInstance = BlockFactory.createBlock(type);
     setBlocks((prev) => [
       ...prev,
       {
-        instance: newBlockInstance,
-        data: newBlockInstance.formData,
-        cachedHtml: newBlockInstance.generateHTML(),
+        instance: block,
+        data: block.formData,
+        cachedHtml: block.generateHTML(),
       },
     ]);
   };
