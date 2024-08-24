@@ -8,6 +8,7 @@ import {
   propNameToTitle,
   setInlineStyle,
 } from "./utils";
+import { camelToTitleCase } from "../../../lib/utils";
 
 async function getModules(url: string): Promise<string> {
   try {
@@ -31,11 +32,6 @@ function parseTemplate(content: string) {
       modules.push(parseModule(node) as ConcreteBlockClass);
     });
 
-    // modules.push(
-    //   parseModule(
-    //     dom.body.querySelectorAll("[data-module]")[0]
-    //   ) as ConcreteBlockClass
-    // );
     return modules;
   } catch (error) {
     throw new Error(`Error parsing file content: ${error}`);
@@ -54,6 +50,11 @@ function parseModule(node: Element): ConcreteBlockClass {
     uiSchema: {},
     defaults: {},
   };
+  const counters = {
+    singleLine: 0,
+    multiLine: 0,
+    img: 0,
+  };
   try {
     handleBGColor(node, schemaBundle);
     handleBG(node, schemaBundle);
@@ -62,9 +63,9 @@ function parseModule(node: Element): ConcreteBlockClass {
     handleBorderColor(node, schemaBundle);
     handleLinkSize(node, schemaBundle);
     handleLinkColor(node, schemaBundle);
-    handleSingleLine(node, schemaBundle);
-    handleMultiLine(node, schemaBundle);
-    handleImages(node, schemaBundle);
+    handleSingleLine(node, schemaBundle, counters);
+    handleMultiLine(node, schemaBundle, counters);
+    handleImages(node, schemaBundle, counters);
   } catch (error) {
     console.error(error);
   }
@@ -272,45 +273,80 @@ function handleLinkAttribute(
   });
 }
 
-function handleSingleLine(node: Element, schemaBundle: SchemaBundle): void {
-  handleTextLine(node, schemaBundle, "singleline", "text");
+function handleSingleLine(
+  node: Element,
+  schemaBundle: SchemaBundle,
+  counters: { singleLine: number }
+): void {
+  handleTextLine(node, schemaBundle, "singleline", "text", counters);
 }
 
-function handleMultiLine(node: Element, schemaBundle: SchemaBundle): void {
-  handleTextLine(node, schemaBundle, "multiline", "textarea");
+function handleMultiLine(
+  node: Element,
+  schemaBundle: SchemaBundle,
+  counters: { multiLine: number }
+): void {
+  handleTextLine(node, schemaBundle, "multiline", "textarea", counters);
 }
 
 function handleTextLine(
   node: Element,
   schemaBundle: SchemaBundle,
   tagName: string,
-  widget: string
+  widget: string,
+  counters: { singleLine: number } | { multiLine: number }
 ): void {
   const elements = node.getElementsByTagName(tagName);
   Array.from(elements).forEach((el) => {
-    const propName = sanitizePropName(el.getAttribute("label") || "", "text");
+    let parentElement = el.parentElement;
+    let mcEdit = null;
+
+    // If the parent is an anchor, go one level higher
+    if (parentElement && parentElement.tagName.toLowerCase() === "a") {
+      parentElement = parentElement.parentElement;
+    }
+
+    // Find the closest ancestor with mc:edit attribute
+    while (parentElement && !mcEdit) {
+      mcEdit = parentElement.getAttribute("mc:edit");
+      if (!mcEdit) {
+        parentElement = parentElement.parentElement;
+      }
+    }
+
+    const counterType = tagName === "singleline" ? "singleLine" : "multiLine";
+    counters[counterType as keyof typeof counters]++;
+    const propName = sanitizePropName(
+      mcEdit ||
+        `${counterType}_${counters[counterType as keyof typeof counters]}`,
+      "text"
+    );
+
     if (!schemaBundle.schema.properties[propName]) {
       schemaBundle.schema.properties[propName] = { type: "string" };
       schemaBundle.uiSchema[propName] = {
         "ui:widget": widget,
-        "ui:title": propNameToTitle(propName),
+        "ui:title": `${camelToTitleCase(counterType)} ${
+          counters[counterType as keyof typeof counters]
+        }`,
       };
       schemaBundle.defaults[propName] = el.textContent || "";
     }
     el.textContent = `{{${propName}}}`;
 
     // Handle anchor tag if present
-    handleAnchorTag(
-      el,
-      schemaBundle,
-      sanitizePropName(el.getAttribute("label") || "", "link")
-    );
+    handleAnchorTag(el, schemaBundle, propName);
   });
 }
 
-function handleImages(node: Element, schemaBundle: SchemaBundle): void {
+function handleImages(
+  node: Element,
+  schemaBundle: SchemaBundle,
+  counters: { img: number }
+): void {
   const images = node.getElementsByTagName("img");
   Array.from(images).forEach((img) => {
+    counters.img++;
     const propName = sanitizePropName(
       img.getAttribute("mc:edit") || "",
       "image"
@@ -324,18 +360,14 @@ function handleImages(node: Element, schemaBundle: SchemaBundle): void {
           accept: "image/*",
           width: img.width || 640,
         },
-        "ui:title": propNameToTitle(propName),
+        "ui:title": `Image ${counters.img}`,
       };
       schemaBundle.defaults[propName] = img.getAttribute("src") || "";
     }
     img.setAttribute("src", `{{{${propName}}}}`);
 
     // Handle anchor tag if present
-    handleAnchorTag(
-      img,
-      schemaBundle,
-      sanitizePropName(img.getAttribute("mc:edit") || "", "link")
-    );
+    handleAnchorTag(img, schemaBundle, propName);
   });
 }
 
@@ -346,19 +378,33 @@ function handleAnchorTag(
 ): void {
   const parentAnchor = el.closest("a");
   if (parentAnchor) {
-    if (!schemaBundle.schema.properties[basePropName]) {
-      schemaBundle.schema.properties[basePropName] = {
+    let mcEdit = null;
+    let currentElement = parentAnchor.parentElement;
+
+    // Find the closest ancestor with mc:edit attribute
+    while (currentElement && !mcEdit) {
+      mcEdit = currentElement.getAttribute("mc:edit");
+      if (!mcEdit) {
+        currentElement = currentElement.parentElement;
+      }
+    }
+
+    const linkPropName = `${
+      mcEdit ? sanitizePropName(mcEdit, "link") : basePropName + "_link"
+    }`;
+    if (!schemaBundle.schema.properties[linkPropName]) {
+      schemaBundle.schema.properties[linkPropName] = {
         type: "string",
         format: "uri",
       };
-      schemaBundle.uiSchema[basePropName] = {
+      schemaBundle.uiSchema[linkPropName] = {
         "ui:widget": "uri",
-        "ui:title": propNameToTitle(basePropName),
+        "ui:title": `${propNameToTitle(mcEdit || basePropName)} (Link)`,
       };
-      schemaBundle.defaults[basePropName] =
+      schemaBundle.defaults[linkPropName] =
         parentAnchor.getAttribute("href") || "";
     }
-    parentAnchor.setAttribute("href", `{{{${basePropName}}}}`);
+    parentAnchor.setAttribute("href", `{{{${linkPropName}}}}`);
   }
 }
 
