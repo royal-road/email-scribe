@@ -1,4 +1,5 @@
 import { RJSFSchema, UiSchema } from '@rjsf/utils';
+import { v4 as uuidv4 } from 'uuid';
 import { BaseBlock, ConcreteBlockClass } from '../setup/Base';
 import { BlockMetadata } from '../setup/Types';
 import { templatify } from '../utils/templater';
@@ -63,9 +64,7 @@ function parseModule(node: Element, templateName: string): ConcreteBlockClass {
   const moduleName = node.getAttribute('data-module');
   const meta: BlockMetadata = {
     label: propNameToTitle(moduleName || 'Dynamic Block'),
-    id:
-      `${moduleName}${Math.random().toString(36).substring(7)}` ||
-      Math.random().toString(36).substring(7),
+    id: `${moduleName}${uuidv4()}` || uuidv4(),
     description: '',
     tags: [...(moduleName?.split('-') || [])],
     group: moduleName || 'Dynamic Blocks',
@@ -79,6 +78,7 @@ function parseModule(node: Element, templateName: string): ConcreteBlockClass {
         uiSchema: schemaBundle.uiSchema,
         defaultValues: schemaBundle.defaults,
         meta: meta,
+        defaultHtml: node.outerHTML,
       });
     }
     static override getMeta(): BlockMetadata {

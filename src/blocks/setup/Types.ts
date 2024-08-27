@@ -1,4 +1,4 @@
-import type { RJSFSchema, UiSchema } from "@rjsf/utils";
+import type { RJSFSchema, UiSchema } from '@rjsf/utils';
 // import { BaseBlock } from "./Base";
 
 // export enum BlockType {
@@ -41,6 +41,7 @@ export interface BlockInterface {
   uiSchema: UiSchema;
   formData: Record<string, unknown>;
   meta: BlockMetadata;
+  defaultHtml: string;
 
   generateHTML(): string;
   validateData(): boolean;

@@ -3,6 +3,7 @@ import { Button } from '../../../ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '../../../ui/popover';
 import { Preset, usePresetManager } from '../hooks/presets';
 import { BlockState } from '..';
+import { jsonToBlocks } from './utils/blockInstancer';
 
 interface PresetManagerProps {
   getBlocks: () => string;
@@ -60,23 +61,6 @@ const PresetManager: React.FC<PresetManagerProps> = ({
         if (blocks) setBlocks(blocks);
       };
       reader.readAsText(file);
-    }
-  };
-
-  const jsonToBlocks = (jsonString: string) => {
-    try {
-      const preset = JSON.parse(jsonString) as Preset;
-      const blocks = JSON.parse(preset.data) as BlockState[];
-      return blocks;
-    } catch (E1) {
-      try {
-        const blocks = JSON.parse(jsonString) as BlockState[];
-        return blocks;
-      } catch (E2) {
-        alert('Invalid Preset');
-        console.error('Error parsing JSON:', E1, E2);
-        return null;
-      }
     }
   };
 

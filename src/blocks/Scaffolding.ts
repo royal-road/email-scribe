@@ -1,76 +1,77 @@
-import { BlockMetadata } from "./setup/Types";
-import { BaseBlock } from "./setup/Base";
-import { templatify } from "./utils/templater";
+import { BlockMetadata } from './setup/Types';
+import { BaseBlock } from './setup/Base';
+import { templatify } from './utils/templater';
+import { v4 as uuidv4 } from 'uuid';
 
 const meta: BlockMetadata = {
-  id: Math.random().toString(36).substr(2, 9),
-  label: "Scaffolding",
-  thumbnailUrl: "/images/scaffolding.png",
-  description: "Main structure for the email template",
-  tags: ["scaffolding", "layout"],
-  group: "layout",
+  id: uuidv4(),
+  label: 'Scaffolding',
+  thumbnailUrl: '/images/scaffolding.png',
+  description: 'Main structure for the email template',
+  tags: ['scaffolding', 'layout'],
+  group: 'layout',
 };
 
 const schema = {
-  type: "object",
+  type: 'object',
   properties: {
-    mainBgColor: { type: "string" },
-    fontFamily: { type: "string" },
-    textColor: { type: "string" },
-    linkColor: { type: "string" },
-    buttonColor: { type: "string" },
-    buttonTextColor: { type: "string" },
-    blocks: { type: "string" },
+    mainBgColor: { type: 'string' },
+    fontFamily: { type: 'string' },
+    textColor: { type: 'string' },
+    linkColor: { type: 'string' },
+    buttonColor: { type: 'string' },
+    buttonTextColor: { type: 'string' },
+    blocks: { type: 'string' },
   },
   required: [
-    "mainBgColor",
-    "fontFamily",
-    "textColor",
-    "linkColor",
-    "buttonColor",
-    "buttonTextColor",
-    "blocks",
+    'mainBgColor',
+    'fontFamily',
+    'textColor',
+    'linkColor',
+    'buttonColor',
+    'buttonTextColor',
+    'blocks',
   ],
 };
 
 const uiSchema = {
   mainBgColor: {
-    "ui:widget": "color",
-    "ui:title": "Main Background Color",
+    'ui:widget': 'color',
+    'ui:title': 'Main Background Color',
   },
   fontFamily: {
-    "ui:widget": "text",
-    "ui:title": "Font Family",
+    'ui:widget': 'text',
+    'ui:title': 'Font Family',
   },
   textColor: {
-    "ui:widget": "color",
-    "ui:title": "Text Color",
+    'ui:widget': 'color',
+    'ui:title': 'Text Color',
   },
   linkColor: {
-    "ui:widget": "color",
-    "ui:title": "Link Color",
+    'ui:widget': 'color',
+    'ui:title': 'Link Color',
   },
   buttonColor: {
-    "ui:widget": "color",
-    "ui:title": "Button Color",
+    'ui:widget': 'color',
+    'ui:title': 'Button Color',
   },
   buttonTextColor: {
-    "ui:widget": "color",
-    "ui:title": "Button Text Color",
+    'ui:widget': 'color',
+    'ui:title': 'Button Text Color',
   },
   blocks: {
-    "ui:widget": "hidden",
+    'ui:widget': 'hidden',
   },
 };
 
 const defaultValues = {
-  mainBgColor: "#eceff3",
+  mainBgColor: '#eceff3',
   fontFamily: "'Open Sans', Arial, sans-serif",
-  textColor: "#7f8c8d",
-  linkColor: "#6ec8c7",
-  buttonColor: "#6ec8c7",
-  buttonTextColor: "#FFFFFF",
-  blocks: "",
+  textColor: '#7f8c8d',
+  linkColor: '#6ec8c7',
+  buttonColor: '#6ec8c7',
+  buttonTextColor: '#FFFFFF',
+  blocks: '',
 };
 
 const htmlTemplate = `
@@ -126,6 +127,7 @@ export class ScaffoldingBlock extends BaseBlock {
       uiSchema: uiSchema,
       defaultValues: defaultValues,
       meta: meta,
+      defaultHtml: htmlTemplate,
     });
   }
 

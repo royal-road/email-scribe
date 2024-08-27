@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { resizeImage } from '../utils/imageProcessing';
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs/promises';
 
 const upload = multer({ dest: 'public/uploads/' });
 
@@ -15,18 +16,31 @@ export const handleUpload = [
 
       const width = req.body.width ? parseInt(req.body.width) : undefined;
 
-      // Convert Buffer to ArrayBuffer and assert the type
-      const arrayBuffer = req.file.buffer.buffer.slice(
-        req.file.buffer.byteOffset,
-        req.file.buffer.byteOffset + req.file.buffer.byteLength
+      // Read the file from disk
+      const filePath = req.file.path;
+      const fileBuffer = await fs.readFile(filePath);
+
+      // Convert Buffer to ArrayBuffer
+      const arrayBuffer = fileBuffer.buffer.slice(
+        fileBuffer.byteOffset,
+        fileBuffer.byteOffset + fileBuffer.byteLength
       ) as ArrayBuffer;
 
       const resizedBuffer = await resizeImage(arrayBuffer, width);
 
       const filename = `${Date.now()}-${req.file.originalname}`;
-      const filePath = path.join(process.cwd(), 'public', 'uploads', filename);
+      const outputPath = path.join(
+        process.cwd(),
+        'public',
+        'uploads',
+        filename
+      );
 
-      await Bun.write(filePath, resizedBuffer);
+      // Write the resized image
+      await fs.writeFile(outputPath, Buffer.from(resizedBuffer));
+
+      // Remove the original uploaded file
+      await fs.unlink(filePath);
 
       const fileUrl = `/uploads/${filename}`;
 
