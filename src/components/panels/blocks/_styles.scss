@@ -30,17 +30,52 @@
     border-right: 1px solid var(--border);
   }
 
-  .PresetManager {
+  .preset-manager-container {
+    width: 100%;
+    position: relative;
+    display: flex;
     flex-direction: column;
-    @include breakpoint('md') {
-      flex-direction: row;
+    gap: 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    align-items: center;
+    padding: 0.75rem;
+    padding-top: 1.25rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .preset-manager-title {
+    margin: 0;
+    line-height: 0.25rem;
+    padding-top: 0;
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+    position: absolute;
+    background-color: var(--card);
+    top: -0.125rem;
+    left: 0.5rem;
+  }
+
+  .preset-manager-buttons {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem;
+
+    & > * {
+      flex: 1 1 calc(50% - 0.25rem);
+      min-width: 120px;
     }
-    & > .button {
-      width: 100%;
-      @include breakpoint('md') {
-        width: auto;
-      }
-    }
+  }
+
+  .import-button,
+  .load-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
   }
 
   .PanelHeading {

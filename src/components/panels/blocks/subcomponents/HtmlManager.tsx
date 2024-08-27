@@ -80,7 +80,7 @@ export default function HtmlManager({ getHtml }: { getHtml: () => string }) {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'center',
-          gap: '0.15rem',
+          gap: '0.25rem',
           alignItems: 'center',
         }}
       >

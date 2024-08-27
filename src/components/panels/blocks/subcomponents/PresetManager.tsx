@@ -58,50 +58,9 @@ const PresetManager: React.FC<PresetManagerProps> = ({
   };
 
   return (
-    <div
-      className=''
-      style={{
-        width: '100%',
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-evenly',
-        gap: '0.5rem',
-        border: '1px solid var(--border)',
-        borderRadius: 'var(--radius)',
-        alignItems: 'center',
-        padding: '0.75rem',
-        paddingTop: '1.25rem',
-        paddingBottom: '0.75rem',
-        marginBottom: '1rem',
-      }}
-    >
-      <h6
-        style={{
-          margin: 0,
-          flex: 1,
-          lineHeight: '0.25rem',
-          paddingTop: 0,
-          paddingLeft: '0.35rem',
-          paddingRight: '0.35rem',
-          position: 'absolute',
-          backgroundColor: 'var(--card)',
-          top: '-0.125rem',
-          left: '0.5rem',
-        }}
-      >
-        Presets
-      </h6>
-      <div
-        className='PresetManager'
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'space-around',
-          gap: '0.2rem',
-          alignItems: 'center',
-        }}
-      >
+    <div className='preset-manager-container'>
+      <h6 className='preset-manager-title'>Presets</h6>
+      <div className='preset-manager-buttons'>
         <InputPopover
           triggerText='Export'
           icon={<Upload />}
@@ -109,7 +68,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
           onSubmit={(presetName) => handleExport(presetName, getBlocks())}
         />
         <Button
-          style={{ gap: '0.5rem', width: '100%' }}
+          className='import-button'
           title='Import'
           onClick={() => fileInputRef.current?.click()}
         >
@@ -130,7 +89,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
         />
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger asChild>
-            <Button style={{ gap: '0.5rem', width: '100%' }}>
+            <Button className='load-button'>
               <CloudDownload /> Load
             </Button>
           </PopoverTrigger>
@@ -158,7 +117,6 @@ const PresetManager: React.FC<PresetManagerProps> = ({
                 }}
               >
                 <h3 style={{ margin: 0 }}>Select Preset</h3>
-                {/* <div className='text-danger'>This will clear current editor!</div> */}
                 <ScrollArea style={{ padding: '1rem', width: '100%' }}>
                   {presetsQuery.data.map((presetName) => (
                     <div

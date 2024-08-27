@@ -13,16 +13,17 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 
 ## ISSUES TO SOLVE
 
-- Remove all Stampready data-attributes from the final HTML because they're not valid html attributes and might cause issues. (Same for singleline, multiline tags)
-- Header-BG-color stops working if a new Header-BG is provided.
-
+- [x] Remove all Stampready data-attributes from the final HTML because they're not valid html attributes and might cause issues. (Same for singleline, multiline tags)
+- [] Header-BG-color stops working if a new Header-BG is provided.
 
 ### Next set of features 26th Aug
-- [] Create a save/load system, possibly even generate preview thumbnails
-- 
 
+- [x] Create a save/load system, ~~possibly even generate preview thumbnails~~
 
+### Next set of features 27th Aug
 
+- [] Add a way to edit global settings for selected blocks at once.
+- [] Add an iframe-to-editor binding. (So that when a block is selected, it's properties are shown in the editor)
 
 # Deprecated
 

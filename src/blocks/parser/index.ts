@@ -132,11 +132,6 @@ function handleBG(
         'ui:classNames': 'FileUploadWidget',
         'ui:title': propNameToTitle(propName),
       };
-      console.log(
-        'BG: ',
-        el.getAttribute('background'),
-        isRelativeUrl(el.getAttribute('background') || '')
-      );
       schemaBundle.defaults[propName] = isRelativeUrl(
         el.getAttribute('background') || ''
       )

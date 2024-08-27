@@ -108,6 +108,7 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
                     height: '100%',
                     gap: '1rem',
                   }}
+                  key={`module${moduleIndex}`}
                 >
                   <h4 className='text-primary' style={{ margin: '2rem' }}>
                     {propNameToTitle(
