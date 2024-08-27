@@ -1,5 +1,9 @@
 @mixin rjsfForm {
+  .panel-title {
+    margin: 0.5rem;
+  }
   #root {
+    padding: 0;
     font-family: 'Poppins', Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
@@ -275,6 +279,11 @@ textarea {
     border-color: color-mix(in srgb, var(--foreground) 90%, transparent);
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--foreground) 10%, transparent);
   }
+}
+
+textarea {
+  resize: vertical;
+  min-height: 8rem;
 }
 
 input[type='color'] {
