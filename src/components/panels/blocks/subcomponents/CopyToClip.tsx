@@ -1,6 +1,6 @@
-import { Clipboard, Check } from "lucide-react";
-import { Button } from "../../../ui/button";
-import { useState, useEffect } from "react";
+import { Clipboard, Check } from 'lucide-react';
+import { Button } from '../../../ui/button';
+import { useState, useEffect } from 'react';
 
 export default function CopyToClip({ onClick }: { onClick: () => void }) {
   const [justCopied, setJustCopied] = useState(false);
@@ -23,19 +23,42 @@ export default function CopyToClip({ onClick }: { onClick: () => void }) {
   };
 
   return (
-    <Button
-      style={{ width: "100%", display: "flex", gap: "0.5rem" }}
-      variant="default"
-      onClick={handleClick}
+    <div
+      className='PresetManager'
+      style={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        gap: '0.5rem',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius)',
+        alignItems: 'center',
+        padding: '0.5rem',
+        marginBottom: '0.5rem',
+      }}
     >
-      <h2 style={{ fontSize: "1.2rem", fontWeight: "400" }}>
-        {justCopied ? "Copied!" : "Copy to Clipboard"}
-      </h2>
-      {justCopied ? (
-        <Check style={{ strokeWidth: "1px" }} />
-      ) : (
-        <Clipboard style={{ strokeWidth: "1px" }} />
-      )}
-    </Button>
+      <h3 style={{ margin: 0, flex: 1, paddingTop: 0 }}>HTML</h3>
+      <div
+        className='PresetManager'
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          gap: '0.5rem',
+          alignItems: 'center',
+        }}
+      >
+        <Button
+          style={{ display: 'flex', gap: '0.5rem', width: '100%' }}
+          variant='default'
+          onClick={handleClick}
+        >
+          {justCopied ? 'Copied!' : 'Copy to Clipboard'}
+          {justCopied ? <Check /> : <Clipboard />}
+        </Button>
+      </div>
+    </div>
   );
 }

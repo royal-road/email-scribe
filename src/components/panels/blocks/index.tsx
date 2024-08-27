@@ -190,7 +190,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         getBlocks={() => JSON.stringify(blocks)}
         setBlocks={setBlocks}
       />
-      {/* <CopyToClip onClick={handleCallToAction} /> */}
+      <CopyToClip onClick={copyToClipboard} />
     </div>
   );
 };
