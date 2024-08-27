@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Breakpoints } from './BreakpointToggleGroup';
 import { useMediaQuery } from '../../../../hooks/useMediaQuery';
+import { prepareHtmlForPreview } from './utils/prepareForPreview';
 
 interface PreviewPanelBodyProps {
   htmlToPreview: string;
@@ -25,68 +26,20 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
   const isMobile = useMediaQuery('(max-width: 767px)');
 
   useEffect(() => {
-    // console.log("htmlToPreview", htmlToPreview);
     if (iframeRef.current) {
       const doc = iframeRef.current.contentDocument;
       if (doc) {
-        // Parse the HTML string
-        const parser = new DOMParser();
-        let htmlDoc;
-        try {
-          htmlDoc = parser.parseFromString(htmlToPreview, 'text/html');
-        } catch (error) {
-          console.error(`Error parsing file content: ${error}`);
-          return;
-        }
-        // console.log("htmlDoc", htmlDoc.body.innerText);
-
-        if (htmlDoc.body.innerHTML.trim() === '') {
-          htmlDoc.body.innerHTML = `<div style = "display: flex; font-family:'Helvetica Neue', Arial, sans-serif; justify-content: center; font-weight:100; align-items: center; height: 100%; font-family: sans-serif; font-size: 1.5rem; color: #737373;">~Wow, so empty~</div>`;
-        }
-
-        // Inject target="_blank" attribute to all links
-        const links = htmlDoc.querySelectorAll('a');
-        links.forEach((link) => {
-          link.setAttribute('target', '_blank');
-        });
-
-        // Determine zoom factor
-        let zoomFactor = 1;
-        if (isMobile) {
-          // On mobile devices
-          if (breakpoint === 'desktop') {
-            zoomFactor = 0.25; // Significant zoom out for desktop view on mobile
-          } else if (breakpoint === 'tablet') {
-            zoomFactor = 0.5; // Moderate zoom out for tablet view on mobile
-          }
-          // For mobile breakpoint on mobile device, keep zoom at 1
-        } else {
-          // On desktop devices
-          if (breakpoint === 'mobile') {
-            zoomFactor = 1.25; // Slight zoom in for mobile view on desktop
-          } else if (breakpoint === 'tablet') {
-            zoomFactor = 1.1;
-          }
-        }
-
-        // Add or update the zoom style
-        let styleTag = htmlDoc.querySelector('style#preview-zoom');
-        if (!styleTag) {
-          styleTag = htmlDoc.createElement('style');
-          styleTag.id = 'preview-zoom';
-          htmlDoc.head.appendChild(styleTag);
-        }
-        styleTag.textContent = `
-          body {
-            zoom: ${zoomFactor};
-          }
-        `;
-
+        const preparedHtml = prepareHtmlForPreview(
+          htmlToPreview,
+          breakpoint,
+          isMobile
+        );
         // Write the modified HTML to the iframe
         doc.open();
-        doc.write(htmlDoc.documentElement.outerHTML);
+        doc.write(preparedHtml);
         doc.close();
       }
+
       // Add event listener to the iframe so I can read the clicked element
       iframeRef.current.contentWindow?.addEventListener('click', (event) => {
         const clickedElement = event.target as HTMLElement;
