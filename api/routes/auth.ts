@@ -1,6 +1,5 @@
-export function handleAuth(): Response {
-  return new Response(JSON.stringify({ message: `authenticated` }), {
-    headers: { "Content-Type": "application/json" },
-    status: 200,
-  });
+import { Request, Response } from 'express';
+
+export function handleAuth(req: Request, res: Response): void {
+  res.status(200).json({ message: 'authenticated' });
 }

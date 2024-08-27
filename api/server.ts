@@ -1,76 +1,57 @@
-import { corsHeaders } from './utils/cors';
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
 import { handleUpload } from './routes/upload';
 import { handleAuth } from './routes/auth';
-import { handleTemplate } from './routes/template';
-import { handlePresetSave, handlePresetList, handlePresetLoad } from './routes/presets';
+import {
+  handlePresetSave,
+  handlePresetList,
+  handlePresetLoad,
+} from './routes/presets';
 
-type Path = "/upload" | "/auth" | "/template" | "/preset" | "/presets";
-type Method = "GET" | "POST";
-type ApiEndpoint = `${Method} ${Path}`;
+const app = express();
+const port = 8080;
 
-Bun.serve({
-  port: 8080,
-  async fetch(req) {
-    try {
-      const url = new URL(req.url);
-      const method = req.method;
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-      if (method === "OPTIONS") {
-        return new Response(null, {
-          headers: corsHeaders,
-          status: 204,
-        });
-      }
+// Serve static files from the 'public' directory
+app.use(
+  '/uploads',
+  express.static(path.join(process.cwd(), 'public', 'uploads'))
+);
 
-      const apiEndpoint: ApiEndpoint = `${method as Method} ${url.pathname as Path}`;
+// Serve template files
+app.use('/templates', express.static(path.join(process.cwd(), 'Templates')));
 
-      let response: Response;
+// Routes
+app.post('/upload', handleUpload);
+app.get('/auth', handleAuth);
+app.post('/preset', handlePresetSave);
+app.get('/presets', handlePresetList);
+app.get('/preset', handlePresetLoad);
 
-      switch (apiEndpoint) {
-        case "POST /upload":
-          response = await handleUpload(req);
-          break;
-        case "GET /auth":
-          response = handleAuth();
-          break;
-        case "GET /template":
-          response = await handleTemplate();
-          break;
-        case "POST /preset":
-          response = await handlePresetSave(req);
-          break;
-        case "GET /presets":
-          response = await handlePresetList();
-          break;
-        case "GET /preset":
-          response = await handlePresetLoad(req);
-          break;
-        default:
-          response = new Response(
-            JSON.stringify({
-              message: `Unhandled Endpoint: ${apiEndpoint}.`,
-            }),
-            { headers: { "Content-Type": "application/json" }, status: 404 }
-          );
-      }
+// 404 handler
+app.use((req, res) => {
+  res
+    .status(404)
+    .json({ message: `Unhandled Endpoint: ${req.method} ${req.path}` });
+});
 
-      Object.entries(corsHeaders).forEach(([key, value]) => {
-        response.headers.set(key, value);
-      });
+// Error handler
+app.use(
+  (
+    err: Error,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error(err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+);
 
-      return response;
-    } catch (err) {
-      console.log(err);
-      return new Response(
-        JSON.stringify({ message: "Internal Server Error" }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-            ...corsHeaders,
-          },
-          status: 500,
-        }
-      );
-    }
-  },
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });

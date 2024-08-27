@@ -1,12 +1,17 @@
+import { Request, Response } from 'express';
 import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
-export async function handlePresetSave(req: Request): Promise<Response> {
+export async function handlePresetSave(
+  req: Request,
+  res: Response
+): Promise<void> {
   try {
-    const data = await req.json();
+    const data = req.body;
 
     if (!data.presetName) {
-      return new Response('Preset name is required', { status: 400 });
+      res.status(400).json({ message: 'Preset name is required' });
+      return;
     }
     const presetsDir = join(process.cwd(), 'public', 'presets');
 
@@ -28,7 +33,8 @@ export async function handlePresetSave(req: Request): Promise<Response> {
           await mkdir(presetsDir, { recursive: true });
         } catch {
           console.log('Error creating presets folder');
-          return new Response('Error saving preset', { status: 500 });
+          res.status(500).json({ message: 'Error saving preset' });
+          return;
         }
         console.log('File does not exist, creating a new one');
       }
@@ -37,14 +43,17 @@ export async function handlePresetSave(req: Request): Promise<Response> {
     const updatedData = { ...existingData, ...data };
     await writeFile(filePath, JSON.stringify(updatedData, null, 2));
 
-    return new Response('Preset saved successfully', { status: 200 });
+    res.status(200).json({ message: 'Preset saved successfully' });
   } catch (error) {
     console.error('Error saving preset:', error);
-    return new Response('Error saving preset', { status: 500 });
+    res.status(500).json({ message: 'Error saving preset' });
   }
 }
 
-export async function handlePresetList(): Promise<Response> {
+export async function handlePresetList(
+  req: Request,
+  res: Response
+): Promise<void> {
   try {
     const presetsDir = join(process.cwd(), 'public', 'presets');
     const files = await readdir(presetsDir, { withFileTypes: true });
@@ -52,23 +61,23 @@ export async function handlePresetList(): Promise<Response> {
       .filter((file) => file.isFile() && file.name.endsWith('.json'))
       .map((file) => file.name.replace('.json', ''));
 
-    return new Response(JSON.stringify(presets), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    res.status(200).json(presets);
   } catch (error) {
     console.error('Error listing presets:', error);
-    return new Response('No Presets.', { status: 500 });
+    res.status(500).json({ message: 'No Presets.' });
   }
 }
 
-export async function handlePresetLoad(req: Request): Promise<Response> {
+export async function handlePresetLoad(
+  req: Request,
+  res: Response
+): Promise<void> {
   try {
-    const url = new URL(req.url);
-    const presetName = url.searchParams.get('presetName');
+    const presetName = req.query.presetName as string;
 
     if (!presetName) {
-      return new Response('Preset name is required', { status: 400 });
+      res.status(400).json({ message: 'Preset name is required' });
+      return;
     }
 
     const presetsDir = join(process.cwd(), 'public', 'presets');
@@ -76,15 +85,13 @@ export async function handlePresetLoad(req: Request): Promise<Response> {
     const filePath = join(presetsDir, fileName);
 
     const fileContent = await readFile(filePath, 'utf-8');
-    return new Response(fileContent, {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    res.status(200).json(JSON.parse(fileContent));
   } catch (error) {
-    if (error.code === 'ENOENT') {
-      return new Response('Preset not found', { status: 404 });
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+      res.status(404).json({ message: 'Preset not found' });
+    } else {
+      console.error('Error loading preset:', error);
+      res.status(500).json({ message: 'Error loading preset' });
     }
-    console.error('Error loading preset:', error);
-    return new Response('Error loading preset', { status: 500 });
   }
 }
