@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readdir, readFile, writeFile, mkdir, unlink } from 'node:fs/promises';
 import { join } from 'node:path';
 
 export async function handlePresetSave(
@@ -93,5 +93,37 @@ export async function handlePresetLoad(
       console.error('Error loading preset:', error);
       res.status(500).json({ message: 'Error loading preset' });
     }
+  }
+}
+
+export async function handlePresetDelete(
+  req: Request,
+  res: Response
+): Promise<void> {
+  try {
+    const presetName = req.query.presetName as string;
+
+    if (!presetName) {
+      res.status(400).json({ message: 'Preset name is required' });
+      return;
+    }
+
+    const presetsDir = join(process.cwd(), 'public', 'presets');
+    const fileName = `${presetName}.json`;
+    const filePath = join(presetsDir, fileName);
+
+    try {
+      await unlink(filePath);
+      res.status(200).json({ message: 'Preset deleted successfully' });
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+        res.status(404).json({ message: 'Preset not found' });
+      } else {
+        throw error;
+      }
+    }
+  } catch (error) {
+    console.error('Error deleting preset:', error);
+    res.status(500).json({ message: 'Error deleting preset' });
   }
 }

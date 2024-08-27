@@ -37,6 +37,23 @@ export const usePreset = (presetName: string) => {
   });
 };
 
+export const useDeletePreset = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<Preset, Error, string>({
+    mutationFn: (presetName) =>
+      apiFetch(
+        `${PRESET_ENDPOINT}?presetName=${encodeURIComponent(presetName)}`,
+        {
+          method: 'DELETE',
+        }
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['presets'] });
+    },
+  });
+};
+
 // Save a preset
 export const useSavePreset = () => {
   const queryClient = useQueryClient();
@@ -61,10 +78,11 @@ export const useSavePreset = () => {
 export const usePresetManager = () => {
   const presetsQuery = usePresets();
   const savePreset = useSavePreset();
-
+  const deletePreset = useDeletePreset();
   return {
     presetsQuery,
     usePreset,
     savePreset,
+    deletePreset,
   };
 };
