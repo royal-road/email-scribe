@@ -4,7 +4,7 @@ import PreviewPanel from './components/panels/preview';
 import { useTheme } from './hooks/useTheme';
 import './styles/styles.scss';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
 
@@ -23,7 +23,7 @@ function App() {
           <PreviewPanel htmlToPreview={html} />
         </div>
       </div>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }
