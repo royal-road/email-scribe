@@ -3,22 +3,16 @@ import { ConcreteBlockClass } from '../../../../blocks/setup/Base';
 import { parseTemplate } from '../../../../blocks/parser';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
-const TEMPLATE_ENDPOINT = `${API_URL}/template`;
+const TEMPLATE_ENDPOINT = `${API_URL}/templates`;
 
 const fetchTemplate = async (templateId: string): Promise<string> => {
-  console.log(
-    'fetching template',
-    TEMPLATE_ENDPOINT + new URLSearchParams({ id: templateId })
-  );
-  const response = await fetch(
-    TEMPLATE_ENDPOINT + '?' + new URLSearchParams({ id: templateId }),
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  console.log('fetching template', TEMPLATE_ENDPOINT + `/${templateId}`);
+  const response = await fetch(TEMPLATE_ENDPOINT + `/${templateId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
   if (!response.ok) {
     throw new Error(`Error fetching template: ${response.statusText}`);
   }

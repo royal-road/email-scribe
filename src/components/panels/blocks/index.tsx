@@ -1,15 +1,14 @@
-import { BlockRenderer } from "./subcomponents/BlockRenderer";
-import { useState, useCallback, useRef, useEffect } from "react";
-import { BlockInterface } from "../../../blocks/setup/Types";
-import debounce from "debounce";
-import { ScrollArea } from "../../ui/scrollArea";
-import { BlockSelector } from "./subcomponents/BlockSelector";
-import autoAnimate from "@formkit/auto-animate";
-import { BlockGlobalSettings } from "./subcomponents/BlockGlobalSettings";
-import { RRLogo } from "../../ui/RRLogo";
-import { templateHandler } from "../../../blocks/parser";
-import { ScaffoldingBlock } from "../../../blocks/Scaffolding";
-import CopyToClip from "./subcomponents/CopyToClip";
+import { BlockRenderer } from './subcomponents/BlockRenderer';
+import { useState, useCallback, useRef, useEffect } from 'react';
+import { BlockInterface } from '../../../blocks/setup/Types';
+import debounce from 'debounce';
+import { ScrollArea } from '../../ui/scrollArea';
+import { BlockSelector } from './subcomponents/BlockSelector';
+import autoAnimate from '@formkit/auto-animate';
+import { BlockGlobalSettings } from './subcomponents/BlockGlobalSettings';
+import { RRLogo } from '../../ui/RRLogo';
+import { ScaffoldingBlock } from '../../../blocks/Scaffolding';
+import CopyToClip from './subcomponents/CopyToClip';
 
 export interface BlockState {
   instance: BlockInterface;
@@ -39,7 +38,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   const updateRenderedHtml = () => {
     const blockContent: string[] = [];
     blocks.map((block) => blockContent.push(block.cachedHtml));
-    const finHtml = blockContent.join("");
+    const finHtml = blockContent.join('');
     scaffoldSettings.instance.updateFormData({
       ...scaffoldSettings.data,
       blocks: finHtml,
@@ -91,7 +90,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   };
 
   const removeBlock = (index: number) => {
-    console.log("remove block", index);
+    console.log('remove block', index);
     setBlocks((prev) => {
       const newBlocks = [...prev];
       newBlocks.splice(index, 1);
@@ -99,13 +98,13 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     });
   };
 
-  const moveBlock = (index: number, direction: "up" | "down") => {
-    console.log("move block", index, direction);
+  const moveBlock = (index: number, direction: 'up' | 'down') => {
+    console.log('move block', index, direction);
     setBlocks((prev) => {
       const newBlocks = [...prev];
       const block = newBlocks[index];
       newBlocks.splice(index, 1);
-      newBlocks.splice(direction === "up" ? index - 1 : index + 1, 0, block);
+      newBlocks.splice(direction === 'up' ? index - 1 : index + 1, 0, block);
       return newBlocks;
     });
     // updateBlockData(index, {});
@@ -117,50 +116,50 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   }, [animateParent]);
 
   const handleCallToAction = () => {
-    // For now, copy the final HTML to the clipboard
+    copyToClipboard();
+  };
+
+  const copyToClipboard = () => {
     if (blocks.length === 0) {
-      navigator.clipboard.writeText("");
+      navigator.clipboard.writeText('');
       return;
     }
     navigator.clipboard.writeText(updateRenderedHtml());
   };
 
   return (
-    <div className="BlocksPanel">
-      <RRLogo
-        style={{ width: "4rem", marginBottom: "2rem" }}
-        onClick={() => templateHandler()}
-      />
+    <div className='BlocksPanel'>
+      <RRLogo style={{ width: '4rem', marginBottom: '2rem' }} />
       <div
         style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          height: "3rem",
-          gap: "0.5rem",
-          width: "100%",
-          justifyContent: "space-between",
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          height: '3rem',
+          gap: '0.5rem',
+          width: '100%',
+          justifyContent: 'space-between',
         }}
       >
-        <h2 className="PanelHeading">Newsletter Designer</h2>
+        <h2 className='PanelHeading'>Newsletter Designer</h2>
         <BlockSelector addBlock={addBlock} />
         <BlockGlobalSettings
           scaffoldSettings={scaffoldSettings}
           setScalfoldSettings={debouncedSetScaffoldSettings}
         />
       </div>
-      <ScrollArea className="blocks">
+      <ScrollArea className='blocks'>
         {blocks.length === 0 && (
           <div
             style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100%",
-              width: "100%",
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+              width: '100%',
             }}
           >
-            <p style={{ fontWeight: 200, fontSize: "1.4rem" }}>
+            <p style={{ fontWeight: 200, fontSize: '1.4rem' }}>
               Click the "+" button to add a block
             </p>
           </div>
@@ -171,8 +170,8 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
               isTop={index === 0}
               isBottom={index === blocks.length - 1}
               onDelete={() => removeBlock(index)}
-              onUp={() => moveBlock(index, "up")}
-              onDown={() => moveBlock(index, "down")}
+              onUp={() => moveBlock(index, 'up')}
+              onDown={() => moveBlock(index, 'down')}
               key={`block${block.instance.id}`}
               block={block.instance}
               data={block.data}
