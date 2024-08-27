@@ -59,9 +59,10 @@ const PresetManager: React.FC<PresetManagerProps> = ({
 
   return (
     <div
-      className='PresetManager'
+      className=''
       style={{
         width: '100%',
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
@@ -69,17 +70,33 @@ const PresetManager: React.FC<PresetManagerProps> = ({
         border: '1px solid var(--border)',
         borderRadius: 'var(--radius)',
         alignItems: 'center',
-        padding: '0.5rem',
-        marginBottom: '0.5rem',
+        padding: '0.75rem',
+        paddingTop: '1.25rem',
+        paddingBottom: '0.75rem',
+        marginBottom: '1rem',
       }}
     >
-      <h3 style={{ margin: 0, flex: 1, paddingTop: 0 }}>Presets</h3>
+      <h6
+        style={{
+          margin: 0,
+          flex: 1,
+          lineHeight: '0.25rem',
+          paddingTop: 0,
+          paddingLeft: '0.35rem',
+          paddingRight: '0.35rem',
+          position: 'absolute',
+          backgroundColor: 'var(--card)',
+          top: '-0.125rem',
+          left: '0.5rem',
+        }}
+      >
+        Presets
+      </h6>
       <div
         className='PresetManager'
         style={{
           width: '100%',
           display: 'flex',
-          flexDirection: 'row',
           justifyContent: 'space-around',
           gap: '0.2rem',
           alignItems: 'center',

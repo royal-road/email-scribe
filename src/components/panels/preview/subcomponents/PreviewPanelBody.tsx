@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Breakpoints } from "./BreakpointToggleGroup";
-import { useMediaQuery } from "../../../../hooks/useMediaQuery";
+import React, { useEffect, useRef, useState } from 'react';
+import { Breakpoints } from './BreakpointToggleGroup';
+import { useMediaQuery } from '../../../../hooks/useMediaQuery';
 
 interface PreviewPanelBodyProps {
   htmlToPreview: string;
-  breakpoint: Breakpoints["breakpoint"];
+  breakpoint: Breakpoints['breakpoint'];
 }
 
 const breakpointSettings = {
-  mobile: { width: 375, height: 667, deviceScaleFactor: 1 },
-  tablet: { width: 768, height: 1024, deviceScaleFactor: 1 },
-  desktop: { width: 1366, height: 768, deviceScaleFactor: 2 }, // Changed to a more common desktop resolution
+  mobile: { width: 375, height: 667 },
+  tablet: { width: 768, height: 1024 },
+  desktop: { width: 1366, height: 768 }, // Changed to a more common desktop resolution
 };
 
 export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
@@ -22,7 +22,7 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   // Media query to detect if we're on a mobile device
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery('(max-width: 767px)');
 
   useEffect(() => {
     // console.log("htmlToPreview", htmlToPreview);
@@ -33,46 +33,47 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
         const parser = new DOMParser();
         let htmlDoc;
         try {
-          htmlDoc = parser.parseFromString(htmlToPreview, "text/html");
+          htmlDoc = parser.parseFromString(htmlToPreview, 'text/html');
         } catch (error) {
           console.error(`Error parsing file content: ${error}`);
           return;
         }
         // console.log("htmlDoc", htmlDoc.body.innerText);
 
-        if (htmlDoc.body.innerHTML.trim() === "") {
+        if (htmlDoc.body.innerHTML.trim() === '') {
           htmlDoc.body.innerHTML = `<div style = "display: flex; font-family:'Helvetica Neue', Arial, sans-serif; justify-content: center; font-weight:100; align-items: center; height: 100%; font-family: sans-serif; font-size: 1.5rem; color: #737373;">~Wow, so empty~</div>`;
         }
 
         // Inject target="_blank" attribute to all links
-        const links = htmlDoc.querySelectorAll("a");
+        const links = htmlDoc.querySelectorAll('a');
         links.forEach((link) => {
-          link.setAttribute("target", "_blank");
+          link.setAttribute('target', '_blank');
         });
 
         // Determine zoom factor
         let zoomFactor = 1;
         if (isMobile) {
           // On mobile devices
-          if (breakpoint === "desktop") {
+          if (breakpoint === 'desktop') {
             zoomFactor = 0.25; // Significant zoom out for desktop view on mobile
-          } else if (breakpoint === "tablet") {
+          } else if (breakpoint === 'tablet') {
             zoomFactor = 0.5; // Moderate zoom out for tablet view on mobile
           }
           // For mobile breakpoint on mobile device, keep zoom at 1
         } else {
           // On desktop devices
-          if (breakpoint === "mobile") {
+          if (breakpoint === 'mobile') {
             zoomFactor = 1.25; // Slight zoom in for mobile view on desktop
+          } else if (breakpoint === 'tablet') {
+            zoomFactor = 1.1;
           }
-          // For tablet and desktop breakpoints on desktop, keep zoom at 1
         }
 
         // Add or update the zoom style
-        let styleTag = htmlDoc.querySelector("style#preview-zoom");
+        let styleTag = htmlDoc.querySelector('style#preview-zoom');
         if (!styleTag) {
-          styleTag = htmlDoc.createElement("style");
-          styleTag.id = "preview-zoom";
+          styleTag = htmlDoc.createElement('style');
+          styleTag.id = 'preview-zoom';
           htmlDoc.head.appendChild(styleTag);
         }
         styleTag.textContent = `
@@ -97,7 +98,7 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
         let { width, height } = breakpointSettings[breakpoint];
 
         // For desktop, always use landscape orientation
-        if (breakpoint === "desktop") {
+        if (breakpoint === 'desktop') {
           if (width < height) {
             [width, height] = [height, width];
           }
@@ -118,39 +119,39 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
     };
 
     updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
   }, [breakpoint]);
 
   return (
     <div
       ref={containerRef}
       style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        overflow: "hidden",
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
       }}
     >
       <div
         style={{
           width: `${dimensions.width}px`,
           height: `${dimensions.height}px`,
-          maxWidth: "100%",
-          maxHeight: "100%",
-          minHeight: "40rem",
-          transition: "all 0.3s ease",
-          boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+          maxWidth: '100%',
+          maxHeight: '100%',
+          minHeight: '40rem',
+          transition: 'all 0.3s ease',
+          boxShadow: '0 0 10px rgba(0,0,0,0.1)',
         }}
       >
         <iframe
           ref={iframeRef}
           style={{
-            width: "100%",
-            height: "100%",
-            border: "1px solid var(--border)",
+            width: '100%',
+            height: '100%',
+            border: '1px solid var(--border)',
           }}
         />
       </div>

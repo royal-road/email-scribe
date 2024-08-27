@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { sanitizeHtml } from './utils/cleanHTML';
 import { handleExportHtml } from './utils/importExport';
 
-export default function CopyToClip({ getHtml }: { getHtml: () => string }) {
+export default function HtmlManager({ getHtml }: { getHtml: () => string }) {
   const [justCopied, setJustCopied] = useState(false);
 
   useEffect(() => {
@@ -38,9 +38,10 @@ export default function CopyToClip({ getHtml }: { getHtml: () => string }) {
 
   return (
     <div
-      className='PresetManager'
+      className='HtmlManager'
       style={{
         width: '100%',
+        position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -48,11 +49,30 @@ export default function CopyToClip({ getHtml }: { getHtml: () => string }) {
         border: '1px solid var(--border)',
         borderRadius: 'var(--radius)',
         alignItems: 'center',
-        padding: '0.5rem',
-        marginBottom: '0.5rem',
+        padding: '0.75rem',
+        paddingTop: '1.25rem',
+        flexWrap: 'wrap',
+        paddingBottom: '0.75rem',
+
+        marginBottom: '0',
       }}
     >
-      <h3 style={{ margin: 0, flex: 1, paddingTop: 0 }}>HTML</h3>
+      <h6
+        style={{
+          margin: 0,
+          flex: 1,
+          lineHeight: '0.25rem',
+          paddingTop: 0,
+          paddingLeft: '0.35rem',
+          paddingRight: '0.35rem',
+          position: 'absolute',
+          backgroundColor: 'var(--card)',
+          top: '-0.125rem',
+          left: '0.5rem',
+        }}
+      >
+        HTML
+      </h6>
       <div
         className='PresetManager'
         style={{

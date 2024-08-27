@@ -8,7 +8,7 @@ import autoAnimate from '@formkit/auto-animate';
 import { BlockGlobalSettings } from './subcomponents/BlockGlobalSettings';
 import { RRLogo } from '../../ui/RRLogo';
 import { ScaffoldingBlock } from '../../../blocks/Scaffolding';
-import CopyToClip from './subcomponents/CopyToClip';
+import HtmlManager from './subcomponents/HtmlManager';
 import PresetManager from './subcomponents/PresetManager';
 
 export interface BlockState {
@@ -173,7 +173,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         getBlocks={() => JSON.stringify(blocks)}
         setBlocks={setBlocks}
       />
-      <CopyToClip
+      <HtmlManager
         getHtml={() => (blocks.length > 0 ? updateRenderedHtml() : '')}
       />
     </div>

@@ -24,10 +24,23 @@
 
   flex: 4;
   @extend .background-card;
-  min-width: 26rem;
+  min-width: 24rem;
   border-bottom: 1px solid var(--border);
   @include breakpoint('md') {
     border-right: 1px solid var(--border);
+  }
+
+  .PresetManager {
+    flex-direction: column;
+    @include breakpoint('md') {
+      flex-direction: row;
+    }
+    & > .button {
+      width: 100%;
+      @include breakpoint('md') {
+        width: auto;
+      }
+    }
   }
 
   .PanelHeading {
