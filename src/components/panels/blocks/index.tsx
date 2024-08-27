@@ -10,7 +10,6 @@ import { RRLogo } from '../../ui/RRLogo';
 import { ScaffoldingBlock } from '../../../blocks/Scaffolding';
 import CopyToClip from './subcomponents/CopyToClip';
 import PresetManager from './subcomponents/PresetManager';
-import { sanitizeHtml } from './subcomponents/utils/cleanHTML';
 
 export interface BlockState {
   instance: BlockInterface;
@@ -117,14 +116,6 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     animateParent.current && autoAnimate(animateParent.current);
   }, [animateParent]);
 
-  const copyToClipboard = () => {
-    if (blocks.length === 0) {
-      navigator.clipboard.writeText('');
-      return;
-    }
-    navigator.clipboard.writeText(sanitizeHtml(updateRenderedHtml()));
-  };
-
   return (
     <div className='BlocksPanel'>
       <RRLogo style={{ width: '4rem', marginBottom: '2rem' }} />
@@ -182,7 +173,9 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         getBlocks={() => JSON.stringify(blocks)}
         setBlocks={setBlocks}
       />
-      <CopyToClip onClick={copyToClipboard} />
+      <CopyToClip
+        getHtml={() => (blocks.length > 0 ? updateRenderedHtml() : '')}
+      />
     </div>
   );
 };

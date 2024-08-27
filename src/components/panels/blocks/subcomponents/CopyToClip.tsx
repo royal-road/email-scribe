@@ -1,8 +1,10 @@
-import { Clipboard, Check } from 'lucide-react';
+import { Clipboard, Check, Save } from 'lucide-react';
 import { Button } from '../../../ui/button';
 import { useState, useEffect } from 'react';
+import { sanitizeHtml } from './utils/cleanHTML';
+import { handleExportHtml } from './utils/importExport';
 
-export default function CopyToClip({ onClick }: { onClick: () => void }) {
+export default function CopyToClip({ getHtml }: { getHtml: () => string }) {
   const [justCopied, setJustCopied] = useState(false);
 
   useEffect(() => {
@@ -17,9 +19,21 @@ export default function CopyToClip({ onClick }: { onClick: () => void }) {
     };
   }, [justCopied]);
 
-  const handleClick = () => {
+  const handleCopy = () => {
     setJustCopied(true);
-    onClick();
+    copyToClipboard(getHtml());
+  };
+
+  const handleDownload = () => {
+    handleExportHtml(getHtml());
+  };
+
+  const copyToClipboard = (jsonState: string) => {
+    if (jsonState === '') {
+      navigator.clipboard.writeText('');
+      return;
+    }
+    navigator.clipboard.writeText(sanitizeHtml(jsonState));
   };
 
   return (
@@ -46,17 +60,24 @@ export default function CopyToClip({ onClick }: { onClick: () => void }) {
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'center',
-          gap: '0.5rem',
+          gap: '0.15rem',
           alignItems: 'center',
         }}
       >
         <Button
           style={{ display: 'flex', gap: '0.5rem', width: '100%' }}
           variant='default'
-          onClick={handleClick}
+          onClick={handleCopy}
         >
           {justCopied ? 'Copied!' : 'Copy to Clipboard'}
           {justCopied ? <Check /> : <Clipboard />}
+        </Button>
+        <Button
+          style={{ display: 'flex', gap: '0.5rem', width: '100%' }}
+          variant='default'
+          onClick={handleDownload}
+        >
+          Download <Save />
         </Button>
       </div>
     </div>
