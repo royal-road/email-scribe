@@ -1,17 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-// Constants
 const API_URL = import.meta.env.VITE_API_URL as string;
 const PRESETS_ENDPOINT = `${API_URL}/presets`;
 const PRESET_ENDPOINT = `${API_URL}/preset`;
 
-// Types
-interface Preset {
+export interface Preset {
   presetName: string;
   data: string;
 }
 
-// Helper function for API calls
 const apiFetch = async (url: string, options?: RequestInit) => {
   const response = await fetch(url, options);
   if (!response.ok) {
@@ -20,7 +17,7 @@ const apiFetch = async (url: string, options?: RequestInit) => {
   return response.json();
 };
 
-// Fetch all presets
+// Fetch all presets (list)
 export const usePresets = () => {
   return useQuery<string[]>({
     queryKey: ['presets'],

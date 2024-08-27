@@ -9,6 +9,8 @@ import { BlockGlobalSettings } from './subcomponents/BlockGlobalSettings';
 import { RRLogo } from '../../ui/RRLogo';
 import { ScaffoldingBlock } from '../../../blocks/Scaffolding';
 import CopyToClip from './subcomponents/CopyToClip';
+import { usePresetManager } from './hooks/presets';
+import PresetManager from './subcomponents/PresetManager';
 
 export interface BlockState {
   instance: BlockInterface;
@@ -23,6 +25,7 @@ interface BlockPanelProps {
 export const BlocksPanel: React.FC<BlockPanelProps> = ({
   onUpdateFinalHtml,
 }) => {
+  const presetManager = usePresetManager();
   const [blocks, setBlocks] = useState<BlockState[]>([]);
   const [scaffoldSettings, setScaffoldSettings] = useState<BlockState>(() => {
     const instance = new ScaffoldingBlock() as BlockInterface;
@@ -116,7 +119,10 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   }, [animateParent]);
 
   const handleCallToAction = () => {
-    copyToClipboard();
+    presetManager.savePreset.mutate({
+      presetName: 'newsletter',
+      data: JSON.stringify(blocks),
+    });
   };
 
   const copyToClipboard = () => {
@@ -180,7 +186,11 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           ))}
         </div>
       </ScrollArea>
-      <CopyToClip onClick={handleCallToAction} />
+      <PresetManager
+        getBlocks={() => JSON.stringify(blocks)}
+        setBlocks={setBlocks}
+      />
+      {/* <CopyToClip onClick={handleCallToAction} /> */}
     </div>
   );
 };
