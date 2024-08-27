@@ -11,6 +11,7 @@ import {
   CloudDownload,
   CloudUpload,
   Download,
+  PackageOpen,
   Trash,
   Trash2,
   Upload,
@@ -168,7 +169,17 @@ const PresetManager: React.FC<PresetManagerProps> = ({
                 </ScrollArea>
               </div>
             ) : (
-              <p>No presets available</p>
+              <p
+                style={{
+                  textAlign: 'center',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                }}
+              >
+                No presets available <PackageOpen />{' '}
+              </p>
             )}
           </PopoverContent>
         </Popover>
