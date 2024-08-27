@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { handleUpload } from './routes/upload';
-import { handleAuth } from './routes/auth';
 import {
   handlePresetSave,
   handlePresetList,
@@ -27,7 +26,6 @@ app.use('/templates', express.static(path.join(process.cwd(), 'Templates')));
 
 // Routes
 app.post('/upload', handleUpload);
-app.get('/auth', handleAuth);
 app.post('/preset', handlePresetSave);
 app.get('/presets', handlePresetList);
 app.get('/preset', handlePresetLoad);
