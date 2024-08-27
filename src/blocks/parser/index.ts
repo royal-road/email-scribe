@@ -1,34 +1,22 @@
-import { RJSFSchema, UiSchema } from "@rjsf/utils";
-import { BaseBlock, ConcreteBlockClass } from "../setup/Base";
-import { BlockMetadata } from "../setup/Types";
-import { templatify } from "../utils/templater";
+import { RJSFSchema, UiSchema } from '@rjsf/utils';
+import { BaseBlock, ConcreteBlockClass } from '../setup/Base';
+import { BlockMetadata } from '../setup/Types';
+import { templatify } from '../utils/templater';
 import {
   getDefaultStyleValue,
   parseInlineStyle,
   propNameToTitle,
   setInlineStyle,
-} from "./utils";
-import { camelToTitleCase } from "../../../lib/utils";
+} from './utils';
+import { camelToTitleCase } from '../../../lib/utils';
 
-async function getModules(url: string): Promise<string> {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Error fetching file: ${response.statusText}`);
-    }
-    return await response.text();
-  } catch (error) {
-    throw new Error(`${error}`);
-  }
-}
-
-function parseTemplate(content: string) {
+export function parseTemplate(content: string) {
   const parser = new DOMParser();
   try {
-    const dom = parser.parseFromString(content, "text/html");
+    const dom = parser.parseFromString(content, 'text/html');
     const modules: ConcreteBlockClass[] = [];
 
-    dom.body.querySelectorAll("[data-module]").forEach((node) => {
+    dom.body.querySelectorAll('[data-module]').forEach((node) => {
       modules.push(parseModule(node) as ConcreteBlockClass);
     });
 
@@ -46,7 +34,7 @@ interface SchemaBundle {
 
 function parseModule(node: Element): ConcreteBlockClass {
   const schemaBundle: SchemaBundle = {
-    schema: { type: "object", properties: {}, required: [] },
+    schema: { type: 'object', properties: {}, required: [] },
     uiSchema: {},
     defaults: {},
   };
@@ -70,16 +58,16 @@ function parseModule(node: Element): ConcreteBlockClass {
     console.error(error);
   }
 
-  const moduleName = node.getAttribute("data-module");
+  const moduleName = node.getAttribute('data-module');
   const meta: BlockMetadata = {
-    label: propNameToTitle(moduleName || "Dynamic Block"),
+    label: propNameToTitle(moduleName || 'Dynamic Block'),
     id:
       `${moduleName}${Math.random().toString(36).substring(7)}` ||
       Math.random().toString(36).substring(7),
-    description: "",
-    tags: [...(moduleName?.split("-") || [])],
-    group: moduleName || "Dynamic Blocks",
-    thumbnailUrl: `/thumbnails/${node.getAttribute("data-thumb")}`,
+    description: '',
+    tags: [...(moduleName?.split('-') || [])],
+    group: moduleName || 'Dynamic Blocks',
+    thumbnailUrl: `/thumbnails/${node.getAttribute('data-thumb')}`,
   };
 
   return class DynamicBlock extends BaseBlock {
@@ -102,91 +90,91 @@ function parseModule(node: Element): ConcreteBlockClass {
 }
 
 function sanitizePropName(name: string, suffix: string): string {
-  return `${name.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]/g, "")}_${suffix}`;
+  return `${name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '')}_${suffix}`;
 }
 
 function handleBGColor(node: Element, schemaBundle: SchemaBundle): void {
-  const elements = node.querySelectorAll("[data-bgcolor]");
+  const elements = node.querySelectorAll('[data-bgcolor]');
   elements.forEach((el) => {
     const propName = sanitizePropName(
-      el.getAttribute("data-bgcolor") || "",
-      "color"
+      el.getAttribute('data-bgcolor') || '',
+      'color'
     );
     if (!schemaBundle.schema.properties[propName]) {
-      schemaBundle.schema.properties[propName] = { type: "string" };
+      schemaBundle.schema.properties[propName] = { type: 'string' };
       schemaBundle.uiSchema[propName] = {
-        "ui:widget": "color",
-        "ui:title": propNameToTitle(propName),
+        'ui:widget': 'color',
+        'ui:title': propNameToTitle(propName),
       };
-      schemaBundle.defaults[propName] = el.getAttribute("bgcolor") || "";
+      schemaBundle.defaults[propName] = el.getAttribute('bgcolor') || '';
     }
-    el.setAttribute("bgcolor", `{{{${propName}}}}`);
+    el.setAttribute('bgcolor', `{{{${propName}}}}`);
   });
 }
 
 function handleBG(node: Element, schemaBundle: SchemaBundle): void {
-  const elements = node.querySelectorAll("[data-bg]");
+  const elements = node.querySelectorAll('[data-bg]');
   elements.forEach((el) => {
     const propName = sanitizePropName(
-      el.getAttribute("data-bg") || "",
-      "image"
+      el.getAttribute('data-bg') || '',
+      'image'
     );
     if (!schemaBundle.schema.properties[propName]) {
-      schemaBundle.schema.properties[propName] = { type: "string" };
+      schemaBundle.schema.properties[propName] = { type: 'string' };
       schemaBundle.uiSchema[propName] = {
-        "ui:widget": "file",
-        "ui:classNames": "FileUploadWidget",
-        "ui:title": propNameToTitle(propName),
+        'ui:widget': 'file',
+        'ui:classNames': 'FileUploadWidget',
+        'ui:title': propNameToTitle(propName),
       };
-      schemaBundle.defaults[propName] = el.getAttribute("background") || "";
+      schemaBundle.defaults[propName] = el.getAttribute('background') || '';
     }
-    el.setAttribute("background", `{{{${propName}}}}`);
+    el.setAttribute('background', `{{{${propName}}}}`);
   });
 }
 
 function handleSize(node: Element, schemaBundle: SchemaBundle): void {
-  handleStyleAttribute(node, schemaBundle, "data-size", "font-size", "size");
+  handleStyleAttribute(node, schemaBundle, 'data-size', 'font-size', 'size');
 }
 
 function handleColor(node: Element, schemaBundle: SchemaBundle): void {
-  handleStyleAttribute(node, schemaBundle, "data-color", "color", "color");
+  handleStyleAttribute(node, schemaBundle, 'data-color', 'color', 'color');
 }
 
 function handleBorderColor(node: Element, schemaBundle: SchemaBundle): void {
   handleStyleAttribute(
     node,
     schemaBundle,
-    "data-border-color",
-    "border-color",
-    "color"
+    'data-border-color',
+    'border-color',
+    'color'
   );
   handleStyleAttribute(
     node,
     schemaBundle,
-    "data-border-top-color",
-    "border-top-color",
-    "color"
+    'data-border-top-color',
+    'border-top-color',
+    'color'
   );
   handleStyleAttribute(
     node,
     schemaBundle,
-    "data-border-right-color",
-    "border-right-color",
-    "color"
+    'data-border-right-color',
+    'border-right-color',
+    'color'
   );
   handleStyleAttribute(
     node,
     schemaBundle,
-    "data-border-bottom-color",
-    "border-bottom-color",
-    "color"
+    'data-border-bottom-color',
+    'border-bottom-color',
+    'color'
   );
   handleStyleAttribute(
     node,
     schemaBundle,
-    "data-border-left-color",
-    "border-left-color",
-    "color"
+    'data-border-left-color',
+    'border-left-color',
+    'color'
   );
 }
 
@@ -199,17 +187,17 @@ function handleStyleAttribute(
 ): void {
   const elements = node.querySelectorAll(`[${dataAttr}]`);
   elements.forEach((el) => {
-    const propName = sanitizePropName(el.getAttribute(dataAttr) || "", suffix);
+    const propName = sanitizePropName(el.getAttribute(dataAttr) || '', suffix);
     if (!schemaBundle.schema.properties[propName]) {
       const defaultStyleVal = getDefaultStyleValue(el, styleAttr);
       if (!defaultStyleVal) {
         return;
       }
       schemaBundle.defaults[propName] = defaultStyleVal;
-      schemaBundle.schema.properties[propName] = { type: "string" };
+      schemaBundle.schema.properties[propName] = { type: 'string' };
       schemaBundle.uiSchema[propName] = {
-        "ui:widget": suffix === "color" ? "color" : "text",
-        "ui:title": propNameToTitle(propName),
+        'ui:widget': suffix === 'color' ? 'color' : 'text',
+        'ui:title': propNameToTitle(propName),
       };
     }
     const styleDict = parseInlineStyle(el);
@@ -222,9 +210,9 @@ function handleLinkSize(node: Element, schemaBundle: SchemaBundle): void {
   handleLinkAttribute(
     node,
     schemaBundle,
-    "data-link-size",
-    "font-size",
-    "link-size"
+    'data-link-size',
+    'font-size',
+    'link-size'
   );
 }
 
@@ -232,9 +220,9 @@ function handleLinkColor(node: Element, schemaBundle: SchemaBundle): void {
   handleLinkAttribute(
     node,
     schemaBundle,
-    "data-link-color",
-    "color",
-    "link-color"
+    'data-link-color',
+    'color',
+    'link-color'
   );
 }
 
@@ -247,25 +235,25 @@ function handleLinkAttribute(
 ): void {
   const elements = node.querySelectorAll(`[${dataAttr}]`);
   elements.forEach((el) => {
-    const propName = sanitizePropName(el.getAttribute(dataAttr) || "", suffix);
+    const propName = sanitizePropName(el.getAttribute(dataAttr) || '', suffix);
     if (!schemaBundle.schema.properties[propName]) {
       const defaultStyleVal = getDefaultStyleValue(el, styleAttr);
-      if (!defaultStyleVal || !el.querySelector("a")) {
+      if (!defaultStyleVal || !el.querySelector('a')) {
         return;
       }
       schemaBundle.defaults[propName] = defaultStyleVal;
-      schemaBundle.schema.properties[propName] = { type: "string" };
+      schemaBundle.schema.properties[propName] = { type: 'string' };
       schemaBundle.uiSchema[propName] = {
-        "ui:widget":
-          suffix === "color" || suffix === "link-color" ? "color" : "text",
-        "ui:title": propNameToTitle(
-          suffix === "link-color"
+        'ui:widget':
+          suffix === 'color' || suffix === 'link-color' ? 'color' : 'text',
+        'ui:title': propNameToTitle(
+          suffix === 'link-color'
             ? `${el.getAttribute(dataAttr)} color (anchor)`
             : propName
         ),
       };
     }
-    el.querySelectorAll("a").forEach((link) => {
+    el.querySelectorAll('a').forEach((link) => {
       const styleDict = parseInlineStyle(link);
       styleDict[styleAttr] = `{{{${propName}}}}`;
       setInlineStyle(link, styleDict);
@@ -278,7 +266,7 @@ function handleSingleLine(
   schemaBundle: SchemaBundle,
   counters: { singleLine: number }
 ): void {
-  handleTextLine(node, schemaBundle, "singleline", "text", counters);
+  handleTextLine(node, schemaBundle, 'singleline', 'text', counters);
 }
 
 function handleMultiLine(
@@ -286,7 +274,7 @@ function handleMultiLine(
   schemaBundle: SchemaBundle,
   counters: { multiLine: number }
 ): void {
-  handleTextLine(node, schemaBundle, "multiline", "textarea", counters);
+  handleTextLine(node, schemaBundle, 'multiline', 'textarea', counters);
 }
 
 function handleTextLine(
@@ -302,35 +290,35 @@ function handleTextLine(
     let mcEdit = null;
 
     // If the parent is an anchor, go one level higher
-    if (parentElement && parentElement.tagName.toLowerCase() === "a") {
+    if (parentElement && parentElement.tagName.toLowerCase() === 'a') {
       parentElement = parentElement.parentElement;
     }
 
     // Find the closest ancestor with mc:edit attribute
     while (parentElement && !mcEdit) {
-      mcEdit = parentElement.getAttribute("mc:edit");
+      mcEdit = parentElement.getAttribute('mc:edit');
       if (!mcEdit) {
         parentElement = parentElement.parentElement;
       }
     }
 
-    const counterType = tagName === "singleline" ? "singleLine" : "multiLine";
+    const counterType = tagName === 'singleline' ? 'singleLine' : 'multiLine';
     counters[counterType as keyof typeof counters]++;
     const propName = sanitizePropName(
       mcEdit ||
         `${counterType}_${counters[counterType as keyof typeof counters]}`,
-      "text"
+      'text'
     );
 
     if (!schemaBundle.schema.properties[propName]) {
-      schemaBundle.schema.properties[propName] = { type: "string" };
+      schemaBundle.schema.properties[propName] = { type: 'string' };
       schemaBundle.uiSchema[propName] = {
-        "ui:widget": widget,
-        "ui:title": `${camelToTitleCase(counterType)} ${
+        'ui:widget': widget,
+        'ui:title': `${camelToTitleCase(counterType)} ${
           counters[counterType as keyof typeof counters]
         }`,
       };
-      schemaBundle.defaults[propName] = el.textContent || "";
+      schemaBundle.defaults[propName] = el.textContent || '';
     }
     el.textContent = `{{${propName}}}`;
 
@@ -344,27 +332,27 @@ function handleImages(
   schemaBundle: SchemaBundle,
   counters: { img: number }
 ): void {
-  const images = node.getElementsByTagName("img");
+  const images = node.getElementsByTagName('img');
   Array.from(images).forEach((img) => {
     counters.img++;
     const propName = sanitizePropName(
-      img.getAttribute("mc:edit") || "",
-      "image"
+      img.getAttribute('mc:edit') || '',
+      'image'
     );
     if (!schemaBundle.schema.properties[propName]) {
-      schemaBundle.schema.properties[propName] = { type: "string" };
+      schemaBundle.schema.properties[propName] = { type: 'string' };
       schemaBundle.uiSchema[propName] = {
-        "ui:widget": "file",
-        "ui:classNames": "FileUploadWidget",
-        "ui:options": {
-          accept: "image/*",
+        'ui:widget': 'file',
+        'ui:classNames': 'FileUploadWidget',
+        'ui:options': {
+          accept: 'image/*',
           width: img.width || 640,
         },
-        "ui:title": `Image ${counters.img}`,
+        'ui:title': `Image ${counters.img}`,
       };
-      schemaBundle.defaults[propName] = img.getAttribute("src") || "";
+      schemaBundle.defaults[propName] = img.getAttribute('src') || '';
     }
-    img.setAttribute("src", `{{{${propName}}}}`);
+    img.setAttribute('src', `{{{${propName}}}}`);
 
     // Handle anchor tag if present
     handleAnchorTag(img, schemaBundle, propName);
@@ -376,47 +364,34 @@ function handleAnchorTag(
   schemaBundle: SchemaBundle,
   basePropName: string
 ): void {
-  const parentAnchor = el.closest("a");
+  const parentAnchor = el.closest('a');
   if (parentAnchor) {
     let mcEdit = null;
     let currentElement = parentAnchor.parentElement;
 
     // Find the closest ancestor with mc:edit attribute
     while (currentElement && !mcEdit) {
-      mcEdit = currentElement.getAttribute("mc:edit");
+      mcEdit = currentElement.getAttribute('mc:edit');
       if (!mcEdit) {
         currentElement = currentElement.parentElement;
       }
     }
 
     const linkPropName = `${
-      mcEdit ? sanitizePropName(mcEdit, "link") : basePropName + "_link"
+      mcEdit ? sanitizePropName(mcEdit, 'link') : basePropName + '_link'
     }`;
     if (!schemaBundle.schema.properties[linkPropName]) {
       schemaBundle.schema.properties[linkPropName] = {
-        type: "string",
-        format: "uri",
+        type: 'string',
+        format: 'uri',
       };
       schemaBundle.uiSchema[linkPropName] = {
-        "ui:widget": "uri",
-        "ui:title": `${propNameToTitle(mcEdit || basePropName)} (Link)`,
+        'ui:widget': 'uri',
+        'ui:title': `${propNameToTitle(mcEdit || basePropName)} (Link)`,
       };
       schemaBundle.defaults[linkPropName] =
-        parentAnchor.getAttribute("href") || "";
+        parentAnchor.getAttribute('href') || '';
     }
-    parentAnchor.setAttribute("href", `{{{${linkPropName}}}}`);
-  }
-}
-
-export async function templateHandler() {
-  return await processTemplate("http://localhost:8080/template");
-}
-
-async function processTemplate(url: string) {
-  try {
-    const templateContent = await getModules(url);
-    return parseTemplate(templateContent);
-  } catch (error) {
-    console.error(error);
+    parentAnchor.setAttribute('href', `{{{${linkPropName}}}}`);
   }
 }

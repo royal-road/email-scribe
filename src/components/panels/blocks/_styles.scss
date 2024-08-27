@@ -1,6 +1,6 @@
 @mixin rjsfForm {
   #root {
-    font-family: "Poppins", Arial, Helvetica, sans-serif;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
     border: 0 !important;
@@ -26,7 +26,7 @@
   @extend .background-card;
   min-width: 26rem;
   border-bottom: 1px solid var(--border);
-  @include breakpoint("md") {
+  @include breakpoint('md') {
     border-right: 1px solid var(--border);
   }
 
@@ -144,9 +144,18 @@
   // Make the text bigger
   font-size: 1.1rem;
   font-family: $font-family-heading;
-  font-weight: 100;
+  font-weight: 200;
   // Make it glow
   text-shadow: 0 0 0.5rem #ff0000;
+}
+
+.text-primary {
+  color: var(--primary);
+  font-size: 1.4rem;
+  font-family: $font-family-heading;
+  font-weight: 300;
+  // Make it glow
+  text-shadow: 0 0 0.5rem var(--primary);
 }
 
 .control-label {
@@ -154,14 +163,14 @@
 }
 
 .FileUploadWidget {
-  input[type="file"] {
+  input[type='file'] {
     &::-webkit-file-upload-button {
       display: none;
     }
 
     &::before {
       margin-right: 0.5rem;
-      content: "Select files";
+      content: 'Select files';
       display: inline-block;
       background: var(--background);
       color: var(--foreground);
@@ -189,13 +198,15 @@
     }
 
     &:focus::before {
-      box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--border);
+      box-shadow:
+        0 0 0 2px var(--background),
+        0 0 0 4px var(--border);
     }
   }
 }
 
-input[type="text"],
-input[type="url"],
+input[type='text'],
+input[type='url'],
 textarea {
   font-family: $font-family-heading;
   border: 1px solid var(--border);
@@ -218,7 +229,7 @@ textarea {
   }
 }
 
-input[type="color"] {
+input[type='color'] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -239,7 +250,9 @@ input[type="color"] {
   &:focus {
     outline: none;
     border-color: var(--foreground);
-    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--border);
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 0 4px var(--border);
   }
 
   &::-webkit-color-swatch-wrapper {
