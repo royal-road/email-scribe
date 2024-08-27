@@ -9,8 +9,8 @@ import { BlockGlobalSettings } from './subcomponents/BlockGlobalSettings';
 import { RRLogo } from '../../ui/RRLogo';
 import { ScaffoldingBlock } from '../../../blocks/Scaffolding';
 import CopyToClip from './subcomponents/CopyToClip';
-import { usePresetManager } from './hooks/presets';
 import PresetManager from './subcomponents/PresetManager';
+import { sanitizeHtml } from './subcomponents/utils/cleanHTML';
 
 export interface BlockState {
   instance: BlockInterface;
@@ -25,7 +25,6 @@ interface BlockPanelProps {
 export const BlocksPanel: React.FC<BlockPanelProps> = ({
   onUpdateFinalHtml,
 }) => {
-  const presetManager = usePresetManager();
   const [blocks, setBlocks] = useState<BlockState[]>([]);
   const [scaffoldSettings, setScaffoldSettings] = useState<BlockState>(() => {
     const instance = new ScaffoldingBlock() as BlockInterface;
@@ -118,19 +117,12 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     animateParent.current && autoAnimate(animateParent.current);
   }, [animateParent]);
 
-  const handleCallToAction = () => {
-    presetManager.savePreset.mutate({
-      presetName: 'newsletter',
-      data: JSON.stringify(blocks),
-    });
-  };
-
   const copyToClipboard = () => {
     if (blocks.length === 0) {
       navigator.clipboard.writeText('');
       return;
     }
-    navigator.clipboard.writeText(updateRenderedHtml());
+    navigator.clipboard.writeText(sanitizeHtml(updateRenderedHtml()));
   };
 
   return (
