@@ -4,20 +4,21 @@ import { BlockMetadata } from '../setup/Types';
 import { templatify } from '../utils/templater';
 import {
   getDefaultStyleValue,
+  isRelativeUrl,
   parseInlineStyle,
   propNameToTitle,
   setInlineStyle,
 } from './utils';
 import { camelToTitleCase } from '../../../lib/utils';
 
-export function parseTemplate(content: string) {
+export function parseTemplate(content: string, templateName: string) {
   const parser = new DOMParser();
   try {
     const dom = parser.parseFromString(content, 'text/html');
     const modules: ConcreteBlockClass[] = [];
 
     dom.body.querySelectorAll('[data-module]').forEach((node) => {
-      modules.push(parseModule(node) as ConcreteBlockClass);
+      modules.push(parseModule(node, templateName) as ConcreteBlockClass);
     });
 
     return modules;
@@ -32,12 +33,13 @@ interface SchemaBundle {
   defaults: Record<string, unknown>;
 }
 
-function parseModule(node: Element): ConcreteBlockClass {
+function parseModule(node: Element, templateName: string): ConcreteBlockClass {
   const schemaBundle: SchemaBundle = {
     schema: { type: 'object', properties: {}, required: [] },
     uiSchema: {},
     defaults: {},
   };
+  const templateUrlPrefix = `${import.meta.env.VITE_API_URL}/templates/${templateName}/`;
   const counters = {
     singleLine: 0,
     multiLine: 0,
@@ -45,7 +47,7 @@ function parseModule(node: Element): ConcreteBlockClass {
   };
   try {
     handleBGColor(node, schemaBundle);
-    handleBG(node, schemaBundle);
+    handleBG(node, schemaBundle, templateUrlPrefix);
     handleSize(node, schemaBundle);
     handleColor(node, schemaBundle);
     handleBorderColor(node, schemaBundle);
@@ -53,7 +55,7 @@ function parseModule(node: Element): ConcreteBlockClass {
     handleLinkColor(node, schemaBundle);
     handleSingleLine(node, schemaBundle, counters);
     handleMultiLine(node, schemaBundle, counters);
-    handleImages(node, schemaBundle, counters);
+    handleImages(node, schemaBundle, counters, templateUrlPrefix);
   } catch (error) {
     console.error(error);
   }
@@ -67,7 +69,7 @@ function parseModule(node: Element): ConcreteBlockClass {
     description: '',
     tags: [...(moduleName?.split('-') || [])],
     group: moduleName || 'Dynamic Blocks',
-    thumbnailUrl: `/thumbnails/${node.getAttribute('data-thumb')}`,
+    thumbnailUrl: `${templateUrlPrefix}thumbnails/${node.getAttribute('data-thumb')}`,
   };
 
   return class DynamicBlock extends BaseBlock {
@@ -112,7 +114,11 @@ function handleBGColor(node: Element, schemaBundle: SchemaBundle): void {
   });
 }
 
-function handleBG(node: Element, schemaBundle: SchemaBundle): void {
+function handleBG(
+  node: Element,
+  schemaBundle: SchemaBundle,
+  templateUrlPrefix: string
+): void {
   const elements = node.querySelectorAll('[data-bg]');
   elements.forEach((el) => {
     const propName = sanitizePropName(
@@ -126,7 +132,16 @@ function handleBG(node: Element, schemaBundle: SchemaBundle): void {
         'ui:classNames': 'FileUploadWidget',
         'ui:title': propNameToTitle(propName),
       };
-      schemaBundle.defaults[propName] = el.getAttribute('background') || '';
+      console.log(
+        'BG: ',
+        el.getAttribute('background'),
+        isRelativeUrl(el.getAttribute('background') || '')
+      );
+      schemaBundle.defaults[propName] = isRelativeUrl(
+        el.getAttribute('background') || ''
+      )
+        ? `${templateUrlPrefix}${el.getAttribute('background')}`
+        : el.getAttribute('background');
     }
     el.setAttribute('background', `{{{${propName}}}}`);
   });
@@ -330,7 +345,8 @@ function handleTextLine(
 function handleImages(
   node: Element,
   schemaBundle: SchemaBundle,
-  counters: { img: number }
+  counters: { img: number },
+  templateUrlPrefix: string
 ): void {
   const images = node.getElementsByTagName('img');
   Array.from(images).forEach((img) => {
@@ -350,7 +366,11 @@ function handleImages(
         },
         'ui:title': `Image ${counters.img}`,
       };
-      schemaBundle.defaults[propName] = img.getAttribute('src') || '';
+      schemaBundle.defaults[propName] = isRelativeUrl(
+        img.getAttribute('src') || ''
+      )
+        ? `${templateUrlPrefix}${img.getAttribute('src')}`
+        : img.getAttribute('src');
     }
     img.setAttribute('src', `{{{${propName}}}}`);
 

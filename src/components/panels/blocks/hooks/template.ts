@@ -24,7 +24,7 @@ const processTemplate = async (
   templateId: string
 ): Promise<ConcreteBlockClass[]> => {
   const templateContent = await fetchTemplate(templateId);
-  return parseTemplate(templateContent);
+  return parseTemplate(templateContent, templateId);
 };
 
 // Hook for fetching and processing a single template
