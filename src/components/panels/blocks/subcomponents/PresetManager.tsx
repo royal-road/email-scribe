@@ -1,9 +1,21 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Button } from '../../../ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '../../../ui/popover';
-import { Preset, usePresetManager } from '../hooks/presets';
+import { usePresetManager } from '../hooks/presets';
 import { BlockState } from '..';
 import { jsonToBlocks } from './utils/blockInstancer';
+import InputPopover from '../../../ui/InputPopover';
+import { ScrollArea } from '../../../ui/scrollArea';
+import { ConfirmButton } from '../../../ui/ConfirmButton';
+import {
+  CloudDownload,
+  CloudUpload,
+  Download,
+  Trash,
+  Trash2,
+  Upload,
+} from 'lucide-react';
+import { handleExport, handleImport } from './utils/importExport';
 
 interface PresetManagerProps {
   getBlocks: () => string;
@@ -14,17 +26,16 @@ const PresetManager: React.FC<PresetManagerProps> = ({
   getBlocks,
   setBlocks,
 }) => {
-  const { presetsQuery, usePreset, savePreset } = usePresetManager();
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-  const [selectedPresetName, setSelectedPresetName] = useState<string | null>(
-    null
-  );
+  const { presetsQuery, usePreset, savePreset, deletePreset } =
+    usePresetManager();
+  const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+  const [selectedPresetName, setSelectedPresetName] = React.useState<
+    string | null
+  >(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Use the usePreset hook at the top level
   const selectedPreset = usePreset(selectedPresetName || '');
 
-  // Effect to apply the selected preset when it's loaded
   React.useEffect(() => {
     if (selectedPreset.data && selectedPreset.data.data) {
       const blocks = jsonToBlocks(selectedPreset.data.data);
@@ -32,44 +43,9 @@ const PresetManager: React.FC<PresetManagerProps> = ({
     }
   }, [selectedPreset.data, setBlocks]);
 
-  const handleExport = () => {
+  const handleSavePreset = (presetName: string) => {
     const jsonString = getBlocks();
-    const presetName = prompt('Enter a name for the preset:');
-    if (presetName) {
-      const preset = { presetName, data: jsonString } as Preset;
-      const blob = new Blob([JSON.stringify(preset)], {
-        type: 'application/json',
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${presetName}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-  };
-
-  const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const content = e.target?.result as string;
-        const blocks = jsonToBlocks(content);
-        if (blocks) setBlocks(blocks);
-      };
-      reader.readAsText(file);
-    }
-  };
-
-  const handleSavePreset = () => {
-    const presetName = prompt('Enter a name for the preset:');
-    if (presetName) {
-      const jsonString = getBlocks();
-      savePreset.mutate({ presetName, data: jsonString });
-    }
+    savePreset.mutate({ presetName, data: jsonString });
   };
 
   const handlePresetSelect = (presetName: string) => {
@@ -77,45 +53,151 @@ const PresetManager: React.FC<PresetManagerProps> = ({
     setIsPopoverOpen(false);
   };
 
+  const handleDeletePreset = (presetName: string) => {
+    deletePreset.mutate(presetName);
+  };
+
   return (
-    <div className='PresetManager'>
-      <Button onClick={handleExport}>Export</Button>
-      <Button onClick={() => fileInputRef.current?.click()}>Import</Button>
-      <input
-        type='file'
-        ref={fileInputRef}
-        style={{ display: 'none' }}
-        accept='.json'
-        onChange={handleImport}
-      />
-      <Button onClick={handleSavePreset}>Save Preset</Button>
-      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-        <PopoverTrigger asChild>
-          <Button>Presets</Button>
-        </PopoverTrigger>
-        <PopoverContent className='PopoverContent'>
-          {presetsQuery.isLoading ? (
-            <p>Loading presets...</p>
-          ) : presetsQuery.isError ? (
-            <p>Error loading presets</p>
-          ) : presetsQuery.data && presetsQuery.data.length > 0 ? (
-            <ul className='preset-list'>
-              {presetsQuery.data.map((presetName) => (
-                <li key={presetName}>
-                  <Button
-                    variant='ghost'
-                    onClick={() => handlePresetSelect(presetName)}
-                  >
-                    {presetName}
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No presets available</p>
-          )}
-        </PopoverContent>
-      </Popover>
+    <div
+      className='PresetManager'
+      style={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        gap: '0.5rem',
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius)',
+        alignItems: 'center',
+        padding: '0.5rem',
+        marginBottom: '0.5rem',
+      }}
+    >
+      <h3 style={{ margin: 0, flex: 1, paddingTop: 0 }}>Presets</h3>
+      <div
+        className='PresetManager'
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          gap: '0.2rem',
+          alignItems: 'center',
+        }}
+      >
+        <InputPopover
+          triggerText='Export'
+          icon={<Upload />}
+          placeholder='Enter preset name'
+          onSubmit={(presetName) => handleExport(presetName, getBlocks())}
+        />
+        <Button
+          style={{ gap: '0.5rem', width: '100%' }}
+          title='Import'
+          onClick={() => fileInputRef.current?.click()}
+        >
+          <Download /> Import
+        </Button>
+        <input
+          type='file'
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          accept='.json'
+          onChange={(event) => handleImport(event, setBlocks)}
+        />
+        <InputPopover
+          icon={<CloudUpload />}
+          triggerText='Save'
+          placeholder='Enter preset name'
+          onSubmit={handleSavePreset}
+        />
+        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+          <PopoverTrigger asChild>
+            <Button style={{ gap: '0.5rem', width: '100%' }}>
+              <CloudDownload /> Load
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            showClose={false}
+            className='PopoverContent'
+            style={{
+              gap: '0.5rem',
+              overflow: 'auto',
+              padding: '0.5rem',
+              paddingLeft: 0,
+            }}
+          >
+            {presetsQuery.isLoading ? (
+              <p>Loading presets...</p>
+            ) : presetsQuery.isError ? (
+              <p>Error loading presets</p>
+            ) : presetsQuery.data && presetsQuery.data.length > 0 ? (
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <h3 style={{ margin: 0 }}>Select Preset</h3>
+                {/* <div className='text-danger'>This will clear current editor!</div> */}
+                <ScrollArea style={{ padding: '1rem', width: '100%' }}>
+                  {presetsQuery.data.map((presetName) => (
+                    <div
+                      key={presetName}
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        alignItems: 'start',
+                      }}
+                    >
+                      <ConfirmButton
+                        style={{
+                          flex: 1,
+                          width: '100%',
+                          font: '2cqw',
+                          marginBottom: '0.15rem',
+                          maxWidth: '10rem',
+                          overflow: 'hidden',
+                        }}
+                        initialText={presetName}
+                        confirmIcon={<></>}
+                        confirmVariant='primary'
+                        confirmText='Confirm reset editor'
+                        variant='outline'
+                        onConfirm={() => handlePresetSelect(presetName)}
+                      />
+                      <ConfirmButton
+                        style={{
+                          font: '2cqw',
+                          marginBottom: '0.5rem',
+                        }}
+                        initialText=''
+                        confirmText=''
+                        initialIcon={
+                          <Trash style={{ width: '1rem', height: '1rem' }} />
+                        }
+                        confirmIcon={
+                          <Trash2 style={{ width: '1rem', height: '1rem' }} />
+                        }
+                        confirmVariant='destructive'
+                        variant='outline'
+                        onConfirm={() => handleDeletePreset(presetName)}
+                      />
+                    </div>
+                  ))}
+                </ScrollArea>
+              </div>
+            ) : (
+              <p>No presets available</p>
+            )}
+          </PopoverContent>
+        </Popover>
+      </div>
     </div>
   );
 };
