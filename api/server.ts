@@ -2,8 +2,9 @@ import { corsHeaders } from './utils/cors';
 import { handleUpload } from './routes/upload';
 import { handleAuth } from './routes/auth';
 import { handleTemplate } from './routes/template';
+import { handlePresetSave, handlePresetList, handlePresetLoad } from './routes/presets';
 
-type Path = "/upload" | "/auth" | "/template";
+type Path = "/upload" | "/auth" | "/template" | "/preset" | "/presets";
 type Method = "GET" | "POST";
 type ApiEndpoint = `${Method} ${Path}`;
 
@@ -34,6 +35,15 @@ Bun.serve({
           break;
         case "GET /template":
           response = await handleTemplate();
+          break;
+        case "POST /preset":
+          response = await handlePresetSave(req);
+          break;
+        case "GET /presets":
+          response = await handlePresetList();
+          break;
+        case "GET /preset":
+          response = await handlePresetLoad(req);
           break;
         default:
           response = new Response(
