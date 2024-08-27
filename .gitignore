@@ -13,6 +13,7 @@ dist
 dist-ssr
 *.local
 public/uploads
+public/presets
 
 # Editor directories and files
 .vscode/*
