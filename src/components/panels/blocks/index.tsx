@@ -35,7 +35,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     return {
       instance,
       data: instance.formData,
-      cachedHtml: instance.generateHTML(),
+      cachedHtml: instance.generateHTML(instance.id),
     };
   });
 
@@ -62,7 +62,9 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       ...scaffoldSettings.data,
       blocks: finHtml,
     });
-    const finalHtml = scaffoldSettings.instance.generateHTML();
+    const finalHtml = scaffoldSettings.instance.generateHTML(
+      scaffoldSettings.instance.id
+    );
     // console.log("final html", finalHtml);
     onUpdateFinalHtml(finalHtml);
     return finalHtml;
@@ -86,7 +88,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           if (i === index) {
             const updatedData = { ...block.data, ...newData };
             block.instance.updateFormData(updatedData);
-            block.cachedHtml = block.instance.generateHTML(); // This ensures only the block that was updated is re-rendered
+            block.cachedHtml = block.instance.generateHTML(block.instance.id); // This ensures only the block that was updated is re-rendered
             return { ...block, data: updatedData };
           }
           return block;
@@ -103,7 +105,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       {
         instance: block,
         data: block.formData,
-        cachedHtml: block.generateHTML(),
+        cachedHtml: block.generateHTML(block.id),
       },
     ]);
     setOpenStates((prev) => ({ ...prev, [block.id]: false })); // Open the block when added

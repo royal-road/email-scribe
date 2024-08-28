@@ -85,8 +85,8 @@ function parseModule(node: Element, templateName: string): ConcreteBlockClass {
       return meta;
     }
 
-    generateHTML(): string {
-      return templatify(node.outerHTML, this.formData);
+    generateHTML(id?: string): string {
+      return templatify(node.outerHTML, this.formData, id);
     }
   } as ConcreteBlockClass;
 }

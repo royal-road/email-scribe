@@ -43,14 +43,12 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
       // Add event listener to the iframe so I can read the clicked element
       iframeRef.current.contentWindow?.addEventListener('click', (event) => {
         const clickedElement = event.target as HTMLElement;
-        if (clickedElement) {
-          console.log('Clicked element:', clickedElement);
-          iframeRef.current?.contentWindow?.postMessage(
-            {
-              type: 'elementClicked',
-              id: clickedElement.id,
-            },
-            '*'
+        if (clickedElement && clickedElement.hasAttribute('editorId')) {
+          console.log(
+            'Clicked element:',
+            clickedElement.getAttribute('editorId'),
+            ',',
+            clickedElement.closest('[data-module]')?.getAttribute('editorid')
           );
         }
       });

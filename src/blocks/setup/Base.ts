@@ -47,7 +47,7 @@ export abstract class BaseBlock implements BlockInterface {
     };
   }
 
-  abstract generateHTML(): string;
+  abstract generateHTML(id?: string): string;
 
   validateData(): boolean {
     const validator = customizeValidator();

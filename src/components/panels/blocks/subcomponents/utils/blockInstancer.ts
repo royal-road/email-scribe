@@ -51,8 +51,8 @@ const incompleteBlockToInstance = (block: BlockState): BlockInterface => {
       return block.instance.meta;
     }
 
-    generateHTML(): string {
-      return templatify(block.instance.defaultHtml, this.formData);
+    generateHTML(id?: string): string {
+      return templatify(block.instance.defaultHtml, this.formData, id);
     }
   } as ConcreteBlockClass;
   return new completeBlock();

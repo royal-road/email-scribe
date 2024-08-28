@@ -25,7 +25,7 @@ export const prepareHtmlForPreview = (
     // link.setAttribute('target', '_blank');
 
     // Removes the href attribute to prevent the link from navigating and making the preview unusable
-    link.setAttribute('href', '#');
+    link.removeAttribute('href');
   });
 
   // Determine zoom factor

@@ -26,6 +26,7 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 - [] Add an iframe-to-editor binding. (So that when a block is selected, it's properties are shown in the editor)
   - Add ids to actual elements based on propname
   - Add ids to Collapsibles, each form item already has id.
+  - Add ids to collapsible and module
 
 # Deprecated
 

@@ -43,7 +43,7 @@ export interface BlockInterface {
   meta: BlockMetadata;
   defaultHtml: string;
 
-  generateHTML(): string;
+  generateHTML(id?: string): string;
   validateData(): boolean;
   updateFormData(newData: Record<string, unknown>): void;
 }
