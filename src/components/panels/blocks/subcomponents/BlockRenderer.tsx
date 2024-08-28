@@ -24,6 +24,7 @@ interface BlockRendererProps {
   onDelete: () => void;
   isOpen: boolean;
   toggleOpen: (open: boolean) => void;
+  id: string;
 }
 
 export const BlockRenderer: React.FC<BlockRendererProps> = ({
@@ -37,6 +38,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
   onDelete,
   isOpen: open,
   toggleOpen,
+  id,
 }) => {
   const widgets: RegistryWidgetsType = {
     FileWidget: FileUploadWidget,
@@ -69,6 +71,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
         {/* This css class comes from Collapsible's own styles.scss*/}
         <div className='CollapsibleRepository'>
           <Form
+            idPrefix={id}
             schema={block.schema}
             uiSchema={block.uiSchema}
             formData={data}

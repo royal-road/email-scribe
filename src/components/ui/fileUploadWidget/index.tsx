@@ -46,8 +46,18 @@ export const FileUploadWidget: React.FC<WidgetProps> = (props) => {
         accept={(options.accept as string) || 'image/*'}
       />
       {props.value && (
-        <div>
-          <p>Uploaded file: {props.value}</p>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            margin: '1rem',
+            padding: '1rem',
+            borderRadius: 'var(--radius)',
+            border: '1px solid var(--border)',
+          }}
+        >
+          {/* <p>Uploaded file: {props.value}</p> */}
           <img
             src={props.value}
             alt='Uploaded file'

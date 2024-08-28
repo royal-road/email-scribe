@@ -47,10 +47,39 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   });
 
   useEffect(() => {
-    console.log('focus block', blockToFocus);
+    // console.log('focus block', blockToFocus);
     if (blockToFocus && Object.hasOwn(openStates, blockToFocus.collapsibleId)) {
       setAllCollapsibles(false);
       setCollapsibleState(blockToFocus.collapsibleId, true);
+      // Now focus on the field by scrolling to it
+      const fieldId = `${blockToFocus.collapsibleId}_${blockToFocus.fieldId}`;
+      const tryToScrollHere = (id: string) => {
+        const field = document.getElementById(id);
+        field?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        field?.focus();
+        return Boolean(field);
+      };
+
+      // Try to scroll to the field a few times
+      if (!tryToScrollHere(fieldId)) {
+        setTimeout(() => {
+          if (!tryToScrollHere(fieldId)) {
+            setTimeout(() => {
+              if (!tryToScrollHere(fieldId)) {
+                setTimeout(() => {
+                  if (!tryToScrollHere(fieldId)) {
+                    setTimeout(() => {
+                      if (!tryToScrollHere(fieldId)) {
+                        console.error('Could not scroll to field', fieldId);
+                      }
+                    }, 500);
+                  }
+                }, 400);
+              }
+            }, 300);
+          }
+        }, 200);
+      }
     }
   }, [blockToFocus]);
 
@@ -208,6 +237,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
               onUp={() => moveBlock(index, 'up')}
               onDown={() => moveBlock(index, 'down')}
               key={`block${block.instance.id}`}
+              id={block.instance.id}
               block={block.instance}
               data={block.data}
               isOpen={openStates[block.instance.id]}
