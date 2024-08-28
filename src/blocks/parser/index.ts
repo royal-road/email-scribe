@@ -102,7 +102,7 @@ function handleBGColor(node: Element, schemaBundle: SchemaBundle): void {
       el.getAttribute('data-bgcolor') || '',
       'color'
     );
-    el.setAttribute('editorId', propName);
+    el.setAttribute('editorid', propName);
     if (!schemaBundle.schema.properties[propName]) {
       schemaBundle.schema.properties[propName] = { type: 'string' };
       schemaBundle.uiSchema[propName] = {
@@ -126,7 +126,7 @@ function handleBG(
       el.getAttribute('data-bg') || '',
       'image'
     );
-    el.setAttribute('editorId', propName);
+    el.setAttribute('editorid', propName);
     if (!schemaBundle.schema.properties[propName]) {
       schemaBundle.schema.properties[propName] = { type: 'string' };
       schemaBundle.uiSchema[propName] = {
@@ -200,7 +200,7 @@ function handleStyleAttribute(
   const elements = node.querySelectorAll(`[${dataAttr}]`);
   elements.forEach((el) => {
     const propName = sanitizePropName(el.getAttribute(dataAttr) || '', suffix);
-    el.setAttribute('editorId', propName);
+    el.setAttribute('editorid', propName);
     if (!schemaBundle.schema.properties[propName]) {
       const defaultStyleVal = getDefaultStyleValue(el, styleAttr);
       if (!defaultStyleVal) {
@@ -249,7 +249,7 @@ function handleLinkAttribute(
   const elements = node.querySelectorAll(`[${dataAttr}]`);
   elements.forEach((el) => {
     const propName = sanitizePropName(el.getAttribute(dataAttr) || '', suffix);
-    el.setAttribute('editorId', propName);
+    el.setAttribute('editorid', propName);
     if (!schemaBundle.schema.properties[propName]) {
       const defaultStyleVal = getDefaultStyleValue(el, styleAttr);
       if (!defaultStyleVal || !el.querySelector('a')) {
@@ -323,7 +323,7 @@ function handleTextLine(
         `${counterType}_${counters[counterType as keyof typeof counters]}`,
       'text'
     );
-    el.setAttribute('editorId', propName);
+    el.setAttribute('editorid', propName);
 
     if (!schemaBundle.schema.properties[propName]) {
       schemaBundle.schema.properties[propName] = { type: 'string' };
@@ -366,7 +366,7 @@ function handleImages(
         },
         'ui:title': `Image ${counters.img}`,
       };
-      img.setAttribute('editorId', propName);
+      img.setAttribute('editorid', propName);
       schemaBundle.defaults[propName] = isRelativeUrl(
         img.getAttribute('src') || ''
       )
@@ -410,7 +410,7 @@ function handleAnchorTag(
         'ui:widget': 'uri',
         'ui:title': `${propNameToTitle(mcEdit || basePropName)} (Link)`,
       };
-      el.setAttribute('editorId', linkPropName);
+      // el.setAttribute('editorid', linkPropName);
       schemaBundle.defaults[linkPropName] =
         parentAnchor.getAttribute('href') || '';
     }
