@@ -8,7 +8,7 @@ export function sanitizeHtml(htmlString: string): string {
       if (
         attr.name.startsWith('data-') ||
         attr.name.startsWith('mc:') ||
-        ['editable', 'label'].includes(attr.name)
+        ['editable', 'label', 'editorid'].includes(attr.name)
       ) {
         element.removeAttribute(attr.name);
       }

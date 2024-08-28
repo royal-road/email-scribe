@@ -25,7 +25,7 @@ export default function HtmlManager({ getHtml }: { getHtml: () => string }) {
   };
 
   const handleDownload = () => {
-    handleExportHtml(getHtml());
+    handleExportHtml(sanitizeHtml(getHtml()));
   };
 
   const copyToClipboard = (jsonState: string) => {
