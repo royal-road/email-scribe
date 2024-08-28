@@ -7,6 +7,7 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 
 - Clone the repo
 - Run `bun i`
+- Extract your templates in `Templates` folder (the folder structure should be like `Templates/xyzTemplate/` and `index.html` should be inside it alongside any images it needs, they'll be relatively used)
 - First run `bun serve` to start mock api (tho it really handles image uploads and resizing)
 - Then in a new terminal, run `bun run dev`
 - `bun run build` + `bun run preview` doesn't play well with api right now bcoz of relative paths.
@@ -16,6 +17,13 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 - [x] Remove all Stampready data-attributes from the final HTML because they're not valid html attributes and might cause issues. (Same for singleline, multiline tags)
 - [] Header-BG-color stops working if a new Header-BG is provided.
 
+## Features in Mind
+
+- Search for blocks, better tagging, filter by tags
+- Add a way to edit global settings for selected blocks at once.
+- Templating for iterated items for server-side rendering.
+- Better layout for Collpablisble's closed state. (not very responsive rn)
+
 ### Next set of features 26th Aug
 
 - [x] Create a save/load system, ~~possibly even generate preview thumbnails~~
@@ -23,7 +31,7 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 ### Next set of features 27th Aug
 
 - [] Add a way to edit global settings for selected blocks at once.
-- [] Add an iframe-to-editor binding. (So that when a block is selected, it's properties are shown in the editor)
+- [x] Add an iframe-to-editor binding. (So that when a block is selected, it's properties are shown in the editor)
   - Add ids to actual elements based on propname
   - Add ids to Collapsibles, each form item already has id.
   - Add ids to collapsible and module

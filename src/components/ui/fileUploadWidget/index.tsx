@@ -56,6 +56,12 @@ export const FileUploadWidget: React.FC<WidgetProps> = (props) => {
             borderRadius: 'var(--radius)',
             border: '1px solid var(--border)',
           }}
+          onClick={() => {
+            const input = document.getElementById(id);
+            if (input) {
+              input.click();
+            }
+          }}
         >
           {/* <p>Uploaded file: {props.value}</p> */}
           <img

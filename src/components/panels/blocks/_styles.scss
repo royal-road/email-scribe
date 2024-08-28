@@ -263,6 +263,10 @@
       border-color: 1px solid var(--primary);
       // background: var(--primary);
     }
+    + div:hover {
+      cursor: pointer;
+      background: var(--accent);
+    }
   }
 }
 
