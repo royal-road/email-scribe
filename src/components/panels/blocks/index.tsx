@@ -49,7 +49,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   useEffect(() => {
     // console.log('focus block', blockToFocus);
     if (blockToFocus && Object.hasOwn(openStates, blockToFocus.collapsibleId)) {
-      setAllCollapsibles(false);
+      // setAllCollapsibles(false);
       setCollapsibleState(blockToFocus.collapsibleId, true);
       // Now focus on the field by scrolling to it
       const fieldId = `${blockToFocus.collapsibleId}_${blockToFocus.fieldId}`;
