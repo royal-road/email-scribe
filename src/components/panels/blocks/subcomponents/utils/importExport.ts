@@ -19,7 +19,8 @@ export const handleExport = (presetName: string, jsonString: string) => {
 
 export const handleImport = (
   event: React.ChangeEvent<HTMLInputElement>,
-  setBlocks: (blocks: BlockState[]) => void
+  setBlocks: (blocks: BlockState[]) => void,
+  setOpenStates: (openStates: Record<string, boolean>) => void
 ) => {
   const file = event.target.files?.[0];
   if (file) {
@@ -27,7 +28,18 @@ export const handleImport = (
     reader.onload = (e) => {
       const content = e.target?.result as string;
       const blocks = jsonToBlocks(content);
-      if (blocks) setBlocks(blocks);
+      if (blocks) {
+        blocks.forEach((block) => {
+          block.cachedHtml = block.instance.generateHTML(block.instance.id);
+        });
+        setBlocks(blocks);
+        const ids = blocks.map((block) => block.instance.id);
+        const openStates: Record<string, boolean> = {};
+        ids?.forEach((id) => {
+          openStates[id] = false;
+        });
+        setOpenStates(openStates);
+      }
     };
     reader.readAsText(file);
   }

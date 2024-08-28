@@ -21,11 +21,13 @@ import { handleExport, handleImport } from './utils/importExport';
 interface PresetManagerProps {
   getBlocks: () => string;
   setBlocks: (blocks: BlockState[]) => void;
+  setOpenStates: (openStates: Record<string, boolean>) => void;
 }
 
 const PresetManager: React.FC<PresetManagerProps> = ({
   getBlocks,
   setBlocks,
+  setOpenStates,
 }) => {
   const { presetsQuery, usePreset, savePreset, deletePreset } =
     usePresetManager();
@@ -40,9 +42,20 @@ const PresetManager: React.FC<PresetManagerProps> = ({
   React.useEffect(() => {
     if (selectedPreset.data && selectedPreset.data.data) {
       const blocks = jsonToBlocks(selectedPreset.data.data);
-      if (blocks) setBlocks(blocks);
+      if (blocks) {
+        blocks.forEach((block) => {
+          block.cachedHtml = block.instance.generateHTML(block.instance.id);
+        });
+        setBlocks(blocks);
+        const ids = blocks.map((block) => block.instance.id);
+        const openStates: Record<string, boolean> = {};
+        ids?.forEach((id) => {
+          openStates[id] = false;
+        });
+        setOpenStates(openStates);
+      }
     }
-  }, [selectedPreset.data, setBlocks]);
+  }, [selectedPreset.data, setBlocks, setOpenStates]);
 
   const handleSavePreset = (presetName: string) => {
     const jsonString = getBlocks();
@@ -80,7 +93,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
           ref={fileInputRef}
           style={{ display: 'none' }}
           accept='.json'
-          onChange={(event) => handleImport(event, setBlocks)}
+          onChange={(event) => handleImport(event, setBlocks, setOpenStates)}
         />
         <InputPopover
           icon={<CloudUpload />}
