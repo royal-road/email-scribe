@@ -18,6 +18,24 @@
     }
   }
 }
+
+@mixin badgeTags {
+  .tags {
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    span {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--muted-foreground);
+      background-color: var(--secondary);
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius);
+    }
+  }
+}
 .BlocksPanel {
   display: flex;
   flex-direction: column;
@@ -143,16 +161,18 @@
 .BlockMeta {
   background-color: var(--card);
   color: var(--card-foreground);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0px 5px var(--shadow);
   display: flex;
   flex-direction: column;
   max-width: 200px;
+  height: auto;
 
   .thumbnail {
     width: 200px;
-    height: 150px;
+    height: auto;
     object-fit: contain;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
@@ -173,21 +193,7 @@
     max-height: 100px;
   }
 
-  .tags {
-    padding: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-
-    span {
-      font-size: 0.8rem;
-      font-weight: 300;
-      color: var(--muted-foreground);
-      background-color: var(--secondary);
-      padding: 0.2rem 0.5rem;
-      border-radius: var(--radius);
-    }
-  }
+  @include badgeTags;
 }
 
 .text-danger {

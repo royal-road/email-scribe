@@ -1,19 +1,19 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700&family=Montserrat:wght@100;200;300;400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700&family=Montserrat:wght@100;200;300;400;500;700&display=swap');
 
-$font-family-body: "Roboto", "Helvetica Neue", Arial, sans-serif;
-$font-family-heading: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+$font-family-body: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+$font-family-heading: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
 $max-line-length: 70ch;
 
 $breakpoints: (
-  "sm": 640px,
-  "md": 768px,
-  "lg": 1024px,
-  "xl": 1280px,
-  "2xl": 1536px,
+  'sm': 640px,
+  'md': 768px,
+  'lg': 1024px,
+  'xl': 1280px,
+  '2xl': 1536px,
 );
 
-@mixin theme-colors($theme: "light") {
-  @if $theme == "light" {
+@mixin theme-colors($theme: 'light') {
+  @if $theme == 'light' {
     --background: hsl(0, 0%, 100%);
     --foreground: hsl(0, 0%, 3.9%);
     --card: hsl(0, 0%, 97%);
@@ -33,6 +33,7 @@ $breakpoints: (
     --border: hsl(204, 0%, 89.8%);
     --input: hsl(204, 0%, 89.8%);
     --ring: hsl(204, 70%, 54%);
+    --shadow: hsla(0, 0%, 0%, 0.2);
   } @else {
     --background: hsl(0, 0%, 3.9%);
     --foreground: hsl(0, 0%, 98%);
@@ -53,6 +54,7 @@ $breakpoints: (
     --border: hsl(204, 0%, 14.9%);
     --input: hsl(204, 0%, 14.9%);
     --ring: hsl(204, 70%, 54%);
+    --shadow: hsla(0, 0%, 100%, 0.3);
   }
   --radius: 0.5rem;
 }
@@ -112,24 +114,25 @@ $breakpoints: (
 
 .newsletterDesigner {
   // Light theme by default
-  @include theme-colors("light");
+  @include theme-colors('light');
 
   // Dark theme
-  &[data-theme="dark"] {
-    @include theme-colors("dark");
+  &[data-theme='dark'] {
+    @include theme-colors('dark');
   }
 
   // Color classes
   @include generate-color-classes(background);
   @include generate-color-classes(text);
 
-  @import "/src/components/panels/blocks/styles";
-  @import "/src/components/panels/preview/styles";
-  @import "/src/components/ui/button/styles";
-  @import "/src/components/ui/collapsible/styles";
-  @import "/src/components/ui/popover/styles";
-  @import "/src/components/ui/scrollArea/styles";
-  @import "/src/components/ui/RRLogo/styles";
+  @import '/src/components/panels/blocks/styles';
+  @import '/src/components/panels/preview/styles';
+  @import '/src/components/ui/button/styles';
+  @import '/src/components/ui/collapsible/styles';
+  @import '/src/components/ui/popover/styles';
+  @import '/src/components/ui/scrollArea/styles';
+  @import '/src/components/ui/RRLogo/styles';
+  @import '/src/components/ui/BlockFilter/styles';
 
   *,
   *::before,
@@ -153,7 +156,7 @@ $breakpoints: (
     display: flex;
     width: 100%;
     flex-direction: column;
-    @include breakpoint("md") {
+    @include breakpoint('md') {
       flex-direction: row;
     }
   }
@@ -212,7 +215,7 @@ $breakpoints: (
   }
 
   // Media query
-  @include breakpoint("md") {
+  @include breakpoint('md') {
     @include responsive-font-sizes;
   }
 }

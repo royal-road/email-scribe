@@ -58,3 +58,13 @@ export function isRelativeUrl(url: string): boolean {
     return true;
   }
 }
+
+export function moduleTagFinder(moduleName: string): string[] {
+  // Remove all number
+  const md = moduleName.replace(/[0-9]/g, '');
+  // Split by - or _ or space
+  let tags = md.split(/[-_ ]/);
+  // Remove empty string
+  tags = tags.filter((tag) => tag !== '');
+  return tags || [];
+}

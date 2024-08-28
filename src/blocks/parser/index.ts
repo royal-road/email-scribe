@@ -6,6 +6,7 @@ import { templatify } from '../utils/templater';
 import {
   getDefaultStyleValue,
   isRelativeUrl,
+  moduleTagFinder,
   parseInlineStyle,
   propNameToTitle,
   setInlineStyle,
@@ -67,7 +68,7 @@ function parseModule(node: Element, templateName: string): ConcreteBlockClass {
     label: propNameToTitle(moduleName || 'Dynamic Block'),
     id: `${moduleName}${uuidv4()}` || uuidv4(),
     description: '',
-    tags: [...(moduleName?.split('-') || [])],
+    tags: [propNameToTitle(templateName), ...moduleTagFinder(moduleName || '')],
     group: moduleName || 'Dynamic Blocks',
     thumbnailUrl: `${templateUrlPrefix}thumbnails/${node.getAttribute('data-thumb')}`,
   };

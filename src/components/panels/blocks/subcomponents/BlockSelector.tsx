@@ -8,6 +8,7 @@ import { useMediaQuery } from '../../../../hooks/useMediaQuery';
 import { BlockInterface } from '../../../../blocks/setup/Types';
 import { useTemplateManager } from '../hooks/template';
 import { propNameToTitle } from '../../../../blocks/parser/utils';
+import { BlockFilter } from '../../../ui/BlockFilter';
 
 interface BlockSelectorProps {
   addBlock: (type: BlockInterface) => void;
@@ -16,6 +17,8 @@ interface BlockSelectorProps {
 export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [searchInput, setSearchInput] = useState('');
+  const [activeTags, setActiveTags] = useState<string[]>([]);
 
   const { multipleTemplateQuery } = useTemplateManager(
     import.meta.env.VITE_TEMPLATE_ID.split(',')
@@ -50,7 +53,7 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
         side={isMobile ? 'bottom' : 'right'}
         style={{
           width: `${isMobile ? '85vw' : '50vw'}`,
-          height: '50vh',
+          height: `${isMobile ? '85vh' : '50vh'}`,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -88,71 +91,128 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
           </div>
         )}
         {multipleTemplateQuery.isSuccess && (
-          <ScrollArea
-            style={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            {multipleTemplateQuery.data.map((module, moduleIndex) => {
-              return (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '100%',
-                    gap: '1rem',
-                  }}
-                  key={`module${moduleIndex}`}
-                >
-                  <h4 className='text-primary' style={{ margin: '2rem' }}>
-                    {propNameToTitle(
-                      import.meta.env.VITE_TEMPLATE_ID.split(',')[moduleIndex]
-                    )}
-                  </h4>
+          <>
+            <BlockFilter
+              tags={[
+                ...new Set(
+                  multipleTemplateQuery.data
+                    .map((template) =>
+                      template.map((module) => module.getMeta().tags).flat()
+                    )
+                    .flat()
+                ),
+              ]}
+              searchValue={searchInput}
+              activeTags={activeTags}
+              setActiveTags={setActiveTags}
+              setSearchValue={setSearchInput}
+              currentTemplates={(
+                import.meta.env.VITE_TEMPLATE_ID.split(',') as string[]
+              ).map((template) => propNameToTitle(template))}
+            />
+
+            <ScrollArea
+              style={{
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              {multipleTemplateQuery.data.map((template, templateIndex) => {
+                return (
                   <div
                     style={{
                       display: 'flex',
-                      flexDirection: 'row',
-                      flexWrap: 'wrap',
+                      flexDirection: 'column',
                       width: '100%',
-                      justifyContent: 'space-around',
+                      justifyContent: 'center',
                       alignItems: 'center',
                       height: '100%',
                       gap: '1rem',
                     }}
+                    key={`template${templateIndex}`}
                   >
-                    {module.map((BlockClass, index) => {
-                      const meta = BlockClass.getMeta();
-                      return (
-                        <div
-                          key={`blockMeta${moduleIndex}${index}`}
-                          onClick={() => addBlock(new BlockClass())}
-                          id={`blockMeta${moduleIndex}${index}`}
-                          style={{
-                            width: 'fit-content',
-                            transform:
-                              activeIndex === index ? 'scale(0.98)' : 'none',
-                            transition: 'transform 0.2s',
-                          }}
-                          className='BlockMetaClickable'
-                          onTouchStart={() => handleTouchStart(index)}
-                          onTouchEnd={handleTouchEnd}
-                        >
-                          <BlockMeta {...meta} />
-                        </div>
-                      );
-                    })}
+                    <h4
+                      className=''
+                      style={{
+                        margin: '0.5rem',
+                        fontSize: '1.6rem',
+                        // fontWeight: 'bold',
+                      }}
+                    >
+                      {propNameToTitle(
+                        import.meta.env.VITE_TEMPLATE_ID.split(',')[
+                          templateIndex
+                        ]
+                      )}
+                    </h4>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        width: '100%',
+                        justifyContent: 'space-around',
+                        alignItems: 'center',
+                        height: '100%',
+                        gap: '1rem',
+                      }}
+                    >
+                      {(() => {
+                        const filteredModules = template.filter(
+                          (module) =>
+                            (activeTags.length === 0 ||
+                              module
+                                .getMeta()
+                                .tags.some((tag) =>
+                                  activeTags.includes(tag)
+                                )) &&
+                            (searchInput === '' ||
+                              module
+                                .getMeta()
+                                .label.toLowerCase()
+                                .includes(searchInput.toLowerCase()))
+                        );
+
+                        if (filteredModules.length === 0) {
+                          return (
+                            <div className='no-results-message'>
+                              No modules match the selected tags.
+                            </div>
+                          );
+                        }
+
+                        return filteredModules.map((moduleClass, index) => {
+                          const meta = moduleClass.getMeta();
+                          return (
+                            <div
+                              key={`blockMeta${templateIndex}${index}`}
+                              onClick={() => addBlock(new moduleClass())}
+                              id={`blockMeta${templateIndex}${index}`}
+                              style={{
+                                width: 'fit-content',
+                                transform:
+                                  activeIndex === index
+                                    ? 'scale(0.98)'
+                                    : 'none',
+                                transition: 'transform 0.2s',
+                              }}
+                              className='BlockMetaClickable'
+                              onTouchStart={() => handleTouchStart(index)}
+                              onTouchEnd={handleTouchEnd}
+                            >
+                              <BlockMeta {...meta} />
+                            </div>
+                          );
+                        });
+                      })()}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </ScrollArea>
+                );
+              })}
+            </ScrollArea>
+          </>
         )}
       </PopoverContent>
     </Popover>
