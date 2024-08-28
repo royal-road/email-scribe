@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Breakpoints } from './BreakpointToggleGroup';
 import { useMediaQuery } from '../../../../hooks/useMediaQuery';
 import { prepareHtmlForPreview } from './utils/prepareForPreview';
+import { CollapsibleFocusProps } from '../../blocks';
 
 interface PreviewPanelBodyProps {
   htmlToPreview: string;
   breakpoint: Breakpoints['breakpoint'];
+  setBlockToFocus: (blockToFocus: CollapsibleFocusProps | null) => void;
 }
 
 const breakpointSettings = {
@@ -17,6 +19,7 @@ const breakpointSettings = {
 export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
   htmlToPreview,
   breakpoint,
+  setBlockToFocus,
 }) => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -44,12 +47,19 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
       iframeRef.current.contentWindow?.addEventListener('click', (event) => {
         const clickedElement = event.target as HTMLElement;
         if (clickedElement && clickedElement.hasAttribute('editorId')) {
-          console.log(
-            'Clicked element:',
-            clickedElement.getAttribute('editorId'),
-            ',',
-            clickedElement.closest('[data-module]')?.getAttribute('editorid')
-          );
+          // console.log(
+          //   'Clicked element:',
+          //   clickedElement.getAttribute('editorId'),
+          //   ',',
+          //   clickedElement.closest('[data-module]')?.getAttribute('editorid')
+          // );
+          setBlockToFocus({
+            collapsibleId:
+              clickedElement
+                .closest('[data-module]')
+                ?.getAttribute('editorid') || '',
+            fieldId: clickedElement.getAttribute('editorId') || '',
+          });
         }
       });
     }

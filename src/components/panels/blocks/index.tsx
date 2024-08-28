@@ -17,16 +17,23 @@ export interface BlockState {
   cachedHtml: string;
 }
 
-interface BlockPanelProps {
-  onUpdateFinalHtml: (html: string) => void;
+export interface CollapsibleFocusProps {
+  collapsibleId: string;
+  fieldId: string;
 }
 
-interface openStates {
+interface BlockPanelProps {
+  onUpdateFinalHtml: (html: string) => void;
+  blockToFocus: CollapsibleFocusProps | null;
+}
+
+export interface openStates {
   [key: string]: boolean;
 }
 
 export const BlocksPanel: React.FC<BlockPanelProps> = ({
   onUpdateFinalHtml,
+  blockToFocus,
 }) => {
   const [blocks, setBlocks] = useState<BlockState[]>([]);
   const [openStates, setOpenStates] = useState<openStates>({});
@@ -39,18 +46,32 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     };
   });
 
-  const toggleBlockOpen = useCallback((blockId: string) => {
-    setOpenStates((prev) => ({ ...prev, [blockId]: !prev[blockId] }));
-  }, []);
+  useEffect(() => {
+    console.log('focus block', blockToFocus);
+    if (blockToFocus && Object.hasOwn(openStates, blockToFocus.collapsibleId)) {
+      setAllCollapsibles(false);
+      setCollapsibleState(blockToFocus.collapsibleId, true);
+    }
+  }, [blockToFocus]);
 
-  const setAllBlocksOpen = useCallback(
-    (isOpen: boolean) => {
-      setOpenStates(
-        Object.fromEntries(blocks.map((block) => [block.instance.id, isOpen]))
-      );
-    },
-    [blocks]
-  );
+  const toggleCollapsibleOpen = (collapsibleId: string) => {
+    setOpenStates((prev) => ({
+      ...prev,
+      [collapsibleId]: !prev[collapsibleId],
+    }));
+  };
+
+  const setCollapsibleState = (collapsibleId: string, open: boolean) => {
+    setOpenStates((prev) => ({ ...prev, [collapsibleId]: open }));
+  };
+
+  const setAllCollapsibles = (open: boolean) => {
+    const newStates = { ...openStates };
+    Object.keys(newStates).forEach((key) => {
+      newStates[key] = open;
+    });
+    setOpenStates(newStates);
+  };
 
   const animateParent = useRef(null);
 
@@ -190,7 +211,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
               block={block.instance}
               data={block.data}
               isOpen={openStates[block.instance.id]}
-              toggleOpen={() => toggleBlockOpen(block.instance.id)}
+              toggleOpen={() => toggleCollapsibleOpen(block.instance.id)}
               onChange={(newData) => updateBlockData(index, newData)}
             />
           ))}
@@ -199,6 +220,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       <PresetManager
         getBlocks={() => JSON.stringify(blocks)}
         setBlocks={setBlocks}
+        setOpenStates={setOpenStates}
       />
       <HtmlManager
         getHtml={() => (blocks.length > 0 ? updateRenderedHtml() : '')}

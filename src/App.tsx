@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BlocksPanel } from './components/panels/blocks';
+import { BlocksPanel, CollapsibleFocusProps } from './components/panels/blocks';
 import PreviewPanel from './components/panels/preview';
 import { useTheme } from './hooks/useTheme';
 import './styles/styles.scss';
@@ -11,6 +11,8 @@ const queryClient = new QueryClient();
 function App() {
   const theme = useTheme();
   const [html, setHtml] = useState('');
+  const [blockToFocus, setBlockToFocus] =
+    useState<CollapsibleFocusProps | null>(null);
   return (
     <QueryClientProvider client={queryClient}>
       <div
@@ -19,8 +21,14 @@ function App() {
         className='newsletterDesigner bg-background text-foreground'
       >
         <div className='container'>
-          <BlocksPanel onUpdateFinalHtml={setHtml} />
-          <PreviewPanel htmlToPreview={html} />
+          <BlocksPanel
+            onUpdateFinalHtml={setHtml}
+            blockToFocus={blockToFocus}
+          />
+          <PreviewPanel
+            htmlToPreview={html}
+            setBlockToFocus={setBlockToFocus}
+          />
         </div>
       </div>
       {/* <ReactQueryDevtools initialIsOpen={false} /> */}
