@@ -47,16 +47,17 @@ function parseModule(node: Element, templateName: string): ConcreteBlockClass {
     img: 0,
   };
   try {
-    handleBGColor(node, schemaBundle);
-    handleBG(node, schemaBundle, templateUrlPrefix);
+    // This Order is IMPORTANT
+    handleLinkSize(node, schemaBundle);
+    handleBorderColor(node, schemaBundle);
     handleSize(node, schemaBundle);
     handleColor(node, schemaBundle);
-    handleBorderColor(node, schemaBundle);
-    handleLinkSize(node, schemaBundle);
     handleLinkColor(node, schemaBundle);
     handleSingleLine(node, schemaBundle, counters);
     handleMultiLine(node, schemaBundle, counters);
     handleImages(node, schemaBundle, counters, templateUrlPrefix);
+    handleBGColor(node, schemaBundle);
+    handleBG(node, schemaBundle, templateUrlPrefix);
   } catch (error) {
     console.error(error);
   }
@@ -200,7 +201,9 @@ function handleStyleAttribute(
   const elements = node.querySelectorAll(`[${dataAttr}]`);
   elements.forEach((el) => {
     const propName = sanitizePropName(el.getAttribute(dataAttr) || '', suffix);
-    el.setAttribute('editorid', propName);
+    if (dataAttr !== 'data-border-color') {
+      el.setAttribute('editorid', propName);
+    }
     if (!schemaBundle.schema.properties[propName]) {
       const defaultStyleVal = getDefaultStyleValue(el, styleAttr);
       if (!defaultStyleVal) {
@@ -249,7 +252,6 @@ function handleLinkAttribute(
   const elements = node.querySelectorAll(`[${dataAttr}]`);
   elements.forEach((el) => {
     const propName = sanitizePropName(el.getAttribute(dataAttr) || '', suffix);
-    el.setAttribute('editorid', propName);
     if (!schemaBundle.schema.properties[propName]) {
       const defaultStyleVal = getDefaultStyleValue(el, styleAttr);
       if (!defaultStyleVal || !el.querySelector('a')) {
