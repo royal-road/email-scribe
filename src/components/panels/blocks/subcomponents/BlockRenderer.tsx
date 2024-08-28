@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { BlockInterface } from '../../../../blocks/setup/Types';
 import {
   Collapsible,
@@ -23,6 +22,8 @@ interface BlockRendererProps {
   onUp: () => void;
   onDown: () => void;
   onDelete: () => void;
+  isOpen: boolean;
+  toggleOpen: (open: boolean) => void;
 }
 
 export const BlockRenderer: React.FC<BlockRendererProps> = ({
@@ -34,13 +35,14 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
   onUp,
   onDown,
   onDelete,
+  isOpen: open,
+  toggleOpen,
 }) => {
-  const [open, setOpen] = useState(false);
   const widgets: RegistryWidgetsType = {
     FileWidget: FileUploadWidget,
   };
   return (
-    <Collapsible open={open} onOpenChange={setOpen}>
+    <Collapsible open={open} onOpenChange={toggleOpen}>
       <div
         className='collapsibleTrigger CollapsibleRepository'
         style={{ height: '3rem', paddingTop: '2rem', paddingBottom: '2rem' }}

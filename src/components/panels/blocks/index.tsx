@@ -21,10 +21,15 @@ interface BlockPanelProps {
   onUpdateFinalHtml: (html: string) => void;
 }
 
+interface openStates {
+  [key: string]: boolean;
+}
+
 export const BlocksPanel: React.FC<BlockPanelProps> = ({
   onUpdateFinalHtml,
 }) => {
   const [blocks, setBlocks] = useState<BlockState[]>([]);
+  const [openStates, setOpenStates] = useState<openStates>({});
   const [scaffoldSettings, setScaffoldSettings] = useState<BlockState>(() => {
     const instance = new ScaffoldingBlock() as BlockInterface;
     return {
@@ -33,6 +38,19 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       cachedHtml: instance.generateHTML(),
     };
   });
+
+  const toggleBlockOpen = useCallback((blockId: string) => {
+    setOpenStates((prev) => ({ ...prev, [blockId]: !prev[blockId] }));
+  }, []);
+
+  const setAllBlocksOpen = useCallback(
+    (isOpen: boolean) => {
+      setOpenStates(
+        Object.fromEntries(blocks.map((block) => [block.instance.id, isOpen]))
+      );
+    },
+    [blocks]
+  );
 
   const animateParent = useRef(null);
 
@@ -88,13 +106,18 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         cachedHtml: block.generateHTML(),
       },
     ]);
+    setOpenStates((prev) => ({ ...prev, [block.id]: false })); // Open the block when added
   };
 
   const removeBlock = (index: number) => {
     console.log('remove block', index);
     setBlocks((prev) => {
       const newBlocks = [...prev];
-      newBlocks.splice(index, 1);
+      const removedBlock = newBlocks.splice(index, 1);
+      setOpenStates((prevStates) => {
+        delete prevStates[removedBlock[0].instance.id];
+        return prevStates;
+      });
       return newBlocks;
     });
   };
@@ -164,6 +187,8 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
               key={`block${block.instance.id}`}
               block={block.instance}
               data={block.data}
+              isOpen={openStates[block.instance.id]}
+              toggleOpen={() => toggleBlockOpen(block.instance.id)}
               onChange={(newData) => updateBlockData(index, newData)}
             />
           ))}
