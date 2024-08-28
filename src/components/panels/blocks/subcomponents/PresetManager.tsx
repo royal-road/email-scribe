@@ -54,6 +54,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
         });
         setOpenStates(openStates);
       }
+      setSelectedPresetName(null);
     }
   }, [selectedPreset.data, setBlocks, setOpenStates]);
 
