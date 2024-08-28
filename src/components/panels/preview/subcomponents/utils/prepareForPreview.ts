@@ -56,6 +56,6 @@ export const prepareHtmlForPreview = (
       zoom: ${zoomFactor};
     }
   `;
-  injectHoverScript(htmlDoc);
+  injectHoverScript(htmlDoc, zoomFactor);
   return htmlDoc.documentElement.outerHTML;
 };
