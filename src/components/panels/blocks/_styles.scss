@@ -111,7 +111,7 @@
     border: 1px solid var(--border);
     margin-top: 1rem;
     margin-bottom: 1rem;
-    padding: 1.5rem;
+    padding: 0.75rem;
     width: 100%;
     height: 100%;
     overflow-y: auto;
@@ -201,10 +201,10 @@
   color: #ff0000;
   // Make the text bigger
   font-size: 1.1rem;
-  font-family: $font-family-heading;
-  font-weight: 200;
+  font-family: $font-family-heading !important;
+  font-weight: 400 !important;
   // Make it glow
-  text-shadow: 0 0 0.5rem #ff0000;
+  // text-shadow: 0 0 0.5rem #ff0000;
 }
 
 .text-primary {
@@ -214,6 +214,12 @@
   font-weight: 300;
   // Make it glow
   text-shadow: 0 0 0.5rem var(--primary);
+}
+
+.text-base {
+  font-size: 1.2rem;
+  font-family: $font-family-heading;
+  font-weight: 300;
 }
 
 .control-label {
