@@ -17,7 +17,7 @@ export const FileUploadWidget: React.FC<WidgetProps> = (props) => {
       }
 
       try {
-        const response = await fetch('http://localhost:8080/upload', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
           method: 'POST',
           body: formData,
         });
