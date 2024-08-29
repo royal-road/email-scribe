@@ -78,7 +78,7 @@
     width: 100%;
     text-align: center;
     cursor: pointer;
-    &.disabled {
+    &:disabled {
       color: var(--muted-foreground);
       cursor: not-allowed;
     }
