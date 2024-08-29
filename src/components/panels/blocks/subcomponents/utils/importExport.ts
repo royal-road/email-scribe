@@ -20,7 +20,9 @@ export const handleExport = (presetName: string, jsonString: string) => {
 export const handleImport = (
   event: React.ChangeEvent<HTMLInputElement>,
   setBlocks: (blocks: BlockState[]) => void,
-  setOpenStates: (openStates: Record<string, boolean>) => void
+  setOpenStates: (
+    openStates: Record<string, { isOpen: boolean; isSelected: boolean }>
+  ) => void
 ) => {
   const file = event.target.files?.[0];
   if (file) {
@@ -34,9 +36,12 @@ export const handleImport = (
         });
         setBlocks(blocks);
         const ids = blocks.map((block) => block.instance.id);
-        const openStates: Record<string, boolean> = {};
+        const openStates: Record<
+          string,
+          { isOpen: boolean; isSelected: boolean }
+        > = {};
         ids?.forEach((id) => {
-          openStates[id] = false;
+          openStates[id] = { isOpen: false, isSelected: false };
         });
         setOpenStates(openStates);
       }

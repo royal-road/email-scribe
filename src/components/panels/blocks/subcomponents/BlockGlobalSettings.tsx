@@ -28,7 +28,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
 }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [mutualSchema, setMutualSchemas] = useState<Partial<BlockConfig>>({});
-  const [isUnionMode, setIsUnionMode] = useState(false);
+  const [isUnionMode, setIsUnionMode] = useState(true);
   const widgets: RegistryWidgetsType = {
     FileWidget: FileUploadWidget,
   };

@@ -12,6 +12,8 @@ import ReorderDeleteGroup from './ReorderDeleteGroup';
 import { camelToTitleCase } from '../../../../../lib/utils';
 import { RegistryWidgetsType } from '@rjsf/utils';
 import { FileUploadWidget } from '../../../ui/fileUploadWidget';
+import useFitText from 'use-fit-text';
+import useLongPress from '../../../../hooks/useLongPress';
 
 interface BlockRendererProps {
   isTop: boolean;
@@ -25,6 +27,8 @@ interface BlockRendererProps {
   isOpen: boolean;
   toggleOpen: (open: boolean) => void;
   id: string;
+  isSelected: boolean;
+  toggleSelect: (id: string) => void;
 }
 
 export const BlockRenderer: React.FC<BlockRendererProps> = ({
@@ -39,15 +43,28 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
   isOpen: open,
   toggleOpen,
   id,
+  isSelected,
+  toggleSelect,
 }) => {
   const widgets: RegistryWidgetsType = {
     FileWidget: FileUploadWidget,
   };
+
+  const { fontSize, ref } = useFitText();
+  const blockLongPress = useLongPress(() => toggleSelect(block.id), 500);
+
   return (
     <Collapsible open={open} onOpenChange={toggleOpen}>
       <div
+        {...blockLongPress}
         className='collapsibleTrigger CollapsibleRepository'
-        style={{ height: '3rem', paddingTop: '2rem', paddingBottom: '2rem' }}
+        style={{
+          height: '3rem',
+          paddingTop: '2rem',
+          paddingBottom: '2rem',
+          backgroundColor: isSelected ? 'var(--accent)' : 'var(--background)',
+          border: isSelected ? '1px solid var(--foreground)' : 'none',
+        }}
       >
         <ReorderDeleteGroup
           isBottom={isBottom}
@@ -56,9 +73,21 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
           onUp={onUp}
           onDown={onDown}
         />
-        <span style={{ fontSize: '1.5em' }}>
+        {/* <span style={{ fontSize: '1.5em' }}> */}
+        <div
+          ref={ref}
+          style={{
+            fontSize,
+            // height: '3rem',
+            width: '20cqw',
+            textAlign: 'left',
+            // paddingTop: '0.25rem',
+            marginLeft: '0.5cqw',
+          }}
+        >
           {camelToTitleCase(block.meta.label)}
-        </span>
+        </div>
+        {/* </span> */}
 
         <CollapsibleTrigger asChild>
           <Button variant='outline'>

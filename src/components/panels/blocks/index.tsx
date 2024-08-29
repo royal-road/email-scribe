@@ -28,7 +28,7 @@ interface BlockPanelProps {
 }
 
 export interface openStates {
-  [key: string]: boolean;
+  [key: string]: { isOpen: boolean; isSelected: boolean };
 }
 
 export const BlocksPanel: React.FC<BlockPanelProps> = ({
@@ -86,21 +86,43 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   const toggleCollapsibleOpen = (collapsibleId: string) => {
     setOpenStates((prev) => ({
       ...prev,
-      [collapsibleId]: !prev[collapsibleId],
+      [collapsibleId]: {
+        ...prev[collapsibleId],
+        isOpen: !prev[collapsibleId].isOpen,
+      },
     }));
   };
 
   const setCollapsibleState = (collapsibleId: string, open: boolean) => {
-    setOpenStates((prev) => ({ ...prev, [collapsibleId]: open }));
+    setOpenStates((prev) => ({
+      ...prev,
+      [collapsibleId]: { ...prev[collapsibleId], isOpen: open },
+    }));
   };
 
-  const setAllCollapsibles = (open: boolean) => {
-    const newStates = { ...openStates };
-    Object.keys(newStates).forEach((key) => {
-      newStates[key] = open;
-    });
-    setOpenStates(newStates);
+  const setCollapsibleSelectedState = (
+    collapsibleId: string,
+    selected: boolean
+  ) => {
+    setOpenStates((prev) => ({
+      ...prev,
+      [collapsibleId]: { ...prev[collapsibleId], isSelected: selected },
+    }));
   };
+
+  // const setAllCollapsibles = (open: boolean) => {
+  //   const newStates = { ...openStates };
+  //   Object.keys(newStates).forEach((key) => {
+  //     newStates[key] = open;
+  //   });
+  //   setOpenStates(newStates);
+  // };
+  // const debouncedSetScaffoldSettings = useCallback(
+  //   debounce((newSettings) => {
+  //     setScaffoldSettings(newSettings);
+  //   }, blocks.length + 5),
+  //   []
+  // );
 
   const animateParent = useRef(null);
 
@@ -123,13 +145,6 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   useEffect(() => {
     updateRenderedHtml();
   }, [blocks, scaffoldSettings]);
-
-  const debouncedSetScaffoldSettings = useCallback(
-    debounce((newSettings) => {
-      setScaffoldSettings(newSettings);
-    }, blocks.length + 5),
-    []
-  );
 
   const updateBlockData = useCallback(
     debounce((index: number, newData: object) => {
@@ -158,7 +173,10 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         cachedHtml: block.generateHTML(block.id),
       },
     ]);
-    setOpenStates((prev) => ({ ...prev, [block.id]: false })); // Open the block when added
+    setOpenStates((prev) => ({
+      ...prev,
+      [block.id]: { ...prev[block.id], isOpen: false },
+    })); // Open the block when added
   };
 
   const removeBlock = (index: number) => {
@@ -210,7 +228,9 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         <BlockGlobalSettings
           blocks={blocks}
           setBlocks={setBlocks}
-          indexOfSelectedBlocks={[0, 1, 2]}
+          indexOfSelectedBlocks={Object.keys(openStates)
+            .filter((id) => openStates[id].isSelected)
+            .map((id) => blocks.findIndex((block) => block.instance.id === id))}
         />
       </div>
       <ScrollArea className='blocks'>
@@ -241,7 +261,11 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
               id={block.instance.id}
               block={block.instance}
               data={block.data}
-              isOpen={openStates[block.instance.id]}
+              isOpen={openStates[block.instance.id]?.isOpen}
+              isSelected={openStates[block.instance.id]?.isSelected}
+              toggleSelect={(id: string) => {
+                setCollapsibleSelectedState(id, !openStates[id].isSelected);
+              }}
               toggleOpen={() => toggleCollapsibleOpen(block.instance.id)}
               onChange={(newData) => updateBlockData(index, newData)}
             />

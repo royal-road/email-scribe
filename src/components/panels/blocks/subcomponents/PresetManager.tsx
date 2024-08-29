@@ -21,7 +21,9 @@ import { handleExport, handleImport } from './utils/importExport';
 interface PresetManagerProps {
   getBlocks: () => string;
   setBlocks: (blocks: BlockState[]) => void;
-  setOpenStates: (openStates: Record<string, boolean>) => void;
+  setOpenStates: (
+    openStates: Record<string, { isOpen: boolean; isSelected: boolean }>
+  ) => void;
 }
 
 const PresetManager: React.FC<PresetManagerProps> = ({
@@ -40,21 +42,28 @@ const PresetManager: React.FC<PresetManagerProps> = ({
   const selectedPreset = usePreset(selectedPresetName || '');
 
   React.useEffect(() => {
-    if (selectedPreset.data && selectedPreset.data.data) {
-      const blocks = jsonToBlocks(selectedPreset.data.data);
-      if (blocks) {
-        blocks.forEach((block) => {
-          block.cachedHtml = block.instance.generateHTML(block.instance.id);
-        });
-        setBlocks(blocks);
-        const ids = blocks.map((block) => block.instance.id);
-        const openStates: Record<string, boolean> = {};
-        ids?.forEach((id) => {
-          openStates[id] = false;
-        });
-        setOpenStates(openStates);
+    try {
+      if (selectedPreset.data && selectedPreset.data.data) {
+        const blocks = jsonToBlocks(selectedPreset.data.data);
+        if (blocks) {
+          blocks.forEach((block) => {
+            block.cachedHtml = block.instance.generateHTML(block.instance.id);
+          });
+          setBlocks(blocks);
+          const ids = blocks.map((block) => block.instance.id);
+          const openStates: Record<
+            string,
+            { isOpen: boolean; isSelected: boolean }
+          > = {};
+          ids?.forEach((id) => {
+            openStates[id] = { isOpen: false, isSelected: false };
+          });
+          setOpenStates(openStates);
+        }
+        setSelectedPresetName(null);
       }
-      setSelectedPresetName(null);
+    } catch (e) {
+      console.error(e);
     }
   }, [selectedPreset.data, setBlocks, setOpenStates]);
 
