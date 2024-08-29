@@ -28,3 +28,4 @@ Templates/*
 *.njsproj
 *.sln
 *.sw?
+src/components/panels/blocks/subcomponents/ScaffoldSettings.tsx
