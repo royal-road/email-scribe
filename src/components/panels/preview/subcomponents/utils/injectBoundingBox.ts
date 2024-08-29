@@ -17,8 +17,8 @@ export const injectHoverScript = (doc: Document, zoomFactor: number) => {
           let rect = currentTarget.getBoundingClientRect();
           hoverBox.style.left = (rect.left / zoomFactor) + 'px';
           hoverBox.style.top = (rect.top / zoomFactor) + 'px';
-          hoverBox.style.width = (rect.width / zoomFactor) + 'px';
-          hoverBox.style.height = (rect.height / zoomFactor) + 'px';
+          hoverBox.style.width = (rect.width / zoomFactor)-2 + 'px';
+          hoverBox.style.height = (rect.height / zoomFactor)-2 + 'px';
           hoverBox.style.display = 'block';
         }
       }
