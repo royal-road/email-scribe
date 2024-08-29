@@ -233,6 +233,59 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             .map((id) => blocks.findIndex((block) => block.instance.id === id))}
         />
       </div>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          gap: '1rem',
+          width: '100%',
+          borderRadius: 'var(--radius)',
+          border: '1px solid var(--border)',
+          padding: '0.5rem',
+        }}
+      >
+        <span
+          className='link-text'
+          onClick={() => {
+            Object.keys(openStates).forEach((id) => {
+              setCollapsibleSelectedState(id, true);
+            });
+          }}
+        >
+          - Select all -
+        </span>
+        <span
+          className='link-text'
+          onClick={() => {
+            Object.keys(openStates).forEach((id) => {
+              setCollapsibleSelectedState(id, false);
+            });
+          }}
+        >
+          - Unselect all -
+        </span>
+        <span
+          className='link-text'
+          onClick={() => {
+            Object.keys(openStates).forEach((id) => {
+              setCollapsibleState(id, true);
+            });
+          }}
+        >
+          - Expand all -
+        </span>
+        <span
+          className='link-text'
+          onClick={() => {
+            Object.keys(openStates).forEach((id) => {
+              setCollapsibleState(id, false);
+            });
+          }}
+        >
+          - Collpase all -
+        </span>
+      </div>
       <ScrollArea className='blocks'>
         {blocks.length === 0 && (
           <div
