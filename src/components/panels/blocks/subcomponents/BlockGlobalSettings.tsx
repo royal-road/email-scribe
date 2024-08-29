@@ -1,66 +1,203 @@
-import { Button } from "../../../ui/button";
-import { Settings2 } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "../../../ui/popover";
+import { Button } from '../../../ui/button';
+import { Settings2 } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '../../../ui/popover';
 // import Form from "@rjsf/core";
 // import validator from "@rjsf/validator-ajv8";
-import React from "react";
-import { useMediaQuery } from "../../../../hooks/useMediaQuery";
-import { BlockState } from "..";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useMediaQuery } from '../../../../hooks/useMediaQuery';
+import { BlockState } from '..';
+import debounce from 'debounce';
+import { RegistryWidgetsType, RJSFSchema, UiSchema } from '@rjsf/utils';
+import validator from '@rjsf/validator-ajv8';
+import { BlockConfig } from '../../../../blocks/setup/Base';
+import Form from '@rjsf/core';
+import { ScrollArea } from '../../../ui/scrollArea';
+import { FileUploadWidget } from '../../../ui/fileUploadWidget';
+import { Switch } from '../../../ui/switch';
 
 interface BlockGlobalSettingsProps {
-  scaffoldSettings: BlockState;
-  setScalfoldSettings?: React.Dispatch<React.SetStateAction<BlockState>>;
+  blocks: BlockState[];
+  setBlocks: React.Dispatch<React.SetStateAction<BlockState[]>>;
+  indexOfSelectedBlocks: number[];
 }
 
 export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
-  scaffoldSettings,
-  setScalfoldSettings,
+  blocks,
+  setBlocks,
+  indexOfSelectedBlocks,
 }) => {
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMobile = useMediaQuery('(max-width: 768px)');
+  const [mutualSchema, setMutualSchemas] = useState<Partial<BlockConfig>>({});
+  const [isUnionMode, setIsUnionMode] = useState(false);
+  const widgets: RegistryWidgetsType = {
+    FileWidget: FileUploadWidget,
+  };
+
+  const updateGlobalBlockData = useCallback(
+    (updates: Array<{ index: number; newData: object }>) => {
+      setBlocks((prevBlocks) =>
+        prevBlocks.map((block, i) => {
+          const update = updates.find((u) => u.index === i);
+          if (update) {
+            const updatedData = { ...block.data, ...update.newData };
+            block.instance.updateFormData(updatedData);
+            block.cachedHtml = block.instance.generateHTML(block.instance.id);
+            return { ...block, data: updatedData };
+          }
+          return block;
+        })
+      );
+    },
+    []
+  );
+
+  const onGlobalBlockDataChange = debounce((newData: object) => {
+    const updates = indexOfSelectedBlocks.map((index) => ({ index, newData }));
+    updateGlobalBlockData(updates);
+  }, 20);
+
+  useEffect(() => {
+    const schema: RJSFSchema = {
+      type: 'object',
+      properties: {},
+    };
+    const uiSchema: UiSchema = {};
+    const formData: Record<string, unknown> = {};
+
+    const selectedBlocks = blocks.filter((block, i) =>
+      indexOfSelectedBlocks.includes(i)
+    );
+
+    if (selectedBlocks.length > 0) {
+      let commonProperties: Set<string>;
+
+      if (isUnionMode) {
+        // Union mode: include all properties from all selected blocks
+        commonProperties = new Set(
+          selectedBlocks.flatMap((block) =>
+            Object.keys(block.instance.schema.properties)
+          )
+        );
+      } else {
+        // Intersection mode: include only properties common to all selected blocks
+        commonProperties = new Set(
+          Object.keys(selectedBlocks[0].instance.schema.properties)
+        );
+        for (let i = 0; i < selectedBlocks.length; i++) {
+          const blockProperties = new Set(
+            Object.keys(selectedBlocks[i].instance.schema.properties)
+          );
+          for (const prop of commonProperties) {
+            if (!blockProperties.has(prop)) {
+              commonProperties.delete(prop);
+            }
+          }
+        }
+      }
+
+      // Now add the properties to the schema
+      for (const key of commonProperties) {
+        schema.properties[key] =
+          selectedBlocks[0].instance.schema.properties[key];
+        uiSchema[key] = selectedBlocks[0].instance.uiSchema[key];
+
+        // For union mode, use the first block that has this property
+        const blockWithProperty = selectedBlocks.find(
+          (block) => block.instance.formData && key in block.instance.formData
+        );
+        if (blockWithProperty) {
+          formData[key] = blockWithProperty.instance.formData[key];
+        }
+      }
+    }
+
+    setMutualSchemas({ schema, uiSchema, defaultValues: formData });
+  }, [blocks, indexOfSelectedBlocks, isUnionMode]);
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant="default"
-          size="icon"
+          variant='default'
+          size='icon'
           style={{
             padding: 0,
-            minWidth: "3rem",
-            maxWidth: "3rem",
-            minHeight: "3rem",
-            maxHeight: "3rem",
+            minWidth: '3rem',
+            maxWidth: '3rem',
+            minHeight: '3rem',
+            maxHeight: '3rem',
           }}
         >
           <Settings2 />
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        side={isMobile ? "bottom" : "right"}
+        side={isMobile ? 'bottom' : 'left'}
         style={{
-          width: "fit-content",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "1rem",
+          width: 'fit-content',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '1rem',
         }}
-        className=""
+        className=''
       >
-        <h3 style={{ margin: "0" }}>Block Settings</h3>
-        <h6>Not Available Right Now...</h6>
-        {scaffoldSettings && setScalfoldSettings && ": )"}
-        {/* <Form
-          schema={scaffoldSettings.instance.schema}
-          uiSchema={scaffoldSettings.instance.uiSchema}
-          formData={scaffoldSettings.data}
-          validator={validator}
-          onChange={(e) =>
-            setScalfoldSettings({ ...scaffoldSettings, data: e.formData })
-          }
-          className="blockForm"
-          children={true}
-        ></Form> */}
+        <h3 style={{ margin: '0' }}>Global Settings</h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span>Intersection</span>
+          <Switch checked={isUnionMode} onCheckedChange={setIsUnionMode} />
+          <span>Union</span>
+        </div>
+        <div
+          className='text-base'
+          style={{ fontSize: '1rem', textAlign: 'center' }}
+        >
+          {indexOfSelectedBlocks.length === 0 ? (
+            'Please select the blocks you want to edit'
+          ) : (
+            <>
+              {indexOfSelectedBlocks.length === 1
+                ? '1 block selected'
+                : `${indexOfSelectedBlocks.length} blocks selected`}
+              {mutualSchema.schema === undefined ||
+                mutualSchema.schema.properties === undefined ||
+                (Object.keys(mutualSchema.schema.properties).length === 0 && (
+                  <div
+                    className='text-danger'
+                    style={{
+                      border: '1px dashed var(--destructive)',
+                      padding: '0.5rem',
+                      borderRadius: '0.5rem',
+                      marginTop: '1rem',
+                    }}
+                  >
+                    No common properties
+                  </div>
+                ))}
+            </>
+          )}
+        </div>
+        <ScrollArea
+          style={{
+            minHeight: '50vh',
+            minWidth: '22rem',
+            padding: 0,
+            paddingRight: '1rem',
+          }}
+        >
+          <Form
+            schema={mutualSchema.schema}
+            uiSchema={mutualSchema.uiSchema}
+            formData={mutualSchema.defaultValues}
+            validator={validator}
+            onChange={(e) => onGlobalBlockDataChange(e.formData)}
+            className='blockForm'
+            children={true}
+            widgets={widgets}
+          ></Form>
+        </ScrollArea>
       </PopoverContent>
     </Popover>
   );

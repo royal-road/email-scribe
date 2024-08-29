@@ -208,8 +208,9 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         <h2 className='PanelHeading'>Newsletter Designer</h2>
         <BlockSelector addBlock={addBlock} />
         <BlockGlobalSettings
-          scaffoldSettings={scaffoldSettings}
-          setScalfoldSettings={debouncedSetScaffoldSettings}
+          blocks={blocks}
+          setBlocks={setBlocks}
+          indexOfSelectedBlocks={[0, 1, 2]}
         />
       </div>
       <ScrollArea className='blocks'>
