@@ -145,7 +145,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        side={isMobile ? 'bottom' : 'left'}
+        side={isMobile ? 'bottom' : 'bottom'}
         style={{
           width: 'fit-content',
           height: '100%',
