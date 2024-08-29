@@ -184,7 +184,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 
   const removeBlock = (index: number) => {
     try {
-      console.log('remove block', index);
+      // console.log('remove block', index);
       setBlocks((prev) => {
         setCollapsibleStates((prevStates) => {
           delete prevStates[removedBlock[0].instance.id];
@@ -213,7 +213,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   };
 
   const moveBlock = (index: number, direction: 'up' | 'down') => {
-    console.log('move block', index, direction);
+    // console.log('move block', index, direction);
     setBlocks((prev) => {
       const newBlocks = [...prev];
       const block = newBlocks[index];

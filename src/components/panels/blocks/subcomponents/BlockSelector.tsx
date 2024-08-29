@@ -16,7 +16,7 @@ interface BlockSelectorProps {
 
 export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
-  const isMd = useMediaQuery('(max-width: 1124px)');
+  // const isMd = useMediaQuery('(max-width: 1124px)');
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [searchInput, setSearchInput] = useState('');
   const [activeTags, setActiveTags] = useState<string[]>([]);

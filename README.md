@@ -1,6 +1,6 @@
 # Newsletter Builder
 
-![Update Aug 23](public/readme/update23Aug.png)
+![Update Aug 23](public/readme/update29Aug.png)
 This is a simple SPA to build an email newsletter from Block-like UI.
 
 ## How to run

@@ -123,7 +123,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
   }, [blocks, indexOfSelectedBlocks, isUnionMode]);
 
   useEffect(() => {
-    console.log('mutualSchema', mutualSchema);
+    // console.log('mutualSchema', mutualSchema);
   }, [mutualSchema]);
 
   return (
