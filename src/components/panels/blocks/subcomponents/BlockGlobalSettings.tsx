@@ -104,15 +104,17 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
         const blockWithProperty = selectedBlocks.find(
           (block) => block.instance.formData && key in block.instance.formData
         );
-        // console.log(
-        //   'blockWithProperty',
-        //   blockWithProperty?.instance.meta.label
-        // );
         if (blockWithProperty) {
-          schema.properties[key] =
-            blockWithProperty.instance.schema.properties[key];
-          uiSchema[key] = blockWithProperty.instance.uiSchema[key];
           formData[key] = blockWithProperty.instance.formData[key];
+        }
+
+        const blockWithSchema = selectedBlocks.find(
+          (block) => key in block.instance.schema.properties
+        );
+        if (blockWithSchema) {
+          schema.properties[key] =
+            blockWithSchema.instance.schema.properties[key];
+          uiSchema[key] = blockWithSchema.instance.uiSchema[key];
         }
       }
     }

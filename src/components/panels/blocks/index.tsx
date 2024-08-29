@@ -275,7 +275,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             });
           }}
         >
-          - Select all -
+          Select all
         </button>
         <button
           className='link-text'
@@ -286,7 +286,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             });
           }}
         >
-          - Unselect all -
+          Unselect all
         </button>
         <button
           className='link-text'
@@ -297,7 +297,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             });
           }}
         >
-          - Expand all -
+          Expand all
         </button>
         <button
           className='link-text'
@@ -308,7 +308,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             });
           }}
         >
-          - Collpase all -
+          Collpase all
         </button>
       </div>
       <ScrollArea className='blocks'>

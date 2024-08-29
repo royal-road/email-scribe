@@ -20,9 +20,9 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 ## Features in Mind
 
 - [X]Search for blocks, better tagging, filter by tags
-- Add a way to edit global settings for selected blocks at once.
+- [X]Add a way to edit global settings for selected blocks at once.
 - Templating for iterated items for server-side rendering.
-- Better layout for Collpablisble's closed state. (not very responsive rn)
+- [X]Better layout for Collpablisble's closed state. (not very responsive rn)
 
 ### Next set of features 26th Aug
 
