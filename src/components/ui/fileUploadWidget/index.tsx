@@ -3,7 +3,6 @@ import { WidgetProps } from '@rjsf/utils';
 
 export const FileUploadWidget: React.FC<WidgetProps> = (props) => {
   const { onChange, options, id } = props;
-  console.log('options:!!!!!!!!!!!!!!', options);
   const handleFileUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
