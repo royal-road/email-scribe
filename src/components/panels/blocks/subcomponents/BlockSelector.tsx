@@ -16,6 +16,7 @@ interface BlockSelectorProps {
 
 export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const isMd = useMediaQuery('(max-width: 1124px)');
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [searchInput, setSearchInput] = useState('');
   const [activeTags, setActiveTags] = useState<string[]>([]);
@@ -149,6 +150,13 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
                     </h4>
                     <div
                       style={{
+                        columnCount: isMobile ? 1 : isMd ? 2 : 3,
+                        columnGap: '1rem',
+                        width: (!isMobile && '100%') || 'auto',
+                      }}
+                    >
+                      {/* <div
+                      style={{
                         display: 'flex',
                         flexDirection: 'row',
                         flexWrap: 'wrap',
@@ -158,7 +166,7 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
                         height: '100%',
                         gap: '1rem',
                       }}
-                    >
+                    >*/}
                       {(() => {
                         const filteredModules = template.filter(
                           (module) =>
@@ -191,6 +199,7 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
                               onClick={() => addBlock(new moduleClass())}
                               id={`blockMeta${templateIndex}${index}`}
                               style={{
+                                marginBottom: '1rem',
                                 width: 'fit-content',
                                 transform:
                                   activeIndex === index
