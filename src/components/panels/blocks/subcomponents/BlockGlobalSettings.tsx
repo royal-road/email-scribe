@@ -55,7 +55,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
   );
 
   const onGlobalBlockDataChange = debounce((newData: object) => {
-    const updates = indexOfSelectedBlocks.map((index) => ({ index, newData }));
+    const updates = indexOfSelectedBlocks?.map((index) => ({ index, newData }));
     updateGlobalBlockData(updates);
   }, 20);
 
@@ -67,8 +67,8 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
     const uiSchema: UiSchema = {};
     const formData: Record<string, unknown> = {};
 
-    const selectedBlocks = blocks.filter((block, i) =>
-      indexOfSelectedBlocks.includes(i)
+    const selectedBlocks = blocks.filter((_block, i) =>
+      indexOfSelectedBlocks?.includes(i)
     );
 
     if (selectedBlocks.length > 0) {
@@ -149,7 +149,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
         className=''
       >
         <h3 style={{ margin: '0' }}>Multiple Block Settings</h3>
-        {indexOfSelectedBlocks.length > 0 && (
+        {indexOfSelectedBlocks?.length > 0 && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span style={{ minWidth: '6rem', textAlign: 'right' }}>
               Intersection
@@ -162,15 +162,15 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
           className='text-base'
           style={{ fontSize: '1rem', textAlign: 'center' }}
         ></div>
-        {indexOfSelectedBlocks.length === 0 ? (
+        {indexOfSelectedBlocks?.length === 0 ? (
           <span className='text-danger'>
             Please select the blocks you want to edit.
           </span>
         ) : (
           <>
-            {indexOfSelectedBlocks.length === 1
+            {indexOfSelectedBlocks?.length === 1
               ? '1 block selected'
-              : `${indexOfSelectedBlocks.length} blocks selected`}
+              : `${indexOfSelectedBlocks?.length} blocks selected`}
             {mutualSchema.schema === undefined ||
               mutualSchema.schema.properties === undefined ||
               (Object.keys(mutualSchema.schema.properties).length === 0 && (
@@ -192,6 +192,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
           className='blocks'
           style={{
             height:
+              mutualSchema?.schema?.properties && // This check is very important or else the app will crash
               Object.keys(mutualSchema.schema.properties).length > 0
                 ? '30rem'
                 : '0',
@@ -211,7 +212,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
             widgets={widgets}
           ></Form>
         </ScrollArea>
-        {indexOfSelectedBlocks.length !== 0 && (
+        {indexOfSelectedBlocks?.length !== 0 && (
           <ConfirmButton
             initialIcon={<Trash />}
             confirmIcon={<Trash2 />}
