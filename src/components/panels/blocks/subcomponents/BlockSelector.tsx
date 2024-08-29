@@ -148,14 +148,14 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
                         ]
                       )}
                     </h4>
-                    <div
+                    {/* <div
                       style={{
                         columnCount: isMobile ? 1 : isMd ? 2 : 3,
                         columnGap: '1rem',
                         width: (!isMobile && '100%') || 'auto',
                       }}
-                    >
-                      {/* <div
+                    > */}
+                    <div
                       style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -166,7 +166,7 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
                         height: '100%',
                         gap: '1rem',
                       }}
-                    >*/}
+                    >
                       {(() => {
                         const filteredModules = template.filter(
                           (module) =>

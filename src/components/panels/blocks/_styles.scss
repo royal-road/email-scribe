@@ -172,6 +172,7 @@
 
   .thumbnail {
     width: 200px;
+    min-height: 150px;
     height: auto;
     object-fit: contain;
     border-top: 1px solid var(--border);
