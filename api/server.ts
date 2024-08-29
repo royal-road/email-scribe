@@ -25,6 +25,7 @@ app.use(
 
 // Serve template files
 app.use('/templates', express.static(path.join(process.cwd(), 'Templates')));
+app.use('/', express.static(path.join(process.cwd(), 'dist')));
 
 // Routes
 app.post('/upload', handleUpload);
