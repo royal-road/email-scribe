@@ -97,18 +97,21 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
           }
         }
       }
-
+      // console.log('commonProperties', commonProperties);
       // Now add the properties to the schema
       for (const key of commonProperties) {
-        schema.properties[key] =
-          selectedBlocks[0].instance.schema.properties[key];
-        uiSchema[key] = selectedBlocks[0].instance.uiSchema[key];
-
         // For union mode, use the first block that has this property
         const blockWithProperty = selectedBlocks.find(
           (block) => block.instance.formData && key in block.instance.formData
         );
+        // console.log(
+        //   'blockWithProperty',
+        //   blockWithProperty?.instance.meta.label
+        // );
         if (blockWithProperty) {
+          schema.properties[key] =
+            blockWithProperty.instance.schema.properties[key];
+          uiSchema[key] = blockWithProperty.instance.uiSchema[key];
           formData[key] = blockWithProperty.instance.formData[key];
         }
       }
@@ -116,6 +119,10 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
 
     setMutualSchemas({ schema, uiSchema, defaultValues: formData });
   }, [blocks, indexOfSelectedBlocks, isUnionMode]);
+
+  useEffect(() => {
+    console.log('mutualSchema', mutualSchema);
+  }, [mutualSchema]);
 
   return (
     <Popover>
