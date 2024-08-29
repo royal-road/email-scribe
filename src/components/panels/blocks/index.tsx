@@ -37,7 +37,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 }) => {
   const [blocks, setBlocks] = useState<BlockState[]>([]);
   const [openStates, setOpenStates] = useState<openStates>({});
-  const [scaffoldSettings, setScaffoldSettings] = useState<BlockState>(() => {
+  const [scaffoldSettings] = useState<BlockState>(() => {
     const instance = new ScaffoldingBlock() as BlockInterface;
     return {
       instance,
@@ -268,6 +268,9 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
               }}
               toggleOpen={() => toggleCollapsibleOpen(block.instance.id)}
               onChange={(newData) => updateBlockData(index, newData)}
+              inSelectionMode={Object.keys(openStates).some(
+                (id) => openStates[id].isSelected
+              )}
             />
           ))}
         </div>

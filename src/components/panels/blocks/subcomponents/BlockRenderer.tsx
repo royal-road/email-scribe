@@ -29,6 +29,7 @@ interface BlockRendererProps {
   id: string;
   isSelected: boolean;
   toggleSelect: (id: string) => void;
+  inSelectionMode?: boolean;
 }
 
 export const BlockRenderer: React.FC<BlockRendererProps> = ({
@@ -45,16 +46,26 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
   id,
   isSelected,
   toggleSelect,
+  inSelectionMode = false,
 }) => {
   const widgets: RegistryWidgetsType = {
     FileWidget: FileUploadWidget,
   };
 
   const { fontSize, ref } = useFitText();
-  const blockLongPress = useLongPress(() => toggleSelect(block.id), 500);
+  const blockLongPress = useLongPress(
+    () => toggleSelect(block.id),
+    inSelectionMode ? 50 : 500 // If inSelectionMode, long press is infinite so that the user can select multiple blocks using shorter clicks
+  );
 
   return (
-    <Collapsible open={open} onOpenChange={toggleOpen}>
+    <Collapsible
+      open={open}
+      onOpenChange={toggleOpen}
+      // onClick={() => {
+      //   if (inSelectionMode) toggleSelect(block.id);
+      // }}
+    >
       <div
         {...blockLongPress}
         className='collapsibleTrigger CollapsibleRepository'
