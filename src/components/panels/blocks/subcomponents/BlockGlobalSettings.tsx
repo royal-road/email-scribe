@@ -1,5 +1,5 @@
 import { Button } from '../../../ui/button';
-import { Settings2 } from 'lucide-react';
+import { Settings2, Trash, Trash2 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../../../ui/popover';
 // import Form from "@rjsf/core";
 // import validator from "@rjsf/validator-ajv8";
@@ -14,17 +14,20 @@ import Form from '@rjsf/core';
 import { ScrollArea } from '../../../ui/scrollArea';
 import { FileUploadWidget } from '../../../ui/fileUploadWidget';
 import { Switch } from '../../../ui/switch';
+import { ConfirmButton } from '../../../ui/ConfirmButton';
 
 interface BlockGlobalSettingsProps {
   blocks: BlockState[];
   setBlocks: React.Dispatch<React.SetStateAction<BlockState[]>>;
   indexOfSelectedBlocks: number[];
+  removeBlocks: (index: number[]) => void;
 }
 
 export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
   blocks,
   setBlocks,
   indexOfSelectedBlocks,
+  removeBlocks,
 }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [mutualSchema, setMutualSchemas] = useState<Partial<BlockConfig>>({});
@@ -118,6 +121,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
     <Popover>
       <PopoverTrigger asChild>
         <Button
+          title='Edit multiple blocks'
           variant='default'
           size='icon'
           style={{
@@ -144,44 +148,53 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
         }}
         className=''
       >
-        <h3 style={{ margin: '0' }}>Global Settings</h3>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span>Intersection</span>
-          <Switch checked={isUnionMode} onCheckedChange={setIsUnionMode} />
-          <span>Union</span>
-        </div>
+        <h3 style={{ margin: '0' }}>Multiple Block Settings</h3>
+        {indexOfSelectedBlocks.length > 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ minWidth: '6rem', textAlign: 'right' }}>
+              Intersection
+            </span>
+            <Switch checked={isUnionMode} onCheckedChange={setIsUnionMode} />
+            <span style={{ minWidth: '6rem', textAlign: 'left' }}>Union</span>
+          </div>
+        )}
         <div
           className='text-base'
           style={{ fontSize: '1rem', textAlign: 'center' }}
-        >
-          {indexOfSelectedBlocks.length === 0 ? (
-            'Please select the blocks you want to edit'
-          ) : (
-            <>
-              {indexOfSelectedBlocks.length === 1
-                ? '1 block selected'
-                : `${indexOfSelectedBlocks.length} blocks selected`}
-              {mutualSchema.schema === undefined ||
-                mutualSchema.schema.properties === undefined ||
-                (Object.keys(mutualSchema.schema.properties).length === 0 && (
-                  <div
-                    className='text-danger'
-                    style={{
-                      border: '1px dashed var(--destructive)',
-                      padding: '0.5rem',
-                      borderRadius: '0.5rem',
-                      marginTop: '1rem',
-                    }}
-                  >
-                    No common properties
-                  </div>
-                ))}
-            </>
-          )}
-        </div>
+        ></div>
+        {indexOfSelectedBlocks.length === 0 ? (
+          <span className='text-danger'>
+            Please select the blocks you want to edit.
+          </span>
+        ) : (
+          <>
+            {indexOfSelectedBlocks.length === 1
+              ? '1 block selected'
+              : `${indexOfSelectedBlocks.length} blocks selected`}
+            {mutualSchema.schema === undefined ||
+              mutualSchema.schema.properties === undefined ||
+              (Object.keys(mutualSchema.schema.properties).length === 0 && (
+                <div
+                  className='text-danger'
+                  style={{
+                    border: '1px dashed var(--destructive)',
+                    padding: '0.5rem',
+                    borderRadius: '0.5rem',
+                    marginTop: '1rem',
+                  }}
+                >
+                  No common properties
+                </div>
+              ))}
+          </>
+        )}
         <ScrollArea
+          className='blocks'
           style={{
-            minHeight: '50vh',
+            height:
+              Object.keys(mutualSchema.schema.properties).length > 0
+                ? '30rem'
+                : '0',
             minWidth: '22rem',
             padding: 0,
             paddingRight: '1rem',
@@ -198,6 +211,18 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
             widgets={widgets}
           ></Form>
         </ScrollArea>
+        {indexOfSelectedBlocks.length !== 0 && (
+          <ConfirmButton
+            initialIcon={<Trash />}
+            confirmIcon={<Trash2 />}
+            confirmVariant='destructive'
+            variant='outline'
+            initialText='Delete Selected'
+            confirmText='Are you sure?'
+            style={{ width: '100%' }}
+            onConfirm={() => removeBlocks(indexOfSelectedBlocks)}
+          />
+        )}
       </PopoverContent>
     </Popover>
   );

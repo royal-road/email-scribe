@@ -48,6 +48,7 @@ export const ConfirmButton: React.FC<ConfirmButtonProps> = ({
 
   return (
     <Button
+      style={{ gap: '1rem' }}
       {...buttonProps}
       onClick={handleClick}
       variant={isConfirming ? confirmVariant : initialVariant}
