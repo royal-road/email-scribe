@@ -55,27 +55,34 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 
       const fieldId = `${blockToFocus.collapsibleId}_${blockToFocus.fieldId}`;
 
-      const scrollToField = (id: string): boolean => {
+      const scrollToField = (
+        id: string,
+        block: ScrollLogicalPosition = 'center'
+      ): boolean => {
         const field = document.getElementById(id);
         if (field) {
-          field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          field.scrollIntoView({ behavior: 'smooth', block: block });
           field.focus();
           return true;
         }
         return false;
       };
-
+      let hasFailed = false;
       const attemptScroll = (attempts: number = 0) => {
         if (attempts >= 5) {
-          console.error('Could not scroll to field', fieldId);
+          // console.error('Could not scroll to field', fieldId);
           return;
         }
 
         if (scrollToField(fieldId)) {
           // If successful, scroll again after a short delay
-          setTimeout(() => scrollToField(fieldId), 100);
+          setTimeout(() => scrollToField(fieldId), 150);
         } else {
           // If unsuccessful, try again after a delay
+          if (!hasFailed) {
+            scrollToField(blockToFocus.collapsibleId, 'start');
+            hasFailed = true;
+          }
           setTimeout(() => attemptScroll(attempts + 1), 200 + 100 * attempts);
         }
       };

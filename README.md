@@ -24,6 +24,11 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 - [] Better Markup in multiline Text Editors (no links in singleLines)
 - [] Templating for unsubscribe Button Kinda already exists w/ the wip templating
 
+## Possibly useful features
+
+- [] Duplicate Block
+- [] Reset Block Properties (or individual fields)
+
 ## ISSUES TO SOLVE (28)
 
 - [x] Remove all Stampready data-attributes from the final HTML because they're not valid html attributes and might cause issues. (Same for singleline, multiline tags)
