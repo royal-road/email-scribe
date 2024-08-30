@@ -97,30 +97,38 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     }
   }, [blockToFocus]);
 
-  const toggleCollapsibleOpen = (collapsibleId: string) => {
+  const toggleCollapsibleOpen = (blockId: string) => {
     setBlockAttributes((prev) => ({
       ...prev,
-      [collapsibleId]: {
-        ...prev[collapsibleId],
-        isOpen: !prev[collapsibleId].isOpen,
+      [blockId]: {
+        ...prev[blockId],
+        isOpen: !prev[blockId].isOpen,
       },
     }));
   };
 
-  const setCollapsibleState = (collapsibleId: string, open: boolean) => {
+  const setCollapsibleState = (blockId: string, open: boolean) => {
     setBlockAttributes((prev) => ({
       ...prev,
-      [collapsibleId]: { ...prev[collapsibleId], isOpen: open },
+      [blockId]: { ...prev[blockId], isOpen: open },
     }));
   };
 
-  const setCollapsibleSelectedState = (
-    collapsibleId: string,
-    selected: boolean
-  ) => {
+  const getIsSSR = (blockId: string) => {
+    return blockAttributes[blockId]?.isSsr;
+  };
+
+  const setSSR = (blockId: string, ssr: string | false) => {
     setBlockAttributes((prev) => ({
       ...prev,
-      [collapsibleId]: { ...prev[collapsibleId], isSelected: selected },
+      [blockId]: { ...prev[blockId], isSsr: ssr },
+    }));
+  };
+
+  const setCollapsibleSelectedState = (blockId: string, selected: boolean) => {
+    setBlockAttributes((prev) => ({
+      ...prev,
+      [blockId]: { ...prev[blockId], isSelected: selected },
     }));
   };
 
@@ -267,6 +275,8 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           blocks={blocks}
           setBlocks={setBlocks}
           removeBlocks={removeBlocks}
+          getSsr={getIsSSR}
+          setSsr={setSSR}
           indexOfSelectedBlocks={Object.keys(blockAttributes)
             .filter((id) => blockAttributes[id].isSelected)
             .map((id) => blocks.findIndex((block) => block.instance.id === id))}
