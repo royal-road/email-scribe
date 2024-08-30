@@ -183,35 +183,25 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
           className='text-base'
           style={{ fontSize: '1rem', textAlign: 'center' }}
         ></div>
-        {indexOfSelectedBlocks?.length === 0 ? (
-          <span
-            className='text-danger'
-            style={{ fontSize: isMobile ? '0.95rem' : 'inherit' }}
-          >
-            Please select the blocks you want to edit.
-          </span>
-        ) : (
-          <>
-            {indexOfSelectedBlocks?.length === 1
-              ? '1 block selected'
-              : `${indexOfSelectedBlocks?.length} blocks selected`}
-            {mutualSchema.schema === undefined ||
-              mutualSchema.schema.properties === undefined ||
-              (Object.keys(mutualSchema.schema.properties).length === 0 && (
-                <div
-                  className='text-danger'
-                  style={{
-                    border: '1px dashed var(--destructive)',
-                    padding: '0.5rem',
-                    borderRadius: '0.5rem',
-                    marginTop: '1rem',
-                  }}
-                >
-                  No overlapping properties
-                </div>
-              ))}
-          </>
-        )}
+
+        {indexOfSelectedBlocks?.length === 1
+          ? '1 block selected'
+          : `${indexOfSelectedBlocks?.length} blocks selected`}
+        {mutualSchema.schema === undefined ||
+          mutualSchema.schema.properties === undefined ||
+          (Object.keys(mutualSchema.schema.properties).length === 0 && (
+            <div
+              className='text-danger'
+              style={{
+                border: '1px dashed var(--destructive)',
+                padding: '0.5rem',
+                borderRadius: '0.5rem',
+                marginTop: '1rem',
+              }}
+            >
+              No overlapping properties
+            </div>
+          ))}
         <ScrollArea
           className='blocks'
           style={{
@@ -236,18 +226,16 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
             widgets={widgets}
           ></Form>
         </ScrollArea>
-        {indexOfSelectedBlocks?.length !== 0 && (
-          <ConfirmButton
-            initialIcon={<Trash />}
-            confirmIcon={<Trash2 />}
-            confirmVariant='destructive'
-            variant='outline'
-            initialText='Delete Selected'
-            confirmText='Are you sure?'
-            style={{ width: '100%' }}
-            onConfirm={() => removeBlocks(indexOfSelectedBlocks)}
-          />
-        )}
+        <ConfirmButton
+          initialIcon={<Trash />}
+          confirmIcon={<Trash2 />}
+          confirmVariant='destructive'
+          variant='outline'
+          initialText='Delete Selected'
+          confirmText='Are you sure?'
+          style={{ width: '100%' }}
+          onConfirm={() => removeBlocks(indexOfSelectedBlocks)}
+        />
       </PopoverContent>
     </Popover>
   );
