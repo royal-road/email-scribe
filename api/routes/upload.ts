@@ -5,7 +5,6 @@ import path from 'path';
 import fs from 'fs/promises';
 
 const upload = multer({ dest: 'public/uploads/' });
-const BASE_PATH = 'https://pantsrapp.com/newsletter-builder';
 export const handleUpload = [
   upload.single('file'),
   async (req: Request, res: Response) => {
@@ -42,7 +41,7 @@ export const handleUpload = [
       // Remove the original uploaded file
       await fs.unlink(filePath);
 
-      const fileUrl = `${BASE_PATH}/uploads/${filename}`;
+      const fileUrl = `${process.env.VITE_API_URL}/${process.env.VITE_BASE_PATH}/uploads/${filename}`;
 
       res.status(200).json({ url: fileUrl });
     } catch (error) {

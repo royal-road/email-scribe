@@ -41,7 +41,7 @@ function parseModule(node: Element, templateName: string): ConcreteBlockClass {
     uiSchema: {},
     defaults: {},
   };
-  const templateUrlPrefix = `${import.meta.env.VITE_API_URL}/templates/${templateName}/`;
+  const templateUrlPrefix = `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_BASE_PATH}/templates/${templateName}/`;
   const counters = {
     singleLine: 0,
     multiLine: 0,

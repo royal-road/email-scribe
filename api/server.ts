@@ -26,7 +26,10 @@ app.use(express.json({ limit: '5mb' }));
 const router = express.Router();
 
 // Serve static files from the 'public' directory
-router.use('/uploads', express.static(path.join(process.cwd(), 'public', 'uploads')));
+router.use(
+  '/uploads',
+  express.static(path.join(process.cwd(), 'public', 'uploads'))
+);
 
 // Serve template files
 router.use('/templates', express.static(path.join(process.cwd(), 'Templates')));
@@ -47,11 +50,13 @@ router.get('*', (req, res) => {
 });
 
 // Mount the router under /newsletter-builder
-app.use('/newsletter-builder', router);
+app.use(`/${process.env.VITE_BASE_PATH}`, router);
 
 // 404 handler for requests outside /newsletter-builder
 app.use((req, res) => {
-  res.status(404).json({ message: `Unhandled Endpoint: ${req.method} ${req.path}` });
+  res
+    .status(404)
+    .json({ message: `Unhandled Endpoint: ${req.method} ${req.path}` });
 });
 
 // Error handler

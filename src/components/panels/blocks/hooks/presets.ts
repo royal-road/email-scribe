@@ -1,8 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
-const PRESETS_ENDPOINT = `${API_URL}/presets`;
-const PRESET_ENDPOINT = `${API_URL}/preset`;
+const BASE_PATH = import.meta.env.VITE_BASE_PATH as string;
+const PRESETS_ENDPOINT = `${API_URL}/${BASE_PATH}/presets`;
+const PRESET_ENDPOINT = `${API_URL}/${BASE_PATH}/preset`;
 
 export interface Preset {
   presetName: string;

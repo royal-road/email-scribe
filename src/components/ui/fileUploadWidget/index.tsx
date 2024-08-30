@@ -17,10 +17,13 @@ export const FileUploadWidget: React.FC<WidgetProps> = (props) => {
       }
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
-          method: 'POST',
-          body: formData,
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_BASE_PATH}/upload`,
+          {
+            method: 'POST',
+            body: formData,
+          }
+        );
 
         if (!response.ok) {
           throw new Error('File upload failed');
