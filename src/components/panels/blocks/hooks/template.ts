@@ -7,7 +7,7 @@ const BASE_PATH = import.meta.env.VITE_BASE_PATH as string;
 const TEMPLATE_ENDPOINT = `${API_URL}/${BASE_PATH}/templates`;
 
 const fetchTemplate = async (templateId: string): Promise<string> => {
-  console.log('fetching template', TEMPLATE_ENDPOINT + `/${templateId}`);
+  // console.log('fetching template', TEMPLATE_ENDPOINT + `/${templateId}`);
   const response = await fetch(TEMPLATE_ENDPOINT + `/${templateId}`, {
     method: 'GET',
     headers: {

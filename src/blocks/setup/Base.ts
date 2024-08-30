@@ -32,7 +32,7 @@ export abstract class BaseBlock implements BlockInterface {
     this.meta = config.meta;
     this.defaultHtml = config.defaultHtml;
     this.id = uuidv4();
-    console.log(this.meta.label, this);
+    // console.log(this.meta.label, this);
   }
 
   static getMeta(): BlockMetadata {

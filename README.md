@@ -12,7 +12,19 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 - Then in a new terminal, run `bun run dev`
 - `bun run build` + `bun run preview` doesn't play well with api right now bcoz of relative paths.
 
-## ISSUES TO SOLVE
+- [] Get templating up and running proper.
+
+## Feedback
+
+- [x] Fix Import
+- [] Make a RR-Specific Template w/ footer and everything
+- [] Do a better job of showing multiple block settings w/ visual language
+- [] Add Undo/Redo
+- [] Look into better grouping of editables (low-priority)
+- [] Better Markup in multiline Text Editors (no links in singleLines)
+- [] Templating for unsubscribe Button Kinda already exists w/ the wip templating
+
+## ISSUES TO SOLVE (28)
 
 - [x] Remove all Stampready data-attributes from the final HTML because they're not valid html attributes and might cause issues. (Same for singleline, multiline tags)
 - [] Header-BG-color stops working if a new Header-BG is provided. - Might need to first add image then reapply bg
