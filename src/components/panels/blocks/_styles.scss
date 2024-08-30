@@ -139,20 +139,20 @@
     .ssrRibbon {
       transform: rotate(90deg);
       // background-color: var(--primary);
-      color: var(--primary);
+      color: var(--foreground);
       padding: 0.125rem 0.25rem;
       font-size: 14px;
       font-weight: 300;
       text-transform: uppercase;
       letter-spacing: 1px;
-      text-shadow: 0 0 0.5rem var(--primary);
+      text-shadow: 0 0 0.5rem var(--foreground);
     }
     .ssrLabel {
       font-size: 1.5rem;
       font-weight: 300;
       margin-left: 1rem;
-      color: var(--primary);
-      text-shadow: 0 0 0.5rem var(--primary);
+      color: var(--foreground);
+      text-shadow: 0 0 0.5rem var(--foreground);
     }
     display: flex;
     flex-direction: column;
