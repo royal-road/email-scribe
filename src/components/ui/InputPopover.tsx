@@ -7,6 +7,7 @@ interface InputPopoverProps {
   triggerText: string;
   placeholder: string;
   onSubmit: (value: string) => void;
+  defaultValue?: string;
 }
 
 const InputPopover: React.FC<InputPopoverProps> = ({
@@ -14,8 +15,9 @@ const InputPopover: React.FC<InputPopoverProps> = ({
   triggerText,
   placeholder,
   onSubmit,
+  defaultValue,
 }) => {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(defaultValue || '');
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = () => {

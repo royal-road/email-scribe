@@ -246,6 +246,8 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
             <InputPopover
               triggerText='Enable SSR'
               placeholder='Enter Id of SSR block'
+              // Give default value as the Template name and block label
+              defaultValue={`${blocks[indexOfSelectedBlocks[0]]?.instance.meta.tags[0]}_${blocks[indexOfSelectedBlocks[0]]?.instance.meta.label}`}
               onSubmit={(value) => {
                 setSsr(blocks[indexOfSelectedBlocks[0]]?.instance.id, value);
               }}
