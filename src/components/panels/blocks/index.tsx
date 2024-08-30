@@ -27,8 +27,14 @@ interface BlockPanelProps {
   blockToFocus: CollapsibleFocusProps | null;
 }
 
-export interface openStates {
-  [key: string]: { isOpen: boolean; isSelected: boolean };
+export interface BlockAttribute {
+  isOpen: boolean;
+  isSelected: boolean;
+  isSsr: string | false;
+}
+
+export interface BlockAttributes {
+  [key: string]: BlockAttribute;
 }
 
 export const BlocksPanel: React.FC<BlockPanelProps> = ({
@@ -36,7 +42,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   blockToFocus,
 }) => {
   const [blocks, setBlocks] = useState<BlockState[]>([]);
-  const [collapsibleStates, setCollapsibleStates] = useState<openStates>({});
+  const [blockAttributes, setBlockAttributes] = useState<BlockAttributes>({});
   const [scaffoldSettings] = useState<BlockState>(() => {
     const instance = new ScaffoldingBlock() as BlockInterface;
     return {
@@ -49,7 +55,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   useEffect(() => {
     if (
       blockToFocus &&
-      Object.hasOwn(collapsibleStates, blockToFocus.collapsibleId)
+      Object.hasOwn(blockAttributes, blockToFocus.collapsibleId)
     ) {
       setCollapsibleState(blockToFocus.collapsibleId, true);
 
@@ -92,7 +98,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   }, [blockToFocus]);
 
   const toggleCollapsibleOpen = (collapsibleId: string) => {
-    setCollapsibleStates((prev) => ({
+    setBlockAttributes((prev) => ({
       ...prev,
       [collapsibleId]: {
         ...prev[collapsibleId],
@@ -102,7 +108,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   };
 
   const setCollapsibleState = (collapsibleId: string, open: boolean) => {
-    setCollapsibleStates((prev) => ({
+    setBlockAttributes((prev) => ({
       ...prev,
       [collapsibleId]: { ...prev[collapsibleId], isOpen: open },
     }));
@@ -112,7 +118,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     collapsibleId: string,
     selected: boolean
   ) => {
-    setCollapsibleStates((prev) => ({
+    setBlockAttributes((prev) => ({
       ...prev,
       [collapsibleId]: { ...prev[collapsibleId], isSelected: selected },
     }));
@@ -181,9 +187,9 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         cachedHtml: block.generateHTML(block.id),
       },
     ]);
-    setCollapsibleStates((prev) => ({
+    setBlockAttributes((prev) => ({
       ...prev,
-      [block.id]: { ...prev[block.id], isOpen: false },
+      [block.id]: { isSelected: false, isOpen: false, isSsr: false },
     })); // Open the block when added
   };
 
@@ -191,7 +197,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     try {
       // console.log('remove block', index);
       setBlocks((prev) => {
-        setCollapsibleStates((prevStates) => {
+        setBlockAttributes((prevStates) => {
           delete prevStates[removedBlock[0].instance.id];
           return prevStates;
         });
@@ -207,7 +213,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   const removeBlocks = (indices: number[]) => {
     setBlocks((prev) => {
       indices.forEach((index) => {
-        setCollapsibleStates((prevStates) => {
+        setBlockAttributes((prevStates) => {
           delete prevStates[prev[index].instance.id];
           return prevStates;
         });
@@ -227,6 +233,13 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       return newBlocks;
     });
     // updateBlockData(index, {});
+  };
+
+  const blockAttributesArray = () => {
+    // I need to turn map to array, but the order might have changed so I need to look it up based on current order of each block and their instance id
+    const blockOrder = blocks.map((block) => block.instance.id);
+    // Now I can sort the blockAttributes based on the order of the blocks
+    return blockOrder.map((id) => blockAttributes[id]);
   };
 
   useEffect(() => {
@@ -254,8 +267,8 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           blocks={blocks}
           setBlocks={setBlocks}
           removeBlocks={removeBlocks}
-          indexOfSelectedBlocks={Object.keys(collapsibleStates)
-            .filter((id) => collapsibleStates[id].isSelected)
+          indexOfSelectedBlocks={Object.keys(blockAttributes)
+            .filter((id) => blockAttributes[id].isSelected)
             .map((id) => blocks.findIndex((block) => block.instance.id === id))}
         />
       </div>
@@ -275,7 +288,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           className='link-text'
           disabled={blocks.length === 0}
           onClick={() => {
-            Object.keys(collapsibleStates).forEach((id) => {
+            Object.keys(blockAttributes).forEach((id) => {
               setCollapsibleSelectedState(id, true);
             });
           }}
@@ -286,7 +299,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           className='link-text'
           disabled={blocks.length === 0}
           onClick={() => {
-            Object.keys(collapsibleStates).forEach((id) => {
+            Object.keys(blockAttributes).forEach((id) => {
               setCollapsibleSelectedState(id, false);
             });
           }}
@@ -297,7 +310,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           className='link-text'
           disabled={blocks.length === 0}
           onClick={() => {
-            Object.keys(collapsibleStates).forEach((id) => {
+            Object.keys(blockAttributes).forEach((id) => {
               setCollapsibleState(id, true);
             });
           }}
@@ -308,7 +321,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           className='link-text'
           disabled={blocks.length === 0}
           onClick={() => {
-            Object.keys(collapsibleStates).forEach((id) => {
+            Object.keys(blockAttributes).forEach((id) => {
               setCollapsibleState(id, false);
             });
           }}
@@ -344,18 +357,18 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
               id={block.instance.id}
               block={block.instance}
               data={block.data}
-              isOpen={collapsibleStates[block.instance.id]?.isOpen}
-              isSelected={collapsibleStates[block.instance.id]?.isSelected}
+              isOpen={blockAttributes[block.instance.id]?.isOpen}
+              isSelected={blockAttributes[block.instance.id]?.isSelected}
               toggleSelect={(id: string) => {
                 setCollapsibleSelectedState(
                   id,
-                  !collapsibleStates[id].isSelected
+                  !blockAttributes[id].isSelected
                 );
               }}
               toggleOpen={() => toggleCollapsibleOpen(block.instance.id)}
               onChange={(newData) => updateBlockData(index, newData)}
-              inSelectionMode={Object.keys(collapsibleStates).some(
-                (id) => collapsibleStates[id].isSelected
+              inSelectionMode={Object.keys(blockAttributes).some(
+                (id) => blockAttributes[id].isSelected
               )}
             />
           ))}
@@ -364,7 +377,8 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       <PresetManager
         getBlocks={() => JSON.stringify(blocks)}
         setBlocks={setBlocks}
-        setOpenStates={setCollapsibleStates}
+        getBlockAttributes={() => JSON.stringify(blockAttributesArray())}
+        setBlockAttributes={setBlockAttributes}
       />
       <HtmlManager
         getHtml={() => (blocks.length > 0 ? updateRenderedHtml() : '')}

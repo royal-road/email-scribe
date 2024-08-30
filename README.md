@@ -96,8 +96,8 @@ This is a simple SPA to build an email newsletter from Block-like UI.
      1. Get all with with [data-link-size]/[data-link-color]
      2. Same as #3
      3. same as #3
-     4. Semi-same as #3, but also need to handlebar styles for a possible descendant <a> tag
-  5. <singleline>, <multiline>
+     4. Semi-same as #3, but also need to handlebar styles for a possible descendant \<a\> tag
+  5. singleline, multiline
      1. Get all by querying the tag.
      2. Replace innerText w/ handlebars whose prop name comes from [label] attribute for this node.
      3. (Obviously change ui schema's widget based on which one it is).
@@ -110,3 +110,11 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 - Global Settings:
   - Might be worth having a way to 'select' blocks in frontend and have their common props (same name and type) be populated to edit in global settings UI.
   - The way Stampready does it is unituitive, and leaves me unsure as to what exactly changes when updating after selecting 'Effect all Modules.' (Coz most of the things don't work as u'd expect)
+
+### How to do server-side templating
+
+- Wrap the said block in a template whose id is given as textbox in UI (set the module name as template+ modulename as default)
+- Replace each item's value with that field's id with percent around it
+- Wrap the whole formData in another new tag, this might need changing 'defaultHtml' and getHtml function or do it as a post processing in block panel.
+  - 1st approach is more 'same concerns together' but will need me to adapt 15+ files to it including import,save,load,export etc etc.
+  - 2nd approach will still need me to change import etc, but its still easier. Bahh, changed my mind, 2nd better.

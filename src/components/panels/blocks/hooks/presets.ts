@@ -1,14 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Preset } from '../subcomponents/PresetManager';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 const BASE_PATH = import.meta.env.VITE_BASE_PATH as string;
 const PRESETS_ENDPOINT = `${API_URL}/${BASE_PATH}/presets`;
 const PRESET_ENDPOINT = `${API_URL}/${BASE_PATH}/preset`;
-
-export interface Preset {
-  presetName: string;
-  data: string;
-}
 
 const apiFetch = async (url: string, options?: RequestInit) => {
   const response = await fetch(url, options);

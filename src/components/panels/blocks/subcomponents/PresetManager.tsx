@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Button } from '../../../ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '../../../ui/popover';
 import { usePresetManager } from '../hooks/presets';
-import { BlockState } from '..';
+import { BlockAttribute, BlockState } from '..';
 import { jsonToBlocks } from './utils/blockInstancer';
 import InputPopover from '../../../ui/InputPopover';
 import { ScrollArea } from '../../../ui/scrollArea';
@@ -18,18 +18,24 @@ import {
 } from 'lucide-react';
 import { handleExport, handleImport } from './utils/importExport';
 
+export interface Preset {
+  presetName: string;
+  blockState: string;
+  blockAttributes: string;
+}
+
 interface PresetManagerProps {
   getBlocks: () => string;
   setBlocks: (blocks: BlockState[]) => void;
-  setOpenStates: (
-    openStates: Record<string, { isOpen: boolean; isSelected: boolean }>
-  ) => void;
+  getBlockAttributes: () => string;
+  setBlockAttributes: (openStates: Record<string, BlockAttribute>) => void;
 }
 
 const PresetManager: React.FC<PresetManagerProps> = ({
   getBlocks,
   setBlocks,
-  setOpenStates,
+  getBlockAttributes,
+  setBlockAttributes,
 }) => {
   const { presetsQuery, usePreset, savePreset, deletePreset } =
     usePresetManager();
@@ -43,33 +49,37 @@ const PresetManager: React.FC<PresetManagerProps> = ({
 
   React.useEffect(() => {
     try {
-      if (selectedPreset.data && selectedPreset.data.data) {
-        const blocks = jsonToBlocks(selectedPreset.data.data);
-        if (blocks) {
-          blocks.forEach((block) => {
+      if (selectedPreset.data && selectedPreset.data.blockState) {
+        const blockState = jsonToBlocks(selectedPreset.data.blockState);
+        const blockAttributes = JSON.parse(
+          selectedPreset.data.blockAttributes
+        ) as BlockAttribute[];
+        if (blockState) {
+          blockState.forEach((block) => {
             block.cachedHtml = block.instance.generateHTML(block.instance.id);
           });
-          setBlocks(blocks);
-          const ids = blocks.map((block) => block.instance.id);
-          const openStates: Record<
-            string,
-            { isOpen: boolean; isSelected: boolean }
-          > = {};
+          setBlocks(blockState);
+          const ids = blockState.map((block) => block.instance.id);
+          const openStates: Record<string, BlockAttribute> = {};
+          let index = 0;
           ids?.forEach((id) => {
-            openStates[id] = { isOpen: false, isSelected: false };
+            openStates[id] = blockAttributes[index];
+            index++;
           });
-          setOpenStates(openStates);
+          setBlockAttributes(openStates);
         }
         setSelectedPresetName(null);
       }
     } catch (e) {
       console.error(e);
     }
-  }, [selectedPreset.data, setBlocks, setOpenStates]);
+  }, [selectedPreset.data, setBlocks, setBlockAttributes]);
 
   const handleSavePreset = (presetName: string) => {
-    const jsonString = getBlocks();
-    savePreset.mutate({ presetName, data: jsonString });
+    const blockState = getBlocks();
+    const blockAttributes = getBlockAttributes();
+    const preset = { presetName, blockState, blockAttributes } as Preset;
+    savePreset.mutate(preset);
   };
 
   const handlePresetSelect = (presetName: string) => {
@@ -89,7 +99,13 @@ const PresetManager: React.FC<PresetManagerProps> = ({
           triggerText='Export'
           icon={<Upload />}
           placeholder='Enter preset name'
-          onSubmit={(presetName) => handleExport(presetName, getBlocks())}
+          onSubmit={(presetName) =>
+            handleExport({
+              presetName,
+              blockState: getBlocks(),
+              blockAttributes: getBlockAttributes(),
+            })
+          }
         />
         <Button
           className='import-button'
@@ -103,7 +119,9 @@ const PresetManager: React.FC<PresetManagerProps> = ({
           ref={fileInputRef}
           style={{ display: 'none' }}
           accept='.json'
-          onChange={(event) => handleImport(event, setBlocks, setOpenStates)}
+          onChange={(event) =>
+            handleImport(event, setBlocks, setBlockAttributes)
+          }
         />
         <InputPopover
           icon={<CloudUpload />}

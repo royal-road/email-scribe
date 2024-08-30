@@ -8,12 +8,12 @@ import {
   BlockMetadata,
 } from '../../../../../blocks/setup/Types';
 import { templatify } from '../../../../../blocks/utils/templater';
-import { Preset } from '../../hooks/presets';
+import { Preset } from '../PresetManager';
 
 export const jsonToBlocks = (jsonString: string) => {
   try {
     const preset = JSON.parse(jsonString) as Preset;
-    const blocks = JSON.parse(preset.data) as BlockState[];
+    const blocks = JSON.parse(preset.blockState) as BlockState[];
     return parsedStatesToInstancedBlocks(blocks);
   } catch (E1) {
     try {
