@@ -197,7 +197,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
                     marginTop: '1rem',
                   }}
                 >
-                  No common properties
+                  No overlapping properties
                 </div>
               ))}
           </>
