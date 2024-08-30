@@ -330,6 +330,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
               inSelectionMode={Object.keys(blockAttributes).some(
                 (id) => blockAttributes[id].isSelected
               )}
+              isSsr={blockAttributes[block.instance.id]?.isSsr}
             />
           ))}
         </div>

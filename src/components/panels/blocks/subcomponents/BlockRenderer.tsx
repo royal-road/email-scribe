@@ -30,6 +30,7 @@ interface BlockRendererProps {
   isSelected: boolean;
   toggleSelect: (id: string) => void;
   inSelectionMode?: boolean;
+  isSsr?: string | false;
 }
 
 export const BlockRenderer: React.FC<BlockRendererProps> = ({
@@ -47,6 +48,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
   isSelected,
   toggleSelect,
   inSelectionMode = false,
+  isSsr,
 }) => {
   const widgets: RegistryWidgetsType = {
     FileWidget: FileUploadWidget,
@@ -98,7 +100,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
         >
           {camelToTitleCase(block.meta.label)}
         </div>
-        {/* </span> */}
+        {isSsr && <div className='ssrRibbon'>SSR</div>}
 
         <CollapsibleTrigger asChild>
           <Button variant='outline'>
@@ -110,6 +112,18 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
       <CollapsibleContent>
         {/* This css class comes from Collapsible's own styles.scss*/}
         <div className='CollapsibleRepository'>
+          {isSsr !== false && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                padding: '0.5rem',
+                alignItems: 'center',
+              }}
+            >
+              <span className='ssrLabel'>SSR ID: {isSsr}</span>
+            </div>
+          )}
           <Form
             idPrefix={id}
             schema={block.schema}
