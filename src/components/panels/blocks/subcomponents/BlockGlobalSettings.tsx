@@ -157,7 +157,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
         }}
         className=''
       >
-        <h3 style={{ margin: '0', fontSize: isMobile ? '1.5rem' : 'inherit' }}>
+        <h3 style={{ margin: '0', fontSize: '1.5rem' }}>
           Multiple Block Settings
         </h3>
         {indexOfSelectedBlocks?.length > 0 && (
