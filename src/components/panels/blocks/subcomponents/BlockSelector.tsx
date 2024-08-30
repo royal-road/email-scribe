@@ -59,11 +59,13 @@ export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          gap: '1rem',
+          gap: isMobile ? '0.2rem' : '1rem',
         }}
         className='BlockSelector'
       >
-        <h3 style={{ margin: '0' }}>Add Block</h3>
+        <h3 style={{ margin: '0', fontSize: isMobile ? '1.5rem' : 'inherit' }}>
+          Add Block
+        </h3>
         {multipleTemplateQuery.isLoading && (
           <div
             style={{

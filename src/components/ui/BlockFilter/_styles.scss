@@ -32,8 +32,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    max-height: 12rem;
+    max-height: 5rem;
     overflow: auto;
+    @include breakpoint('md') {
+      max-height: 12rem;
+    }
 
     .tag {
       font-size: 0.8rem;

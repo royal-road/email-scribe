@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useMediaQuery } from '../../../hooks/useMediaQuery';
 
 interface BlockFilterProps {
   tags: string[];
@@ -17,6 +18,8 @@ export const BlockFilter: React.FC<BlockFilterProps> = ({
   activeTags,
   searchValue,
 }) => {
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
   useEffect(() => {
     setActiveTags(activeTags);
   }, [activeTags, setActiveTags]);
@@ -40,11 +43,18 @@ export const BlockFilter: React.FC<BlockFilterProps> = ({
   return (
     <div className='TagSelector'>
       <div className='search-container'>
+        {/* This makes it so search isn't auto-focused on mobile, making the keyboard cover up the screen */}
+        {isMobile && (
+          <div style={{ height: 0, width: 0, overflow: 'hidden' }}>
+            <input autoFocus={true} />
+          </div>
+        )}
         <input
           type='text'
           placeholder='Search...'
           value={searchValue}
           onChange={handleSearchChange}
+          autoFocus={false}
           className='search-input'
         />
       </div>

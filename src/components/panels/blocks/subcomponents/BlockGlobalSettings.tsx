@@ -157,14 +157,16 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
         }}
         className=''
       >
-        <h3 style={{ margin: '0' }}>Multiple Block Settings</h3>
+        <h3 style={{ margin: '0', fontSize: isMobile ? '1.5rem' : 'inherit' }}>
+          Multiple Block Settings
+        </h3>
         {indexOfSelectedBlocks?.length > 0 && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span style={{ minWidth: '6rem', textAlign: 'right' }}>
-              Intersection
+              Overlapping
             </span>
             <Switch checked={isUnionMode} onCheckedChange={setIsUnionMode} />
-            <span style={{ minWidth: '6rem', textAlign: 'left' }}>Union</span>
+            <span style={{ minWidth: '6rem', textAlign: 'left' }}>Merged</span>
           </div>
         )}
         <div
@@ -172,7 +174,10 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
           style={{ fontSize: '1rem', textAlign: 'center' }}
         ></div>
         {indexOfSelectedBlocks?.length === 0 ? (
-          <span className='text-danger'>
+          <span
+            className='text-danger'
+            style={{ fontSize: isMobile ? '0.95rem' : 'inherit' }}
+          >
             Please select the blocks you want to edit.
           </span>
         ) : (
@@ -205,7 +210,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
               Object.keys(mutualSchema.schema.properties).length > 0
                 ? '30rem'
                 : '0',
-            minWidth: '22rem',
+            minWidth: isMobile ? '20rem' : '22rem',
             padding: 0,
             paddingRight: '1rem',
           }}
