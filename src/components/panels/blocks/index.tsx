@@ -47,42 +47,40 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   });
 
   useEffect(() => {
-    // console.log('focus block', blockToFocus);
     if (
       blockToFocus &&
       Object.hasOwn(collapsibleStates, blockToFocus.collapsibleId)
     ) {
-      // setAllCollapsibles(false);
       setCollapsibleState(blockToFocus.collapsibleId, true);
-      // Now focus on the field by scrolling to it
+
       const fieldId = `${blockToFocus.collapsibleId}_${blockToFocus.fieldId}`;
-      const tryToScrollHere = (id: string) => {
+
+      const scrollToField = (id: string): boolean => {
         const field = document.getElementById(id);
-        field?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        field?.focus();
-        return Boolean(field);
+        if (field) {
+          field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          field.focus();
+          return true;
+        }
+        return false;
       };
 
-      // Try to scroll to the field a few times
-      if (!tryToScrollHere(fieldId)) {
-        setTimeout(() => {
-          if (!tryToScrollHere(fieldId)) {
-            setTimeout(() => {
-              if (!tryToScrollHere(fieldId)) {
-                setTimeout(() => {
-                  if (!tryToScrollHere(fieldId)) {
-                    setTimeout(() => {
-                      if (!tryToScrollHere(fieldId)) {
-                        console.error('Could not scroll to field', fieldId);
-                      }
-                    }, 500);
-                  }
-                }, 400);
-              }
-            }, 300);
-          }
-        }, 200);
-      }
+      const attemptScroll = (attempts: number = 0) => {
+        if (attempts >= 5) {
+          console.error('Could not scroll to field', fieldId);
+          return;
+        }
+
+        if (scrollToField(fieldId)) {
+          // If successful, scroll again after a short delay
+          setTimeout(() => scrollToField(fieldId), 100);
+        } else {
+          // If unsuccessful, try again after a delay
+          setTimeout(() => attemptScroll(attempts + 1), 200 + 100 * attempts);
+        }
+      };
+
+      attemptScroll();
     }
   }, [blockToFocus]);
 
