@@ -55,7 +55,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
   const { fontSize, ref } = useFitText();
   const blockLongPress = useLongPress(
     () => toggleSelect(block.id),
-    inSelectionMode ? 50 : 500 // If inSelectionMode, long press is infinite so that the user can select multiple blocks using shorter clicks
+    inSelectionMode ? 0 : 500 // If inSelectionMode, long press is infinite so that the user can select multiple blocks using shorter clicks
   );
 
   return (
