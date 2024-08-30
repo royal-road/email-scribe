@@ -10,6 +10,7 @@ import { RRLogo } from '../../ui/RRLogo';
 import { ScaffoldingBlock } from '../../../blocks/Scaffolding';
 import HtmlManager from './subcomponents/HtmlManager';
 import PresetManager from './subcomponents/PresetManager';
+import SelectionPanel from './subcomponents/SelectionPanel';
 
 export interface BlockState {
   instance: BlockInterface;
@@ -282,63 +283,12 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             .map((id) => blocks.findIndex((block) => block.instance.id === id))}
         />
       </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          gap: '1rem',
-          width: '100%',
-          borderRadius: 'var(--radius)',
-          border: '1px solid var(--border)',
-          padding: '0.5rem',
-        }}
-      >
-        <button
-          className='link-text'
-          disabled={blocks.length === 0}
-          onClick={() => {
-            Object.keys(blockAttributes).forEach((id) => {
-              setCollapsibleSelectedState(id, true);
-            });
-          }}
-        >
-          Select all
-        </button>
-        <button
-          className='link-text'
-          disabled={blocks.length === 0}
-          onClick={() => {
-            Object.keys(blockAttributes).forEach((id) => {
-              setCollapsibleSelectedState(id, false);
-            });
-          }}
-        >
-          Unselect all
-        </button>
-        <button
-          className='link-text'
-          disabled={blocks.length === 0}
-          onClick={() => {
-            Object.keys(blockAttributes).forEach((id) => {
-              setCollapsibleState(id, true);
-            });
-          }}
-        >
-          Expand all
-        </button>
-        <button
-          className='link-text'
-          disabled={blocks.length === 0}
-          onClick={() => {
-            Object.keys(blockAttributes).forEach((id) => {
-              setCollapsibleState(id, false);
-            });
-          }}
-        >
-          Collpase all
-        </button>
-      </div>
+      <SelectionPanel
+        blockCount={blocks.length}
+        blockAttributes={blockAttributes}
+        setCollapsibleSelectedState={setCollapsibleSelectedState}
+        setCollapsibleState={setCollapsibleState}
+      />
       <ScrollArea className='blocks'>
         {blocks.length === 0 && (
           <div
