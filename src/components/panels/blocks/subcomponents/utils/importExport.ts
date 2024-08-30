@@ -47,6 +47,7 @@ export const handleImport = (
       }
     };
     reader.readAsText(file);
+    event.target.value = '';
   }
 };
 

@@ -35,6 +35,7 @@ export const FileUploadWidget: React.FC<WidgetProps> = (props) => {
         console.error('Error uploading file:', error);
         // You might want to show an error message to the user here
       }
+      event.target.value = '';
     },
     [onChange, options]
   );
