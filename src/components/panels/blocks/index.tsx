@@ -14,7 +14,7 @@ import SelectionPanel from './subcomponents/SelectionPanel';
 
 export interface BlockState {
   instance: BlockInterface;
-  data: object;
+  data: Record<string, unknown>;
   cachedHtml: string;
 }
 
@@ -151,7 +151,16 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 
   const updateRenderedHtml = () => {
     const blockContent: string[] = [];
-    blocks.map((block) => blockContent.push(block.cachedHtml));
+    blocks.map((block) => {
+      let html = block.cachedHtml;
+      const isSsr = getIsSSR(block.instance.id);
+      if (isSsr) {
+        const prefix = `<div templateId="${isSsr}">`;
+        const suffix = `</div>`;
+        html = `${prefix}${html}${suffix}`;
+      }
+      blockContent.push(html);
+    });
     const finHtml = blockContent.join('');
     scaffoldSettings.instance.updateFormData({
       ...scaffoldSettings.data,

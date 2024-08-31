@@ -46,10 +46,13 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
       setBlocks((prevBlocks) =>
         prevBlocks.map((block, i) => {
           const update = updates.find((u) => u.index === i);
-          if (update) {
+          if (update && getSsr(block.instance.id) === false) {
             const updatedData = { ...block.data, ...update.newData };
+
             block.instance.updateFormData(updatedData);
             block.cachedHtml = block.instance.generateHTML(block.instance.id);
+            console.log('updating form data', updatedData);
+
             return { ...block, data: updatedData };
           }
           return block;

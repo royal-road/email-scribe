@@ -1,4 +1,7 @@
 @mixin rjsfForm {
+  &.disabled {
+    opacity: 0.5;
+  }
   .panel-title {
     margin: 0.5rem;
   }

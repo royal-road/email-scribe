@@ -14,13 +14,14 @@ import { RegistryWidgetsType } from '@rjsf/utils';
 import { FileUploadWidget } from '../../../ui/fileUploadWidget';
 import useFitText from 'use-fit-text';
 import useLongPress from '../../../../hooks/useLongPress';
+import { useEffect } from 'react';
 
 interface BlockRendererProps {
   isTop: boolean;
   isBottom: boolean;
   block: BlockInterface;
-  data: object;
-  onChange: (newData: object) => void;
+  data: Record<string, unknown>;
+  onChange: (newData: Record<string, unknown>) => void;
   onUp: () => void;
   onDown: () => void;
   onDelete: () => void;
@@ -56,9 +57,27 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
 
   const { fontSize, ref } = useFitText();
   const blockLongPress = useLongPress(
-    () => toggleSelect(block.id),
-    inSelectionMode ? 0 : 500 // If inSelectionMode, long press is infinite so that the user can select multiple blocks using shorter clicks
+    () => {
+      console.log('HEY!');
+      toggleSelect(block.id);
+    },
+    inSelectionMode ? 5 : 500 // If inSelectionMode, long press is small so that the user can select multiple blocks using shorter clicks
   );
+
+  const generateSsrFormData = (
+    data: Record<string, unknown>
+  ): Record<string, string> => {
+    return Object.keys(data).reduce(
+      (acc, key) => {
+        return { ...acc, [key]: `%${key}%` };
+      },
+      {} as Record<string, string>
+    );
+  };
+
+  useEffect(() => {
+    if (isSsr) onChange(generateSsrFormData(block.formData));
+  }, [isSsr]); // Do not include onChange in the dependencies array, or it messes up LongPress
 
   return (
     <Collapsible
@@ -129,10 +148,15 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
             schema={block.schema}
             uiSchema={block.uiSchema}
             formData={data}
+            readonly={isSsr !== false}
             validator={validator}
-            onChange={(e) => onChange(e.formData)}
+            onChange={(e) => {
+              if (isSsr === false) {
+                onChange(e.formData);
+              }
+            }}
             liveValidate={true}
-            className='blockForm'
+            className={`blockForm ${isSsr ? 'disabled' : ''}`}
             children={true}
             onError={(e) => console.error(e)}
             widgets={widgets}
