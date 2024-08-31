@@ -19,10 +19,10 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 - [x] Fix Import
 - [] Make a RR-Specific Template w/ footer and everything
 - [-] Do a better job of showing multiple block settings w/ visual language
-- [] Add Undo/Redo
+- [-] Add Undo/Redo
 - [] Look into better grouping of editables (low-priority)
 - [] Better Markup in multiline Text Editors (no links in singleLines)
-- [] Templating for unsubscribe Button Kinda already exists w/ the wip templating
+- [x] Templating for unsubscribe Button Kinda already exists w/ the wip templating
 
 ## Possibly useful features
 
