@@ -12,8 +12,6 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 - Then in a new terminal, run `bun run dev`
 - `bun run build` + `bun run preview` doesn't play well with api right now bcoz of relative paths.
 
-- [] Get templating up and running proper.
-
 ## Feedback
 
 - [x] Fix Import
@@ -22,7 +20,7 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 - [-] Add Undo/Redo
 - [] Look into better grouping of editables (low-priority)
 - [] Better Markup in multiline Text Editors (no links in singleLines)
-- [x] Templating for unsubscribe Button Kinda already exists w/ the wip templating
+- [x] (SSR has been implemented) Templating for unsubscribe Button Kinda already exists w/ the wip templating
 
 ## Possibly useful features
 
@@ -118,3 +116,10 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 - Wrap the whole formData in another new tag, this might need changing 'defaultHtml' and getHtml function or do it as a post processing in block panel.
   - 1st approach is more 'same concerns together' but will need me to adapt 15+ files to it including import,save,load,export etc etc.
   - 2nd approach will still need me to change import etc, but its still easier. Bahh, changed my mind, 2nd better.
+
+### How to undo-redo
+
+- History, index lives in L-child.
+- canUndo, canRedo are needed by R-child.
+- onUndo, onRedo will need to be triggered by R-child.
+- What are my options if I don't wanna lift unnecessary state upto their common parent?

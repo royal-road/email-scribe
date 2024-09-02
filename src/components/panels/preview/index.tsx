@@ -17,8 +17,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   return (
     <div className='PreviewPanel'>
       <PreviewPanelHeader
-        breakpoint={breakpoint}
-        onBreakpointChange={setBreakpoint}
+        bp={{ breakpoint, onBreakpointChange: setBreakpoint }}
       />
       <PreviewPanelBody
         htmlToPreview={htmlToPreview}

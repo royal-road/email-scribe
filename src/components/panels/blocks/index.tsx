@@ -1,5 +1,5 @@
 import { BlockRenderer } from './subcomponents/BlockRenderer';
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
 import { BlockInterface } from '../../../blocks/setup/Types';
 import debounce from 'debounce';
 import { ScrollArea } from '../../ui/scrollArea';
@@ -11,6 +11,7 @@ import { ScaffoldingBlock } from '../../../blocks/Scaffolding';
 import HtmlManager from './subcomponents/HtmlManager';
 import PresetManager from './subcomponents/PresetManager';
 import SelectionPanel from './subcomponents/SelectionPanel';
+import { useUndoRedo } from '../../../UndoRedoContext';
 
 export interface BlockState {
   instance: BlockInterface;
@@ -42,6 +43,12 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   onUpdateFinalHtml,
   blockToFocus,
 }) => {
+  const {
+    addToHistory,
+    getCurrentHistoryEntry,
+    hasUndoRedoOccurred,
+    setHasUndoRedoOccurred,
+  } = useUndoRedo();
   const [blocks, setBlocks] = useState<BlockState[]>([]);
   const [blockAttributes, setBlockAttributes] = useState<BlockAttributes>({});
   const [scaffoldSettings] = useState<BlockState>(() => {
@@ -52,6 +59,26 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       cachedHtml: instance.generateHTML(instance.id),
     };
   });
+
+  useEffect(() => {
+    if (hasUndoRedoOccurred) {
+      const currentEntry = getCurrentHistoryEntry();
+      if (currentEntry) {
+        setBlocks(currentEntry.blocks);
+        setBlockAttributes(currentEntry.attributes);
+      }
+      setHasUndoRedoOccurred(false);
+    }
+  }, [hasUndoRedoOccurred, getCurrentHistoryEntry, setHasUndoRedoOccurred]);
+
+  const DebouncedUpdateHistory = debounce((blocks, blockAttributes) => {
+    console.log(blocks, blockAttributes);
+    addToHistory({ blocks, attributes: blockAttributes });
+  }, 1000);
+
+  const updateHistory = () => {
+    addToHistory({ blocks, attributes: blockAttributes });
+  };
 
   useEffect(() => {
     if (
@@ -133,20 +160,6 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     }));
   };
 
-  // const setAllCollapsibles = (open: boolean) => {
-  //   const newStates = { ...openStates };
-  //   Object.keys(newStates).forEach((key) => {
-  //     newStates[key] = open;
-  //   });
-  //   setOpenStates(newStates);
-  // };
-  // const debouncedSetScaffoldSettings = useCallback(
-  //   debounce((newSettings) => {
-  //     setScaffoldSettings(newSettings);
-  //   }, blocks.length + 5),
-  //   []
-  // );
-
   const animateParent = useRef(null);
 
   const updateRenderedHtml = () => {
@@ -191,6 +204,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           return block;
         })
       );
+      DebouncedUpdateHistory(blocks, blockAttributes);
     }, blocks.length + 5), // Debounce more based on whether there's more blocks
     []
   );
@@ -209,6 +223,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       ...prev,
       [block.id]: { isSelected: false, isOpen: false, isSsr: false },
     })); // Open the block when added
+    updateHistory();
   };
 
   const removeBlock = (index: number) => {
@@ -226,6 +241,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     } catch (e) {
       console.error(e);
     }
+    updateHistory();
   };
 
   const removeBlocks = (indices: number[]) => {
@@ -239,10 +255,10 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       const newBlocks = prev.filter((_, i) => !indices.includes(i));
       return newBlocks;
     });
+    updateHistory();
   };
 
   const moveBlock = (index: number, direction: 'up' | 'down') => {
-    // console.log('move block', index, direction);
     setBlocks((prev) => {
       const newBlocks = [...prev];
       const block = newBlocks[index];
@@ -250,7 +266,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       newBlocks.splice(direction === 'up' ? index - 1 : index + 1, 0, block);
       return newBlocks;
     });
-    // updateBlockData(index, {});
+    updateHistory();
   };
 
   const blockAttributesArray = () => {
@@ -349,6 +365,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         setBlocks={setBlocks}
         getBlockAttributes={() => JSON.stringify(blockAttributesArray())}
         setBlockAttributes={setBlockAttributes}
+        addToHistory={addToHistory}
       />
       <HtmlManager
         getHtml={() => (blocks.length > 0 ? updateRenderedHtml() : '')}

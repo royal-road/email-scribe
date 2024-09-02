@@ -17,6 +17,7 @@ import {
   Upload,
 } from 'lucide-react';
 import { handleExport, handleImport } from './utils/importExport';
+import { HistoryEntry } from '../../../../UndoRedoContext';
 
 export interface Preset {
   presetName: string;
@@ -29,6 +30,7 @@ interface PresetManagerProps {
   setBlocks: (blocks: BlockState[]) => void;
   getBlockAttributes: () => string;
   setBlockAttributes: (openStates: Record<string, BlockAttribute>) => void;
+  addToHistory: (entry: HistoryEntry) => void;
 }
 
 const PresetManager: React.FC<PresetManagerProps> = ({
@@ -36,6 +38,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
   setBlocks,
   getBlockAttributes,
   setBlockAttributes,
+  addToHistory,
 }) => {
   const { presetsQuery, usePreset, savePreset, deletePreset } =
     usePresetManager();
@@ -67,6 +70,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
             index++;
           });
           setBlockAttributes(openStates);
+          addToHistory({ blocks: blockState, attributes: openStates });
         }
         setSelectedPresetName(null);
       }
@@ -120,7 +124,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
           style={{ display: 'none' }}
           accept='.json'
           onChange={(event) =>
-            handleImport(event, setBlocks, setBlockAttributes)
+            handleImport(event, setBlocks, setBlockAttributes, addToHistory)
           }
         />
         <InputPopover
