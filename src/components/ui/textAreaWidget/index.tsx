@@ -73,7 +73,7 @@ export const LexicalWidget: React.FC<WidgetProps> = (props) => {
         contentEditable={
           <ContentEditable
             id={id}
-            className='editor-input'
+            className='editorInput'
             disabled={disabled || readonly}
           />
         }

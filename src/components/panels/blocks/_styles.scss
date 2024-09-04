@@ -339,7 +339,8 @@
 
 input[type='text'],
 input[type='url'],
-textarea {
+textarea,
+.editorInput {
   font-family: $font-family-heading;
   border: 1px solid var(--border);
   border-radius: 0.25rem;
