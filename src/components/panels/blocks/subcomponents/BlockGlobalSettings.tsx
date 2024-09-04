@@ -237,24 +237,24 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
           onConfirm={() => removeBlocks(indexOfSelectedBlocks)}
         />
         {indexOfSelectedBlocks.length === 1 &&
-          getSsr(blocks[indexOfSelectedBlocks[0]].instance.id) === false && (
+          getSsr(blocks[indexOfSelectedBlocks[0]]?.instance?.id) === false && (
             <InputPopover
               triggerText='Enable SSR'
               placeholder='Enter Id of SSR block'
               // Give default value as the Template name and block label
               defaultValue={`${blocks[indexOfSelectedBlocks[0]]?.instance.meta.tags[0]}_${blocks[indexOfSelectedBlocks[0]]?.instance.meta.label}`}
               onSubmit={(value) => {
-                setSsr(blocks[indexOfSelectedBlocks[0]]?.instance.id, value);
+                setSsr(blocks[indexOfSelectedBlocks[0]]?.instance?.id, value);
               }}
             />
           )}
         {indexOfSelectedBlocks.length === 1 &&
-          getSsr(blocks[indexOfSelectedBlocks[0]].instance.id) !== false && (
+          getSsr(blocks[indexOfSelectedBlocks[0]]?.instance?.id) !== false && (
             <Button
               style={{ width: '100%' }}
               variant='destructive'
               onClick={() => {
-                setSsr(blocks[indexOfSelectedBlocks[0]]?.instance.id, false);
+                setSsr(blocks[indexOfSelectedBlocks[0]]?.instance?.id, false);
               }}
             >
               Disable SSR

@@ -229,7 +229,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       // console.log('remove block', index);
       setBlocks((prev) => {
         setBlockAttributes((prevStates) => {
-          delete prevStates[removedBlock[0].instance.id];
+          delete prevStates[removedBlock[0]?.instance?.id];
           return prevStates;
         });
         newBlocks = [...prev];
