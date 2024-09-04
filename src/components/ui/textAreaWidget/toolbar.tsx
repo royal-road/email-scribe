@@ -1,7 +1,7 @@
 import { FORMAT_TEXT_COMMAND } from 'lexical';
-import { Bold, Italic, UnderlineIcon } from 'lucide-react';
+import { Bold, Italic, Strikethrough, UnderlineIcon } from 'lucide-react';
 import { useState } from 'react';
-import { ToggleButton } from '../toggle';
+import { Toggle } from '../toggle';
 import {
   $getSelection,
   $isRangeSelection,
@@ -14,12 +14,12 @@ import { useCallback, useEffect } from 'react';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { $findMatchingParent, mergeRegister } from '@lexical/utils';
 
-// src/components/editor/plugins/toolbar-plugin.tsx
 export default function ToolbarPlugin() {
   const [editor] = useLexicalComposerContext();
   const [isBold, setIsBold] = useState<boolean>(false);
   const [isItalic, setIsItalic] = useState<boolean>(false);
   const [isUnderline, setIsUnderline] = useState<boolean>(false);
+  const [isStrikethrough, setIsStrikethrough] = useState<boolean>(false);
 
   const $updateToolbar = useCallback(() => {
     const selection = $getSelection();
@@ -27,6 +27,7 @@ export default function ToolbarPlugin() {
       setIsBold(selection.hasFormat('bold'));
       setIsItalic(selection.hasFormat('italic'));
       setIsUnderline(selection.hasFormat('underline'));
+      setIsStrikethrough(selection.hasFormat('strikethrough'));
 
       const anchorNode = selection.anchor.getNode();
 
@@ -63,43 +64,63 @@ export default function ToolbarPlugin() {
   }, [editor, $updateToolbar]);
 
   return (
-    <div className='w-full p-1 border-b z-10'>
-      <div className='flex space-x-2 justify-center'>
-        <ToggleButton
+    <div className='editor-toolbar'>
+      <div
+        style={{
+          display: 'flex',
+          gap: '0.2rem',
+        }}
+      >
+        <Toggle
           area-label='Bold'
-          size='sm'
-          isActive={isBold}
-          onToggle={(pressed: boolean | ((prevState: boolean) => boolean)) => {
+          pressed={isBold}
+          onPressedChange={(
+            pressed: boolean | ((prevState: boolean) => boolean)
+          ) => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'bold');
             setIsBold(pressed);
           }}
         >
           <Bold />
-        </ToggleButton>
+        </Toggle>
 
-        <ToggleButton
+        <Toggle
           area-label='Italic'
-          size='sm'
-          isActive={isItalic}
-          onToggle={(pressed: boolean | ((prevState: boolean) => boolean)) => {
+          pressed={isItalic}
+          onPressedChange={(
+            pressed: boolean | ((prevState: boolean) => boolean)
+          ) => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'italic');
             setIsItalic(pressed);
           }}
         >
           <Italic />
-        </ToggleButton>
+        </Toggle>
 
-        <ToggleButton
+        <Toggle
           area-label='Underline'
-          size='sm'
-          isActive={isUnderline}
-          onToggle={(pressed: boolean | ((prevState: boolean) => boolean)) => {
+          pressed={isUnderline}
+          onPressedChange={(
+            pressed: boolean | ((prevState: boolean) => boolean)
+          ) => {
             editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'underline');
             setIsUnderline(pressed);
           }}
         >
           <UnderlineIcon />
-        </ToggleButton>
+        </Toggle>
+        <Toggle
+          area-label='Strikethrough'
+          pressed={isStrikethrough}
+          onPressedChange={(
+            pressed: boolean | ((prevState: boolean) => boolean)
+          ) => {
+            editor.dispatchCommand(FORMAT_TEXT_COMMAND, 'strikethrough');
+            setIsStrikethrough(pressed);
+          }}
+        >
+          <Strikethrough />
+        </Toggle>
       </div>
     </div>
   );
