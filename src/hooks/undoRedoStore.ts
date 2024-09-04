@@ -13,6 +13,6 @@ export const useEditorStore = create<EditorState>()(
       history: [],
       createHistory: (newHistory) => set({ history: newHistory }),
     }),
-    { limit: 10 }
+    { limit: 30 }
   )
 );
