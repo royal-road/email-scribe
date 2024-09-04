@@ -1,42 +1,18 @@
-import React, { useState } from 'react';
-import { Button, ButtonProps } from '../button';
+import React from 'react';
+import * as RadixToggle from '@radix-ui/react-toggle';
 
-export interface ToggleButtonProps extends Omit<ButtonProps, 'onClick'> {
-  isActive?: boolean;
-  onToggle?: (isActive: boolean) => void;
+export interface ToggleProps extends RadixToggle.ToggleProps {
+  className?: string;
 }
 
-export const ToggleButton: React.FC<ToggleButtonProps> = ({
-  isActive: initialIsActive = false,
-  onToggle,
-  className,
-  children,
-  ...props
-}) => {
-  const [isActive, setIsActive] = useState(initialIsActive);
+const Toggle = React.forwardRef<HTMLButtonElement, ToggleProps>(
+  ({ className, ...props }, ref) => {
+    const toggleClasses = ['toggle', className].filter(Boolean).join(' ');
 
-  const handleClick = () => {
-    const newIsActive = !isActive;
-    setIsActive(newIsActive);
-    onToggle?.(newIsActive);
-  };
+    return <RadixToggle.Root className={toggleClasses} ref={ref} {...props} />;
+  }
+);
 
-  const toggleButtonClasses = [
-    'toggle-button',
-    isActive ? 'toggle-button--active' : '',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
+Toggle.displayName = 'Toggle';
 
-  return (
-    <Button
-      className={toggleButtonClasses}
-      onClick={handleClick}
-      aria-pressed={isActive}
-      {...props}
-    >
-      {children}
-    </Button>
-  );
-};
+export { Toggle };

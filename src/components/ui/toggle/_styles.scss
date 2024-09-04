@@ -1,20 +1,44 @@
-// Add this at the end of your existing _styles.scss file
+.toggle {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1rem;
+  width: 1rem;
+  padding: 0.35rem;
+  border-radius: var(--radius);
+  background-color: var(--background);
+  color: var(--foreground);
+  font-size: 0.1rem;
+  line-height: 1;
 
-.toggle-button {
-  &--active {
-    background-color: var(--primary);
-    color: var(--primary-foreground);
+  transition:
+    background-color 0.15s ease-in-out,
+    color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
 
-    &:hover {
-      background-color: color-mix(in srgb, var(--primary) 90%, black);
-    }
+  &:hover {
+    background-color: var(--accent);
+  }
 
-    &.button--outline {
-      border-color: var(--primary);
-    }
+  &[data-state='on'] {
+    background-color: var(--foreground);
+    color: var(--background);
+  }
 
-    &.button--ghost {
-      background-color: color-mix(in srgb, var(--primary) 10%, transparent);
-    }
+  &:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 0 4px var(--ring);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &:active {
+    transform: scale(0.93);
   }
 }
