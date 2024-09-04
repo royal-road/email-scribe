@@ -1,4 +1,3 @@
-import React from 'react';
 import { BlockAttributes } from '..';
 
 function SelectionPanel({
