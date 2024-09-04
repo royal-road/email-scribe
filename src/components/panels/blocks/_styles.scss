@@ -362,9 +362,17 @@ textarea,
   }
 }
 
-textarea {
+.editorInput {
   resize: vertical;
   min-height: 8rem;
+  // Remove top left and right border radius
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  &:focus {
+    &.editor-toolbar {
+      border-color: color-mix(in srgb, var(--foreground) 90%, transparent);
+    }
+  }
 }
 
 input[type='color'] {
