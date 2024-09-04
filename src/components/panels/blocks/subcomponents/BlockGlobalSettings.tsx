@@ -137,30 +137,22 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <span
-          title={
-            indexOfSelectedBlocks.length === 0
-              ? 'Select multiple blocks to edit them together'
-              : 'Edit Multiple Blocks'
-          }
+        <Button
+          className='blockSettingsButton'
+          title='Edit multiple blocks'
+          variant='default'
+          disabled={indexOfSelectedBlocks?.length === 0}
+          size='icon'
+          style={{
+            padding: 0,
+            minWidth: '3rem',
+            maxWidth: '3rem',
+            minHeight: '3rem',
+            maxHeight: '3rem',
+          }}
         >
-          <Button
-            className='blockSettingsButton'
-            title='Edit multiple blocks'
-            variant='default'
-            disabled={indexOfSelectedBlocks?.length === 0}
-            size='icon'
-            style={{
-              padding: 0,
-              minWidth: '3rem',
-              maxWidth: '3rem',
-              minHeight: '3rem',
-              maxHeight: '3rem',
-            }}
-          >
-            <Settings2 />
-          </Button>
-        </span>
+          <Settings2 />
+        </Button>
       </PopoverTrigger>
       <PopoverContent
         side={isMobile ? 'bottom' : 'bottom'}
