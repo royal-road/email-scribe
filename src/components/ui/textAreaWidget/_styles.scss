@@ -1,0 +1,33 @@
+// Styles referenced through theme
+
+.editor-text-bold {
+  font-weight: bold;
+}
+
+.editor-text-italic {
+  font-style: italic;
+}
+
+.editor-text-underline {
+  text-decoration: underline;
+}
+
+.editor-text-strikethrough {
+  text-decoration: line-through;
+}
+
+.editor-text-underlineStrikethrough {
+  text-decoration: underline line-through;
+}
+
+// Personal styles for Toolbar
+
+.editor-toolbar {
+  width: 100%;
+  padding: 0.25rem;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: var(--radius);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
