@@ -1,21 +1,16 @@
 import { create } from 'zustand';
 import { temporal } from 'zundo';
-import { BlockState, BlockAttributes } from '../components/panels/blocks';
-
-interface HistoryEntry {
-  blocks: BlockState[];
-  attributes: BlockAttributes;
-}
+import { BlockState } from '../components/panels/blocks';
 
 interface EditorState {
-  history: HistoryEntry;
-  createHistory: (newHistory: HistoryEntry) => void;
+  history: BlockState[];
+  createHistory: (newHistory: BlockState[]) => void;
 }
 
 export const useEditorStore = create<EditorState>()(
   temporal(
     (set) => ({
-      history: { blocks: [], attributes: {} },
+      history: [],
       createHistory: (newHistory) => set({ history: newHistory }),
     }),
     { limit: 10 }

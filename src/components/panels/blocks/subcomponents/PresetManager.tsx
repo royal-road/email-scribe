@@ -17,7 +17,6 @@ import {
   Upload,
 } from 'lucide-react';
 import { handleExport, handleImport } from './utils/importExport';
-import { HistoryEntry } from '../../../../UndoRedoContext';
 
 export interface Preset {
   presetName: string;
@@ -30,7 +29,7 @@ interface PresetManagerProps {
   setBlocks: (blocks: BlockState[]) => void;
   getBlockAttributes: () => string;
   setBlockAttributes: (openStates: Record<string, BlockAttribute>) => void;
-  addToHistory: (entry: HistoryEntry) => void;
+  addToHistory: (entry: BlockState[]) => void;
 }
 
 const PresetManager: React.FC<PresetManagerProps> = ({
@@ -70,7 +69,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
             index++;
           });
           setBlockAttributes(openStates);
-          addToHistory({ blocks: blockState, attributes: openStates });
+          addToHistory(blockState);
         }
         setSelectedPresetName(null);
       }

@@ -55,20 +55,10 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     };
   });
 
-  const debouncedUpdateHistory = debounce(
-    (blocks: BlockState[], blockAttributes: BlockAttributes) => {
-      // console.log(blocks, blockAttributes);
-      createHistory({ blocks, attributes: blockAttributes });
-    },
-    1000
-  );
-
-  const updateHistory = (
-    blocks: BlockState[],
-    blockAttributes: BlockAttributes
-  ) => {
-    createHistory({ blocks, attributes: blockAttributes });
-  };
+  const debouncedCreateHistory = debounce((blocks: BlockState[]) => {
+    // console.log(blocks, blockAttributes);
+    createHistory(blocks);
+  }, 1000);
 
   useEffect(() => {
     if (
@@ -116,7 +106,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   }, [blockToFocus]);
 
   useEffect(() => {
-    setBlocks(history.blocks);
+    setBlocks(history);
     // setBlockAttributes(history.attributes);
   }, [history]);
 
@@ -200,7 +190,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         });
 
         // setTimeout(() => DebouncedUpdateHistory(newBlocks, blockAttributes), 0);
-        debouncedUpdateHistory(newBlocks, blockAttributes);
+        debouncedCreateHistory(newBlocks);
         // updateHistory();
         return newBlocks;
       });
@@ -230,18 +220,16 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       };
       return newBlockAttributes;
     }); // Open the block when added
-    updateHistory(newBlock, newBlockAttributes);
+    createHistory(newBlock);
   };
 
   const removeBlock = (index: number) => {
-    let newBlockAttributes: BlockAttributes = {};
     let newBlocks: BlockState[] = [];
     try {
       // console.log('remove block', index);
       setBlocks((prev) => {
         setBlockAttributes((prevStates) => {
           delete prevStates[removedBlock[0].instance.id];
-          newBlockAttributes = prevStates;
           return prevStates;
         });
         newBlocks = [...prev];
@@ -251,24 +239,22 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     } catch (e) {
       console.error(e);
     }
-    updateHistory(newBlocks, newBlockAttributes);
+    createHistory(newBlocks);
   };
 
   const removeBlocks = (indices: number[]) => {
-    let newBlockAttributes: BlockAttributes = {};
     let newBlocks: BlockState[] = [];
     setBlocks((prev) => {
       indices.forEach((index) => {
         setBlockAttributes((prevStates) => {
           delete prevStates[prev[index].instance.id];
-          newBlockAttributes = prevStates;
           return prevStates;
         });
       });
       newBlocks = prev.filter((_, i) => !indices.includes(i));
       return newBlocks;
     });
-    updateHistory(newBlocks, newBlockAttributes);
+    createHistory(newBlocks);
   };
 
   const moveBlock = (index: number, direction: 'up' | 'down') => {
@@ -280,7 +266,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       newBlocks.splice(direction === 'up' ? index - 1 : index + 1, 0, block);
       return newBlocks;
     });
-    updateHistory(newBlocks, blockAttributes);
+    createHistory(newBlocks);
   };
 
   const blockAttributesArray = () => {

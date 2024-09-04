@@ -1,5 +1,4 @@
 import { BlockAttribute, BlockState } from '../..';
-import { HistoryEntry } from '../../../../../UndoRedoContext';
 import { Preset } from '../PresetManager';
 import { jsonToBlocks } from './blockInstancer';
 
@@ -21,7 +20,7 @@ export const handleImport = (
   event: React.ChangeEvent<HTMLInputElement>,
   setBlocks: (blocks: BlockState[]) => void,
   setOpenStates: (openStates: Record<string, BlockAttribute>) => void,
-  addToHistory: (entry: HistoryEntry) => void
+  addToHistory: (entry: BlockState[]) => void
 ) => {
   const file = event.target.files?.[0];
   if (file) {
@@ -46,7 +45,7 @@ export const handleImport = (
           index++;
         });
         setOpenStates(openStates);
-        addToHistory({ blocks: blockState, attributes: openStates });
+        addToHistory(blockState);
       }
     };
     reader.readAsText(file);
