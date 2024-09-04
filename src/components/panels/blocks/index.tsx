@@ -1,5 +1,5 @@
 import { BlockRenderer } from './subcomponents/BlockRenderer';
-import { useState, useCallback, useRef, useEffect, useMemo } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { BlockInterface } from '../../../blocks/setup/Types';
 import debounce from 'debounce';
 import { ScrollArea } from '../../ui/scrollArea';
@@ -11,7 +11,7 @@ import { ScaffoldingBlock } from '../../../blocks/Scaffolding';
 import HtmlManager from './subcomponents/HtmlManager';
 import PresetManager from './subcomponents/PresetManager';
 import SelectionPanel from './subcomponents/SelectionPanel';
-import { useUndoRedo } from '../../../UndoRedoContext';
+import { useEditorStore } from '../../../hooks/undoRedoStore';
 
 export interface BlockState {
   instance: BlockInterface;
@@ -43,14 +43,9 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   onUpdateFinalHtml,
   blockToFocus,
 }) => {
-  const {
-    addToHistory,
-    getCurrentHistoryEntry,
-    hasUndoRedoOccurred,
-    setHasUndoRedoOccurred,
-  } = useUndoRedo();
   const [blocks, setBlocks] = useState<BlockState[]>([]);
   const [blockAttributes, setBlockAttributes] = useState<BlockAttributes>({});
+  const { createHistory, history } = useEditorStore();
   const [scaffoldSettings] = useState<BlockState>(() => {
     const instance = new ScaffoldingBlock() as BlockInterface;
     return {
@@ -60,24 +55,19 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     };
   });
 
-  useEffect(() => {
-    if (hasUndoRedoOccurred) {
-      const currentEntry = getCurrentHistoryEntry();
-      if (currentEntry) {
-        setBlocks(currentEntry.blocks);
-        setBlockAttributes(currentEntry.attributes);
-      }
-      setHasUndoRedoOccurred(false);
-    }
-  }, [hasUndoRedoOccurred, getCurrentHistoryEntry, setHasUndoRedoOccurred]);
+  const debouncedUpdateHistory = debounce(
+    (blocks: BlockState[], blockAttributes: BlockAttributes) => {
+      // console.log(blocks, blockAttributes);
+      createHistory({ blocks, attributes: blockAttributes });
+    },
+    1000
+  );
 
-  const DebouncedUpdateHistory = debounce((blocks, blockAttributes) => {
-    console.log(blocks, blockAttributes);
-    addToHistory({ blocks, attributes: blockAttributes });
-  }, 1000);
-
-  const updateHistory = () => {
-    addToHistory({ blocks, attributes: blockAttributes });
+  const updateHistory = (
+    blocks: BlockState[],
+    blockAttributes: BlockAttributes
+  ) => {
+    createHistory({ blocks, attributes: blockAttributes });
   };
 
   useEffect(() => {
@@ -124,6 +114,11 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       attemptScroll();
     }
   }, [blockToFocus]);
+
+  useEffect(() => {
+    setBlocks(history.blocks);
+    // setBlockAttributes(history.attributes);
+  }, [history]);
 
   const toggleCollapsibleOpen = (blockId: string) => {
     setBlockAttributes((prev) => ({
@@ -193,8 +188,8 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 
   const updateBlockData = useCallback(
     debounce((index: number, newData: object) => {
-      setBlocks((prevBlocks) =>
-        prevBlocks.map((block, i) => {
+      setBlocks((prevBlocks) => {
+        const newBlocks = prevBlocks.map((block, i) => {
           if (i === index) {
             const updatedData = { ...block.data, ...newData };
             block.instance.updateFormData(updatedData);
@@ -202,71 +197,90 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             return { ...block, data: updatedData };
           }
           return block;
-        })
-      );
-      DebouncedUpdateHistory(blocks, blockAttributes);
+        });
+
+        // setTimeout(() => DebouncedUpdateHistory(newBlocks, blockAttributes), 0);
+        debouncedUpdateHistory(newBlocks, blockAttributes);
+        // updateHistory();
+        return newBlocks;
+      });
     }, blocks.length + 5), // Debounce more based on whether there's more blocks
     []
   );
 
   const addBlock = (block: BlockInterface) => {
     // const newBlockInstance = BlockFactory.createBlock(type);
-    setBlocks((prev) => [
-      ...prev,
-      {
-        instance: block,
-        data: block.formData,
-        cachedHtml: block.generateHTML(block.id),
-      },
-    ]);
-    setBlockAttributes((prev) => ({
-      ...prev,
-      [block.id]: { isSelected: false, isOpen: false, isSsr: false },
-    })); // Open the block when added
-    updateHistory();
+    let newBlock: BlockState[] = [];
+    let newBlockAttributes: BlockAttributes = {};
+    setBlocks((prev) => {
+      newBlock = [
+        ...prev,
+        {
+          instance: block,
+          data: block.formData,
+          cachedHtml: block.generateHTML(block.id),
+        },
+      ];
+      return newBlock;
+    });
+    setBlockAttributes((prev) => {
+      newBlockAttributes = {
+        ...prev,
+        [block.id]: { isSelected: false, isOpen: false, isSsr: false },
+      };
+      return newBlockAttributes;
+    }); // Open the block when added
+    updateHistory(newBlock, newBlockAttributes);
   };
 
   const removeBlock = (index: number) => {
+    let newBlockAttributes: BlockAttributes = {};
+    let newBlocks: BlockState[] = [];
     try {
       // console.log('remove block', index);
       setBlocks((prev) => {
         setBlockAttributes((prevStates) => {
           delete prevStates[removedBlock[0].instance.id];
+          newBlockAttributes = prevStates;
           return prevStates;
         });
-        const newBlocks = [...prev];
+        newBlocks = [...prev];
         const removedBlock = newBlocks.splice(index, 1);
         return newBlocks;
       });
     } catch (e) {
       console.error(e);
     }
-    updateHistory();
+    updateHistory(newBlocks, newBlockAttributes);
   };
 
   const removeBlocks = (indices: number[]) => {
+    let newBlockAttributes: BlockAttributes = {};
+    let newBlocks: BlockState[] = [];
     setBlocks((prev) => {
       indices.forEach((index) => {
         setBlockAttributes((prevStates) => {
           delete prevStates[prev[index].instance.id];
+          newBlockAttributes = prevStates;
           return prevStates;
         });
       });
-      const newBlocks = prev.filter((_, i) => !indices.includes(i));
+      newBlocks = prev.filter((_, i) => !indices.includes(i));
       return newBlocks;
     });
-    updateHistory();
+    updateHistory(newBlocks, newBlockAttributes);
   };
 
   const moveBlock = (index: number, direction: 'up' | 'down') => {
+    let newBlocks: BlockState[] = [];
     setBlocks((prev) => {
-      const newBlocks = [...prev];
+      newBlocks = [...prev];
       const block = newBlocks[index];
       newBlocks.splice(index, 1);
       newBlocks.splice(direction === 'up' ? index - 1 : index + 1, 0, block);
       return newBlocks;
     });
-    updateHistory();
+    updateHistory(newBlocks, blockAttributes);
   };
 
   const blockAttributesArray = () => {
@@ -365,7 +379,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         setBlocks={setBlocks}
         getBlockAttributes={() => JSON.stringify(blockAttributesArray())}
         setBlockAttributes={setBlockAttributes}
-        addToHistory={addToHistory}
+        addToHistory={createHistory}
       />
       <HtmlManager
         getHtml={() => (blocks.length > 0 ? updateRenderedHtml() : '')}
