@@ -338,7 +338,12 @@ function handleTextLine(
       };
       schemaBundle.defaults[propName] = el.textContent || '';
     }
-    el.textContent = `{{${propName}}}`;
+    // Multi-line text should be wrapped in triple curly braces to render the html received from Lexical
+    if (tagName === 'singleline') {
+      el.textContent = `{{${propName}}}`;
+    } else {
+      el.textContent = `{{{${propName}}}}`;
+    }
 
     // Handle anchor tag if present
     handleAnchorTag(el, schemaBundle, propName);
