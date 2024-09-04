@@ -4,19 +4,17 @@ import {
   InitialConfigType,
   LexicalComposer,
 } from '@lexical/react/LexicalComposer';
-import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
-import { $getRoot, $createParagraphNode, $createTextNode } from 'lexical';
+import { $getRoot, EditorState, LexicalEditor, $insertNodes } from 'lexical';
 import { HeadingNode } from '@lexical/rich-text';
 import ToolbarPlugin from './toolbar';
-const theme = {
-  // Theme styling goes here
-  // ...
-};
+import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
+import { baseLexicalTheme } from './theme';
 
 function AutoFocusPlugin() {
   const [editor] = useLexicalComposerContext();
@@ -33,14 +31,14 @@ function InitialValuePlugin({ initialValue }: { initialValue: string }) {
 
   useEffect(() => {
     editor.update(() => {
-      const root = $getRoot();
-      if (root.getTextContent() === '') {
-        const paragraph = $createParagraphNode();
-        paragraph.append($createTextNode(initialValue));
-        root.append(paragraph);
-      }
+      const parser = new DOMParser();
+      const dom = parser.parseFromString(initialValue, 'text/html');
+      const nodes = $generateNodesFromDOM(editor, dom);
+      $getRoot().select();
+      $getRoot().clear();
+      $insertNodes(nodes);
     });
-  }, [editor, initialValue]);
+  }, []);
 
   return null;
 }
@@ -49,11 +47,12 @@ export const LexicalWidget: React.FC<WidgetProps> = (props) => {
   const { onChange, value, id, disabled, readonly } = props;
 
   const handleChange = useCallback(
-    (editorState: any) => {
+    (editorState: EditorState, editor: LexicalEditor) => {
       editorState.read(() => {
-        const root = $getRoot();
-        const text = root.getTextContent();
-        onChange(text);
+        // const root = $getRoot();
+        const htmlString = $generateHtmlFromNodes(editor);
+        console.log(htmlString);
+        onChange(htmlString);
       });
     },
     [onChange]
@@ -61,15 +60,15 @@ export const LexicalWidget: React.FC<WidgetProps> = (props) => {
 
   const initialConfig: InitialConfigType = {
     namespace: 'RJSFEditor',
-    theme,
-    onError: (error: any) => console.error(error),
+    theme: baseLexicalTheme,
+    onError: (error: Error) => console.error(error),
     nodes: [HeadingNode],
   };
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
       <ToolbarPlugin />
-      <PlainTextPlugin
+      <RichTextPlugin
         contentEditable={
           <ContentEditable
             id={id}
