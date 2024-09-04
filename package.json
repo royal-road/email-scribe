@@ -13,6 +13,7 @@
   "dependencies": {
     "@css-inline/css-inline": "^0.14.1",
     "@formkit/auto-animate": "^0.8.2",
+    "@lexical/react": "^0.17.1",
     "@radix-ui/react-collapsible": "^1.1.0",
     "@radix-ui/react-popover": "^1.1.1",
     "@radix-ui/react-scroll-area": "^1.1.0",
@@ -25,6 +26,7 @@
     "@types/uuid": "^10.0.0",
     "debounce": "^2.1.0",
     "handlebars": "^4.7.8",
+    "lexical": "^0.17.1",
     "lucide-react": "^0.428.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

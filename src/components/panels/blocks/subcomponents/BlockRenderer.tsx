@@ -15,6 +15,7 @@ import { FileUploadWidget } from '../../../ui/fileUploadWidget';
 import useFitText from 'use-fit-text';
 import useLongPress from '../../../../hooks/useLongPress';
 import { useEffect } from 'react';
+import { LexicalWidget } from '../../../ui/textAreaWidget';
 
 interface BlockRendererProps {
   isTop: boolean;
@@ -53,6 +54,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
 }) => {
   const widgets: RegistryWidgetsType = {
     FileWidget: FileUploadWidget,
+    TextareaWidget: LexicalWidget,
   };
 
   const { fontSize, ref } = useFitText();

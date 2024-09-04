@@ -1,0 +1,20 @@
+// Add this at the end of your existing _styles.scss file
+
+.toggle-button {
+  &--active {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+
+    &:hover {
+      background-color: color-mix(in srgb, var(--primary) 90%, black);
+    }
+
+    &.button--outline {
+      border-color: var(--primary);
+    }
+
+    &.button--ghost {
+      background-color: color-mix(in srgb, var(--primary) 10%, transparent);
+    }
+  }
+}
