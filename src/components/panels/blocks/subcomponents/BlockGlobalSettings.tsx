@@ -17,6 +17,7 @@ import { Switch } from '../../../ui/switch';
 import { ConfirmButton } from '../../../ui/ConfirmButton';
 import InputPopover from '../../../ui/InputPopover';
 import { LexicalWidget } from '../../../ui/textAreaWidget';
+import { ColorPickerWidget } from '../../../ui/ColorWidget';
 
 interface BlockGlobalSettingsProps {
   blocks: BlockState[];
@@ -43,6 +44,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
   const widgets: RegistryWidgetsType = {
     FileWidget: FileUploadWidget,
     TextareaWidget: LexicalWidget,
+    ColorWidget: ColorPickerWidget,
   };
 
   function generateDiff(
