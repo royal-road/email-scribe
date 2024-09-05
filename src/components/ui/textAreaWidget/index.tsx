@@ -6,15 +6,17 @@ import {
 } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { $getRoot, EditorState, LexicalEditor, $insertNodes } from 'lexical';
 import { HeadingNode } from '@lexical/rich-text';
-import ToolbarPlugin from './toolbar';
+import ToolbarPlugin from './Toolbar';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { baseLexicalTheme } from './theme';
+import AutoLinkPlugin from './AutoLinkPlugin';
 
 function AutoFocusPlugin() {
   const [editor] = useLexicalComposerContext();
@@ -38,7 +40,7 @@ function InitialValuePlugin({ initialValue }: { initialValue: string }) {
       $getRoot().clear();
       $insertNodes(nodes);
     });
-  }, []);
+  }, [initialValue]);
 
   return null;
 }
@@ -51,7 +53,8 @@ export const LexicalWidget: React.FC<WidgetProps> = (props) => {
       editorState.read(() => {
         // const root = $getRoot();
         const htmlString = $generateHtmlFromNodes(editor);
-        console.log(htmlString);
+        // console.log(htmlString);
+        if (htmlString === value) return;
         onChange(htmlString);
       });
     },
@@ -62,7 +65,7 @@ export const LexicalWidget: React.FC<WidgetProps> = (props) => {
     namespace: 'RJSFEditor',
     theme: baseLexicalTheme,
     onError: (error: Error) => console.error(error),
-    nodes: [HeadingNode],
+    nodes: [HeadingNode, AutoLinkNode, LinkNode],
   };
 
   return (
@@ -80,7 +83,9 @@ export const LexicalWidget: React.FC<WidgetProps> = (props) => {
         ErrorBoundary={LexicalErrorBoundary}
       />
       <OnChangePlugin onChange={handleChange} />
-      <HistoryPlugin />
+      {/* <HistoryPlugin /> */}
+      <LinkPlugin />
+      <AutoLinkPlugin />
       <AutoFocusPlugin />
       <InitialValuePlugin initialValue={value || ''} />
     </LexicalComposer>
