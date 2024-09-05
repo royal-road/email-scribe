@@ -9,7 +9,7 @@ export const ColorPickerWidget: React.FC<WidgetProps> = (props) => {
   const debouncedOnChange = useCallback(
     debounce((newColor: string) => {
       onChange(newColor);
-    }, 300),
+    }, 200),
     [onChange]
   );
 
