@@ -16,6 +16,7 @@ import { FileUploadWidget } from '../../../ui/fileUploadWidget';
 import { Switch } from '../../../ui/switch';
 import { ConfirmButton } from '../../../ui/ConfirmButton';
 import InputPopover from '../../../ui/InputPopover';
+import { LexicalWidget } from '../../../ui/textAreaWidget';
 
 interface BlockGlobalSettingsProps {
   blocks: BlockState[];
@@ -24,6 +25,7 @@ interface BlockGlobalSettingsProps {
   removeBlocks: (index: number[]) => void;
   getSsr: (index: string) => string | false;
   setSsr: (blockId: string, ssr: string | false) => void;
+  debouncedHistoryUpdate: (blocks: BlockState[]) => void;
 }
 
 export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
@@ -33,31 +35,34 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
   removeBlocks,
   getSsr,
   setSsr,
+  debouncedHistoryUpdate,
 }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [mutualSchema, setMutualSchemas] = useState<Partial<BlockConfig>>({});
   const [isUnionMode, setIsUnionMode] = useState(true);
   const widgets: RegistryWidgetsType = {
     FileWidget: FileUploadWidget,
+    TextareaWidget: LexicalWidget,
   };
 
   const updateGlobalBlockData = useCallback(
     (updates: Array<{ index: number; newData: object }>) => {
-      setBlocks((prevBlocks) =>
-        prevBlocks.map((block, i) => {
+      setBlocks((prevBlocks) => {
+        const newBlocks = prevBlocks.map((block, i) => {
           const update = updates.find((u) => u.index === i);
           if (update && getSsr(block.instance.id) === false) {
             const updatedData = { ...block.data, ...update.newData };
 
             block.instance.updateFormData(updatedData);
             block.cachedHtml = block.instance.generateHTML(block.instance.id);
-            console.log('updating form data', updatedData);
 
             return { ...block, data: updatedData };
           }
           return block;
-        })
-      );
+        });
+        debouncedHistoryUpdate(newBlocks);
+        return newBlocks;
+      });
     },
     []
   );
@@ -65,7 +70,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
   const onGlobalBlockDataChange = debounce((newData: object) => {
     const updates = indexOfSelectedBlocks?.map((index) => ({ index, newData }));
     updateGlobalBlockData(updates);
-  }, 20);
+  }, 30);
 
   useEffect(() => {
     const schema: RJSFSchema = {

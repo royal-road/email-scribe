@@ -299,6 +299,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         <BlockSelector addBlock={addBlock} />
         <BlockGlobalSettings
           blocks={blocks}
+          debouncedHistoryUpdate={debouncedCreateHistory}
           setBlocks={setBlocks}
           removeBlocks={removeBlocks}
           getSsr={getIsSSR}
