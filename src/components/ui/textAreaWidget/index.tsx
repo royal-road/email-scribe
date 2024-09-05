@@ -33,6 +33,9 @@ function InitialValuePlugin({ initialValue }: { initialValue: string }) {
 
   useEffect(() => {
     editor.update(() => {
+      const htmlString = $generateHtmlFromNodes(editor);
+      if (htmlString === initialValue) return;
+
       const parser = new DOMParser();
       const dom = parser.parseFromString(initialValue, 'text/html');
       const nodes = $generateNodesFromDOM(editor, dom);
