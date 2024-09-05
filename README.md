@@ -31,12 +31,14 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 
 - [x] Remove all Stampready data-attributes from the final HTML because they're not valid html attributes and might cause issues. (Same for singleline, multiline tags)
 - [] Header-BG-color stops working if a new Header-BG is provided. - Might need to first add image then reapply bg
+- [] Undo Redo gets borked after doing bold/italics etc through Lexical. (Do 1 undo, then try redo (it'll fail), do another undo, and it'll appear, but now will not actually do enough redos and always have 'canRedo' true)
+- [x] Block Global Settings have stopped working since adding undo/redo (or lexical)
 
 ## Features in Mind
 
 - [X]Search for blocks, better tagging, filter by tags
 - [X]Add a way to edit global settings for selected blocks at once.
-- Templating for iterated items for server-side rendering.
+- [x] Templating for iterated items for server-side rendering.
 - [X]Better layout for Collpablisble's closed state. (not very responsive rn)
 
 ### Next set of features 26th Aug
