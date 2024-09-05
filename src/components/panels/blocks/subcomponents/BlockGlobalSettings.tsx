@@ -52,7 +52,6 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
           const update = updates.find((u) => u.index === i);
           if (update && getSsr(block.instance.id) === false) {
             const updatedData = { ...block.data, ...update.newData };
-
             block.instance.updateFormData(updatedData);
             block.cachedHtml = block.instance.generateHTML(block.instance.id);
 
@@ -64,7 +63,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
         return newBlocks;
       });
     },
-    []
+    [debouncedHistoryUpdate, getSsr, setBlocks]
   );
 
   const onGlobalBlockDataChange = debounce((newData: object) => {

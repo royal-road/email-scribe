@@ -16,10 +16,10 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 
 - [x] Fix Import
 - [] Make a RR-Specific Template w/ footer and everything
-- [-] Do a better job of showing multiple block settings w/ visual language
-- [-] Add Undo/Redo
+- [x] Do a better job of showing multiple block settings w/ visual language
+- [x] Add Undo/Redo
 - [] Look into better grouping of editables (low-priority)
-- [] Better Markup in multiline Text Editors (no links in singleLines)
+- [x] Better Markup in multiline Text Editors (no links in singleLines) -> Lexical
 - [x] (SSR has been implemented) Templating for unsubscribe Button Kinda already exists w/ the wip templating
 
 ## Possibly useful features
@@ -30,7 +30,8 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 ## ISSUES TO SOLVE (28)
 
 - [x] Remove all Stampready data-attributes from the final HTML because they're not valid html attributes and might cause issues. (Same for singleline, multiline tags)
-- [] Header-BG-color stops working if a new Header-BG is provided. - Might need to first add image then reapply bg
+- [x] Header-BG-color stops working if a new Header-BG is provided. - Might need to first add image then reapply bg
+  - Haha, it wasn't that providing new bg overwrites the color, it was that the default image is transparent, so the color was showing through, which can be hard to force in the App without specific indication inside template (couldn't find any).
 - [] Undo Redo gets borked after doing bold/italics etc through Lexical. (Do 1 undo, then try redo (it'll fail), do another undo, and it'll appear, but now will not actually do enough redos and always have 'canRedo' true)
 - [x] Block Global Settings have stopped working since adding undo/redo (or lexical)
 
@@ -47,7 +48,7 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 
 ### Next set of features 27th Aug
 
-- [] Add a way to edit global settings for selected blocks at once.
+- [x] Add a way to edit global settings for selected blocks at once.
 - [x] Add an iframe-to-editor binding. (So that when a block is selected, it's properties are shown in the editor)
   - Add ids to actual elements based on propname
   - Add ids to Collapsibles, each form item already has id.
