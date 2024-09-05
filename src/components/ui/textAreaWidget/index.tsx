@@ -59,9 +59,7 @@ export const LexicalWidget: React.FC<WidgetProps> = (props) => {
       editorState.read(() => {
         // const root = $getRoot();
         const htmlString = $generateHtmlFromNodes(editor);
-        // console.log(htmlString);
         if (htmlString === value) return;
-        console.log('onChange', htmlString);
         onChange(htmlString);
       });
     },
