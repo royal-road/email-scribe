@@ -17,14 +17,14 @@ export const UndoRedoProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { undo, redo, pastStates, futureStates } =
     useEditorStore.temporal.getState();
-
+  console.log('pastStates', pastStates.length, futureStates.length);
   return (
     <UndoRedoContext.Provider
       value={{
         undo,
         redo,
-        canUndo: !!pastStates.length,
-        canRedo: !!futureStates.length,
+        canUndo: pastStates.length !== 0,
+        canRedo: futureStates.length !== 0,
       }}
     >
       {children}

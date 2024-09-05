@@ -45,24 +45,19 @@ export default function ToolbarPlugin() {
       const node = getSelectedNode(selection);
       const parent = node?.getParent();
       if ($isLinkNode(parent)) {
-        // console.log('parent', isLink, linkUrl);
         setLinkUrl(parent.getURL());
         setIsLink(true);
       } else if ($isLinkNode(node)) {
-        // console.log('node', isLink, linkUrl);
         setLinkUrl(node.getURL());
         setIsLink(true);
       } else {
-        // console.log('no link', isLink, linkUrl);
         setLinkUrl('');
         setIsLink(false);
       }
     }
   }, [editor]);
 
-  useEffect(() => {
-    console.log('useEffect', isLink, linkUrl);
-  }, [isLink, linkUrl]);
+  useEffect(() => {}, [isLink, linkUrl]);
 
   useEffect(() => {
     return mergeRegister(

@@ -23,13 +23,17 @@ const PreviewPanelHeader: React.FC<PreviewPanelHeaderProps> = ({ bp }) => {
         <h4>Preview</h4>
       </div>
       <div style={{ display: 'flex', gap: '0.5rem' }}>
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', gap: '0' }}>
           <Button
             title='Undo'
             onClick={() => undo()}
             variant='outline'
             size='icon'
             disabled={!canUndo}
+            style={{
+              borderBottomRightRadius: 0,
+              borderTopRightRadius: 0,
+            }}
           >
             <Undo2 />
           </Button>
@@ -39,6 +43,10 @@ const PreviewPanelHeader: React.FC<PreviewPanelHeaderProps> = ({ bp }) => {
             variant='outline'
             size='icon'
             disabled={!canRedo}
+            style={{
+              borderBottomLeftRadius: 0,
+              borderTopLeftRadius: 0,
+            }}
           >
             <Redo2 />
           </Button>
