@@ -27,13 +27,14 @@ This is a simple SPA to build an email newsletter from Block-like UI.
 - [] Duplicate Block
 - [] Reset Block Properties (or individual fields)
 
-## ISSUES TO SOLVE (28)
+## ISSUES TO SOLVE
 
 - [x] Remove all Stampready data-attributes from the final HTML because they're not valid html attributes and might cause issues. (Same for singleline, multiline tags)
 - [x] Header-BG-color stops working if a new Header-BG is provided. - Might need to first add image then reapply bg
   - Haha, it wasn't that providing new bg overwrites the color, it was that the default image is transparent, so the color was showing through, which can be hard to force in the App without specific indication inside template (couldn't find any).
 - [] Undo Redo gets borked after doing bold/italics etc through Lexical. (Do 1 undo, then try redo (it'll fail), do another undo, and it'll appear, but now will not actually do enough redos and always have 'canRedo' true)
 - [x] Block Global Settings have stopped working since adding undo/redo (or lexical)
+- [x] Global settings application doesn't apply 'diff' changes, but rather 'overrites all.' This makes it so if we have 2 copies of same modules and we try to change let's say 'buttonColor', it'll also override the other props like 'backgroundImage' of the other copy, even if we didn't want to.
 
 ## Features in Mind
 

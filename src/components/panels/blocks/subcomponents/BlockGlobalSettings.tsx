@@ -45,13 +45,29 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
     TextareaWidget: LexicalWidget,
   };
 
+  function generateDiff(
+    oldData: Record<string, unknown>,
+    newData: Record<string, unknown>
+  ) {
+    const diff: Partial<typeof newData> = {};
+    for (const key in newData) {
+      if (Object.prototype.hasOwnProperty.call(newData, key)) {
+        if (JSON.stringify(oldData[key]) !== JSON.stringify(newData[key])) {
+          diff[key] = newData[key];
+        }
+      }
+    }
+    return diff;
+  }
+
   const updateGlobalBlockData = useCallback(
-    (updates: Array<{ index: number; newData: object }>) => {
+    (updates: Array<{ index: number; newData: Record<string, unknown> }>) => {
       setBlocks((prevBlocks) => {
         const newBlocks = prevBlocks.map((block, i) => {
           const update = updates.find((u) => u.index === i);
           if (update && getSsr(block.instance.id) === false) {
-            const updatedData = { ...block.data, ...update.newData };
+            const diff = generateDiff(block.data, update.newData);
+            const updatedData = { ...block.data, ...diff };
             block.instance.updateFormData(updatedData);
             block.cachedHtml = block.instance.generateHTML(block.instance.id);
 
@@ -66,10 +82,16 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
     [debouncedHistoryUpdate, getSsr, setBlocks]
   );
 
-  const onGlobalBlockDataChange = debounce((newData: object) => {
-    const updates = indexOfSelectedBlocks?.map((index) => ({ index, newData }));
-    updateGlobalBlockData(updates);
-  }, 30);
+  const onGlobalBlockDataChange = debounce(
+    (changedField: Record<string, unknown>) => {
+      const updates = indexOfSelectedBlocks?.map((index) => ({
+        index,
+        newData: changedField,
+      }));
+      updateGlobalBlockData(updates);
+    },
+    30
+  );
 
   useEffect(() => {
     const schema: RJSFSchema = {
@@ -224,7 +246,19 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
             uiSchema={mutualSchema.uiSchema}
             formData={mutualSchema.defaultValues}
             validator={validator}
-            onChange={(e) => onGlobalBlockDataChange(e.formData)}
+            onChange={(e) => {
+              const changedField: Record<string, unknown> = {};
+              for (const key in e.formData) {
+                if (!mutualSchema?.defaultValues) return;
+                if (
+                  JSON.stringify(mutualSchema.defaultValues[key]) !==
+                  JSON.stringify(e.formData[key])
+                ) {
+                  changedField[key] = e.formData[key];
+                }
+              }
+              onGlobalBlockDataChange(changedField);
+            }}
             className='blockForm'
             children={true}
             widgets={widgets}
