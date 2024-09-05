@@ -1,3 +1,6 @@
+// Most stuff pulled from here: https://codesandbox.io/p/sandbox/vigilant-kate-5tncvy?file=%2Fsrc%2Fthemes%2FExampleTheme.js%3A67%2C3
+// And here: https://lexical.dev/docs/concepts/serialization
+
 import React, { useCallback, useEffect } from 'react';
 import { WidgetProps } from '@rjsf/utils';
 import {
@@ -58,6 +61,7 @@ export const LexicalWidget: React.FC<WidgetProps> = (props) => {
         const htmlString = $generateHtmlFromNodes(editor);
         // console.log(htmlString);
         if (htmlString === value) return;
+        console.log('onChange', htmlString);
         onChange(htmlString);
       });
     },
@@ -85,7 +89,7 @@ export const LexicalWidget: React.FC<WidgetProps> = (props) => {
         placeholder={<div>Enter some text...</div>}
         ErrorBoundary={LexicalErrorBoundary}
       />
-      <OnChangePlugin onChange={handleChange} />
+      <OnChangePlugin onChange={handleChange} ignoreSelectionChange />
       {/* <HistoryPlugin /> */}
       <LinkPlugin />
       <AutoLinkPlugin />
