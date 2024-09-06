@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { temporal } from 'zundo';
-import { BlockState } from '../components/panels/blocks';
+import { BlockState } from '@/panels/blocks';
 
 interface EditorState {
   history: BlockState[];
