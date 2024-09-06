@@ -1,6 +1,6 @@
 # Email Editor SPA
 
-A feature-rich, embeddable email editor Single Page Application (SPA) designed for creating modular, email-safe designs. This pseudo WYSIWYG editor allows you to build emails using pre-existing template modules, ensuring compatibility across various email clients.
+A feature-rich, embeddable email editor (<350kb gzipped), designed for creating modular, email-safe designs. This semi-WYSIWYG editor allows you to build emails using pre-existing template modules, ensuring compatibility across various email clients.
 ![Email Editor](docs/Primary.png)
 
 ## Key Features
@@ -9,6 +9,9 @@ A feature-rich, embeddable email editor Single Page Application (SPA) designed f
 
 <div align="center"><img src="docs/AddModules.png" width="500" alt="Add Block"></div>
 
+- **Embeddable SPA**: Completely isolated CSS to prevent conflicts with parent application styles that builds to a single js+css.
+
+
 - **Export and Import**: Save your work as JSON, import previously saved designs, and save/load from server.
 
 - **Download Safe HTML**: Generate and download sanitized, email-safe HTML.
@@ -16,8 +19,6 @@ A feature-rich, embeddable email editor Single Page Application (SPA) designed f
 - **Responsive Preview**: View your design across multiple device sizes (mobile, tablet, PC).
 
 - **Theme Support**: Light/Dark mode that can sync with the parent application (defaults to 'theme-dark' class on body).
-
-- **CSS Isolation**: Completely isolated CSS to prevent conflicts with parent application styles.
 
 - **Mock Express Server**: Includes a mock server for image upload (with resizing), template serving, and preset management.
 
@@ -40,7 +41,7 @@ A feature-rich, embeddable email editor Single Page Application (SPA) designed f
 
 ### Development
 
-- First run `bun serve` to start the server (for image uploads, template serving, and preset management)
+- First run `bun run serve` to start the server (for image uploads, template serving, and preset management)
 - Then in a new terminal, run `bun run dev`
 
 ### Production
@@ -68,11 +69,10 @@ VITE_TEMPLATE_ID=Template1,Template2,Template3
 
 (These vars are used for build, client querying as well as mock server)
 
-For production, ensure your server can handle image uploads (potentially to a cloud storage bucket or equivalent) and preset storage with your preferred implementation.
 
 ## Project Structure
 
-The project is a React SPA using Tanstack Query for data fetching, Zustand for state management, Radix components for UI, Handlebars for templating alognside other minor packages.
+The project is a React SPA (Single Page Application) that uses Tanstack Query for data fetching, Zustand for state management, Radix components for UI, Handlebars for templating alognside other minor packages for various tasks.
 ![Project Structure](docs/ProjectStructure.png)
 
 ## Embedding
