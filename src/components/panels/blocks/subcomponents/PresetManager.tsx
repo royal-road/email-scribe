@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 import { Button } from '@components/button';
-import { Popover, PopoverTrigger, PopoverContent } from '../../../ui/popover';
+import { Popover, PopoverTrigger, PopoverContent } from '@components/popover';
 import { usePresetManager } from '../hooks/presets';
 import { BlockAttribute, BlockState } from '..';
 import { jsonToBlocks } from './utils/blockInstancer';
-import InputPopover from '../../../ui/InputPopover';
-import { ScrollArea } from '../../../ui/scrollArea';
-import { ConfirmButton } from '../../../ui/ConfirmButton';
+import InputPopover from '@components/InputPopover';
+import { ScrollArea } from '@components/scrollArea';
+import { ConfirmButton } from '@components/ConfirmButton';
 import {
   CloudDownload,
   CloudUpload,

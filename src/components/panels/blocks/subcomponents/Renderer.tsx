@@ -8,15 +8,15 @@ import { Button } from '@components/button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import Form from '@rjsf/core';
 import validator from '@rjsf/validator-ajv8';
-import ReorderDeleteGroup from '../../../ui/ReorderDeleteGroup';
+import ReorderDeleteGroup from '@components/ReorderDeleteGroup';
 import { camelToTitleCase } from '../../../../../lib/utils';
 import { RegistryWidgetsType } from '@rjsf/utils';
-import { FileUploadWidget } from '../../../ui/fileUploadWidget';
+import { FileUploadWidget } from '@components/fileUploadWidget';
 import useFitText from 'use-fit-text';
 import useLongPress from '../../../../hooks/useLongPress';
 import { useEffect } from 'react';
-import { LexicalWidget } from '../../../ui/textAreaWidget';
-import { ColorPickerWidget } from '../../../ui/ColorWidget';
+import { LexicalWidget } from '@components/textAreaWidget';
+import { ColorPickerWidget } from '@components/ColorWidget';
 
 interface BlockRendererProps {
   isTop: boolean;

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Button } from '@components/button';
 import { PlusCircle } from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from '../../../ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@components/popover';
 import BlockMeta from './Meta';
-import { ScrollArea } from '../../../ui/scrollArea';
+import { ScrollArea } from '@components/scrollArea';
 import { useMediaQuery } from '../../../../hooks/useMediaQuery';
 import { BlockInterface } from '../../../../blocks/setup/Types';
 import { useTemplateManager } from '../hooks/template';
 import { propNameToTitle } from '../../../../blocks/parser/utils';
-import { BlockFilter } from '../../../ui/BlockFilter';
+import { BlockFilter } from '@components/BlockFilter';
 
 interface BlockSelectorProps {
   addBlock: (type: BlockInterface) => void;

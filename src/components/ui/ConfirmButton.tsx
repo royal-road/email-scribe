@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, ButtonProps } from '../ui/button';
+import { Button, ButtonProps } from '@components/button';
 
 interface ConfirmButtonProps extends Omit<ButtonProps, 'onClick'> {
   onConfirm: () => void;

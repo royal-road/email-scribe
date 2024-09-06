@@ -15,13 +15,13 @@ import { RegistryWidgetsType, RJSFSchema, UiSchema } from '@rjsf/utils';
 import validator from '@rjsf/validator-ajv8';
 import { BlockConfig } from '../../../../../blocks/setup/Base';
 import Form from '@rjsf/core';
-import { ScrollArea } from '../../../../ui/scrollArea';
-import { FileUploadWidget } from '../../../../ui/fileUploadWidget';
-import { Switch } from '../../../../ui/switch';
-import { ConfirmButton } from '../../../../ui/ConfirmButton';
-import InputPopover from '../../../../ui/InputPopover';
-import { LexicalWidget } from '../../../../ui/textAreaWidget';
-import { ColorPickerWidget } from '../../../../ui/ColorWidget';
+import { ScrollArea } from '@components/scrollArea';
+import { FileUploadWidget } from '@components/fileUploadWidget';
+import { Switch } from '@components/switch';
+import { ConfirmButton } from '@components/ConfirmButton';
+import InputPopover from '@components/InputPopover';
+import { LexicalWidget } from '@components/textAreaWidget';
+import { ColorPickerWidget } from '@components/ColorWidget';
 
 interface BlockGlobalSettingsProps {
   blocks: BlockState[];
