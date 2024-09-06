@@ -1,7 +1,7 @@
 import { BlockState } from '..';
-import { BaseBlock, ConcreteBlockClass } from '@/blocks/setup/Base';
-import { BlockInterface, BlockMetadata } from '@/blocks/setup/Types';
-import { templatify } from '@/blocks/utils/templater';
+import { BaseBlock, ConcreteBlockClass } from '@/parser/setup/Base';
+import { BlockInterface, BlockMetadata } from '@/parser/setup/Types';
+import { templatify } from '@/parser/utils/templater';
 import { Preset } from '../managers/PresetManager';
 
 export const jsonToBlocks = (jsonString: string) => {

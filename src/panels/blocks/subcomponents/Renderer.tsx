@@ -1,4 +1,4 @@
-import { BlockInterface } from '@/blocks/setup/Types';
+import { BlockInterface } from '@/parser/setup/Types';
 import {
   Collapsible,
   CollapsibleContent,

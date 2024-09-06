@@ -1,6 +1,6 @@
-import { BlockMetadata } from './setup/Types';
-import { BaseBlock } from './setup/Base';
-import { templatify } from './utils/templater';
+import { BlockMetadata } from '../setup/Types';
+import { BaseBlock } from '../setup/Base';
+import { templatify } from '../utils/templater';
 import { v4 as uuidv4 } from 'uuid';
 
 const meta: BlockMetadata = {

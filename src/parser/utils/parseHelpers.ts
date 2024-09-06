@@ -4,8 +4,6 @@ export function getDefaultStyleValue(
   attrToChange: string = 'style'
 ): string | undefined {
   const styleDict = parseInlineStyle(el, attrToChange);
-  //   if (!styleDict[styleAttr])
-  //   console.log(el, styleDict, styleAttr);
   return styleDict[styleAttr] || undefined;
 }
 
@@ -17,9 +15,7 @@ export function setInlineStyle(
   const styleString = Object.entries(styles)
     .map(([property, value]) => `${property}: ${value}`)
     .join('; ');
-  //   console.log("PRE: ", element, styleString);
   element.setAttribute(attrToChange, styleString);
-  //   console.log("POST: ", element, styleString);
 }
 
 export function parseInlineStyle(

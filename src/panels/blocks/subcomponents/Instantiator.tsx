@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Button } from '@components/button';
 import { PlusCircle } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@components/popover';
-import BlockMeta from './Meta';
+import BlockMeta from '@/panels/blocks/subcomponents/Meta';
 import { ScrollArea } from '@components/scrollArea';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { BlockInterface } from '@/blocks/setup/Types';
-import { useTemplateManager } from '../hooks/template';
-import { propNameToTitle } from '@/blocks/parser/utils';
+import { BlockInterface } from '@/parser/setup/Types';
+import { useTemplateManager } from '@/panels/blocks/hooks/template';
+import { propNameToTitle } from '@/parser/utils/parseHelpers';
 import { BlockFilter } from '@components/BlockFilter';
 
 interface BlockInstantiatorProps {

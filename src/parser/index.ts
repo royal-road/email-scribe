@@ -1,8 +1,8 @@
 import { RJSFSchema, UiSchema } from '@rjsf/utils';
 import { v4 as uuidv4 } from 'uuid';
-import { BaseBlock, ConcreteBlockClass } from '../setup/Base';
-import { BlockMetadata } from '../setup/Types';
-import { templatify } from '../utils/templater';
+import { BaseBlock, ConcreteBlockClass } from '@/parser/setup/Base';
+import { BlockMetadata } from '@/parser/setup/Types';
+import { templatify } from '@/parser/utils/templater';
 import {
   getDefaultStyleValue,
   isRelativeUrl,
@@ -10,8 +10,8 @@ import {
   parseInlineStyle,
   propNameToTitle,
   setInlineStyle,
-} from './utils';
-import { camelToTitleCase } from '../../../lib/utils';
+} from '@/parser/utils/parseHelpers';
+import { camelToTitleCase } from '@lib/utils';
 
 export function parseTemplate(content: string, templateName: string) {
   const parser = new DOMParser();
