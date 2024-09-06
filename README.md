@@ -11,11 +11,6 @@ A feature-rich, embeddable email editor Single Page Application (SPA) designed f
 
 - **Export and Import**: Save your work as JSON, import previously saved designs, and save/load from server.
 
-<div align="center" style="display:flex;justify-content:center;align-items:center; gap:1rem">
-   <img src="docs/SavePresets.png" width="100" alt="Save Presets">
-   <img src="docs/LoadPresets.png" width="100" alt="Load Presets">
-</div>
-
 - **Download Safe HTML**: Generate and download sanitized, email-safe HTML.
 
 - **Responsive Preview**: View your design across multiple device sizes (mobile, tablet, PC).
@@ -26,13 +21,33 @@ A feature-rich, embeddable email editor Single Page Application (SPA) designed f
 
 - **Mock Express Server**: Includes a mock server for image upload (with resizing), template serving, and preset management.
 
-- **Server-Side Rendering Support**: Convert module variables into placeholders for server-side data injection.
+- **Bulk Settings**: Change overlapping/merged settings for multiple blocks simultaneously.
+
+- **Server-Side Rendering Support**: Enables dynamic content injection via server-side processing.
+  - Converts editable fields to placeholders (e.g., `%field_name%`)
+  - Wraps blocks in uniquely identified templates
+  - Facilitates iterative data population on the server
 
 <div align="center"><img src="docs/SSR.png" width="500" alt="SSR Support"></div>
 
-- **Bulk Settings**: Change overlapping/merged settings for multiple blocks simultaneously.
+## How to run
 
-<div align="center"><img src="docs/CombinedSettings.png" width="300" alt="Combined Settings"></div>
+- Clone the repo
+- Run `bun i`
+- Extract your templates in `Templates` folder
+  - The folder structure should be like `Templates/xyzTemplate/` and `index.html` should be inside it alongside any images it needs. They'll be used relatively.
+  - Suggested/Tested template: [Matah Responsive Email Set](https://themeforest.net/item/matah-responsive-email-set/10569882)
+
+### Development
+
+- First run `bun serve` to start the server (for image uploads, template serving, and preset management)
+- Then in a new terminal, run `bun run dev`
+
+### Production
+
+- `bun run build` followed by `bun run serve` (or your preferred server).
+
+(All bun commands can be replaced with your preferred package manager/runtime environment)
 
 ## API and Server Requirements
 
@@ -54,22 +69,6 @@ VITE_TEMPLATE_ID=Template1,Template2,Template3
 (These vars are used for build, client querying as well as mock server)
 
 For production, ensure your server can handle image uploads (potentially to a cloud storage bucket or equivalent) and preset storage with your preferred implementation.
-
-## How to run
-
-- Clone the repo
-- Run `bun i` (or your preferred package manager's install command)
-- Extract your templates in `Templates` folder (the folder structure should be like `Templates/xyzTemplate/` and `index.html` should be inside it alongside any images it needs, they'll be relatively used)
-  - Suggested template: [Matah Emai](https://themeforest.net/item/matah-responsive-email-set/10569882)
-
-### Development
-
-- First run `bun serve` to start mock api (tho it really handles image uploads and resizing)
-- Then in a new terminal, run `bun run dev`
-
-### Production
-
-- `bun run build` followed by `bun run serve` (or your preferred server).
 
 ## Project Structure
 
