@@ -1,5 +1,5 @@
-import PreviewPanelHeader from './subcomponents/PreviewPanelHeader';
-import PreviewPanelBody from './subcomponents/PreviewPanelBody';
+import PreviewPanelHeader from './subcomponents/header';
+import PreviewPanelBody from './subcomponents/body';
 import { useState } from 'react';
 import { CollapsibleFocusProps } from '../blocks';
 import { useKeyboardShortcuts } from '../../../hooks/keyboardShortcuts';
