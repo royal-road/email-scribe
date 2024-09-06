@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Breakpoints } from './BreakpointToggleGroup';
+import { Breakpoints } from '@/panels/preview/subcomponents/BreakpointToggleGroup';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { prepareHtmlForPreview } from './utils/prepareForPreview';
-import { CollapsibleFocusProps } from '../../blocks';
+import { prepareHtmlForPreview } from '@/panels/preview/utils/prepareForPreview';
+import { CollapsibleFocusProps } from '@/panels/blocks';
 
 interface PreviewPanelBodyProps {
   htmlToPreview: string;

@@ -1,3 +1,5 @@
+// This file is not used in the project, but it might be needed down the line.
+
 import { Button } from '@/components/ui/button';
 import { Settings2 } from 'lucide-react';
 import {
@@ -9,12 +11,12 @@ import React from 'react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { BlockState } from '..';
 
-interface BlockGlobalSettingsProps {
+interface BlockScaffoldSettingsProps {
   scaffoldSettings: BlockState;
   setScalfoldSettings?: React.Dispatch<React.SetStateAction<BlockState>>;
 }
 
-export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
+export const BlockScaffoldSettings: React.FC<BlockScaffoldSettingsProps> = ({
   scaffoldSettings,
   setScalfoldSettings,
 }) => {

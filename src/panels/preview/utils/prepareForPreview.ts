@@ -1,4 +1,4 @@
-import { injectHoverScript } from './injectBoundingBox';
+import { injectHoverScript } from '@/panels/preview/utils/injectBoundingBox';
 
 export const prepareHtmlForPreview = (
   htmlToPreview: string,
