@@ -1,11 +1,11 @@
-import { BlockRenderer } from './subcomponents/BlockRenderer';
+import { BlockRenderer } from './subcomponents/Renderer';
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { BlockInterface } from '../../../blocks/setup/Types';
 import debounce from 'debounce';
 import { ScrollArea } from '../../ui/scrollArea';
-import { BlockSelector } from './subcomponents/BlockSelector';
+import { BlockSelector } from './subcomponents/Instantiator';
 import autoAnimate from '@formkit/auto-animate';
-import { BlockGlobalSettings } from './subcomponents/BlockGlobalSettings';
+import { BlockGlobalSettings } from './subcomponents/GlobalSettings';
 import { RRLogo } from '../../ui/RRLogo';
 import { ScaffoldingBlock } from '../../../blocks/Scaffolding';
 import HtmlManager from './subcomponents/HtmlManager';
