@@ -1,23 +1,27 @@
-import { Button } from '../../../ui/button';
+import { Button } from '@components/button';
 import { Settings2, Trash, Trash2 } from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from '../../../ui/popover';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '../../../../ui/popover';
 // import Form from "@rjsf/core";
 // import validator from "@rjsf/validator-ajv8";
 import React, { useCallback, useEffect, useState } from 'react';
-import { useMediaQuery } from '../../../../hooks/useMediaQuery';
-import { BlockState } from '..';
+import { useMediaQuery } from '../../../../../hooks/useMediaQuery';
+import { BlockState } from '../..';
 import debounce from 'debounce';
 import { RegistryWidgetsType, RJSFSchema, UiSchema } from '@rjsf/utils';
 import validator from '@rjsf/validator-ajv8';
-import { BlockConfig } from '../../../../blocks/setup/Base';
+import { BlockConfig } from '../../../../../blocks/setup/Base';
 import Form from '@rjsf/core';
-import { ScrollArea } from '../../../ui/scrollArea';
-import { FileUploadWidget } from '../../../ui/fileUploadWidget';
-import { Switch } from '../../../ui/switch';
-import { ConfirmButton } from '../../../ui/ConfirmButton';
-import InputPopover from '../../../ui/InputPopover';
-import { LexicalWidget } from '../../../ui/textAreaWidget';
-import { ColorPickerWidget } from '../../../ui/ColorWidget';
+import { ScrollArea } from '../../../../ui/scrollArea';
+import { FileUploadWidget } from '../../../../ui/fileUploadWidget';
+import { Switch } from '../../../../ui/switch';
+import { ConfirmButton } from '../../../../ui/ConfirmButton';
+import InputPopover from '../../../../ui/InputPopover';
+import { LexicalWidget } from '../../../../ui/textAreaWidget';
+import { ColorPickerWidget } from '../../../../ui/ColorWidget';
 
 interface BlockGlobalSettingsProps {
   blocks: BlockState[];

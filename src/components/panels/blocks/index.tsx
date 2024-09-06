@@ -5,7 +5,7 @@ import debounce from 'debounce';
 import { ScrollArea } from '../../ui/scrollArea';
 import { BlockSelector } from './subcomponents/Instantiator';
 import autoAnimate from '@formkit/auto-animate';
-import { BlockGlobalSettings } from './subcomponents/GlobalSettings';
+import { BlockGlobalSettings } from './subcomponents/managers/GlobalSettings';
 import { RRLogo } from '../../ui/RRLogo';
 import { ScaffoldingBlock } from '../../../blocks/Scaffolding';
 import HtmlManager from './subcomponents/HtmlManager';
