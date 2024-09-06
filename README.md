@@ -11,7 +11,7 @@ A feature-rich, embeddable email editor Single Page Application (SPA) designed f
 
 - **Export and Import**: Save your work as JSON, import previously saved designs, and save/load from server.
 
-<div style="display:flex;justify-content:center;align-items:center; gap:1rem">
+<div align="center" style="display:flex;justify-content:center;align-items:center; gap:1rem">
    <img src="docs/SavePresets.png" width="100" alt="Save Presets">
    <img src="docs/LoadPresets.png" width="100" alt="Load Presets">
 </div>
