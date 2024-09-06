@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from '../../../ui/button';
+import { Button } from '@components/button';
 import { PlusCircle } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../../../ui/popover';
 import BlockMeta from './Meta';

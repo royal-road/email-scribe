@@ -1,5 +1,5 @@
 import { Clipboard, Check, Save } from 'lucide-react';
-import { Button } from '../../../ui/button';
+import { Button } from '@components/button';
 import { useState, useEffect } from 'react';
 import { sanitizeHtml } from './utils/cleanHTML';
 import { handleExportHtml } from './utils/importExport';

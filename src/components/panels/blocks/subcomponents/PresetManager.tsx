@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Button } from '../../../ui/button';
+import { Button } from '@components/button';
 import { Popover, PopoverTrigger, PopoverContent } from '../../../ui/popover';
 import { usePresetManager } from '../hooks/presets';
 import { BlockAttribute, BlockState } from '..';

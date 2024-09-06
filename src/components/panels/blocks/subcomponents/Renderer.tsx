@@ -4,7 +4,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '../../../ui/collapsible';
-import { Button } from '../../../ui/button';
+import { Button } from '@components/button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import Form from '@rjsf/core';
 import validator from '@rjsf/validator-ajv8';

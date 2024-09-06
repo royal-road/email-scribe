@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '../../../ui/button';
+import { Button } from '@components/button';
 import { MoonStar, Redo2, Sun, Undo2 } from 'lucide-react';
 import BreakpointToggleGroup, { Breakpoints } from './BreakpointToggleGroup';
 import { useUndoRedo } from '../../../../UndoRedoContext';
