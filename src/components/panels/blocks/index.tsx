@@ -10,7 +10,7 @@ import { RRLogo } from '../../ui/RRLogo';
 import { ScaffoldingBlock } from '../../../blocks/Scaffolding';
 import HtmlManager from './subcomponents/HtmlManager';
 import PresetManager from './subcomponents/PresetManager';
-import SelectionPanel from './subcomponents/SelectionPanel';
+import SelectionPanel from './subcomponents/SelectionManager';
 import { useEditorStore } from '../../../hooks/undoRedoStore';
 
 export interface BlockState {

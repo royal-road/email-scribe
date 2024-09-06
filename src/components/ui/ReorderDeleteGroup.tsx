@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowUp, X } from 'lucide-react';
-import { Button } from '../../../ui/button';
-import { ConfirmButton } from '../../../ui/ConfirmButton';
+import { Button } from './button';
+import { ConfirmButton } from './ConfirmButton';
 
 export interface Breakpoints {
   isTop: boolean;

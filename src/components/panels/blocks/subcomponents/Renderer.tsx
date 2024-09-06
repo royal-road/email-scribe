@@ -8,7 +8,7 @@ import { Button } from '../../../ui/button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import Form from '@rjsf/core';
 import validator from '@rjsf/validator-ajv8';
-import ReorderDeleteGroup from './ReorderDeleteGroup';
+import ReorderDeleteGroup from '../../../ui/ReorderDeleteGroup';
 import { camelToTitleCase } from '../../../../../lib/utils';
 import { RegistryWidgetsType } from '@rjsf/utils';
 import { FileUploadWidget } from '../../../ui/fileUploadWidget';
