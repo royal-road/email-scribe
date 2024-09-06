@@ -1,11 +1,11 @@
-import { BlockRenderer } from './subcomponents/Renderer';
+import { BlockRenderer } from '@/panels/blocks/subcomponents/Renderer';
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { BlockInterface } from '@/blocks/setup/Types';
 import debounce from 'debounce';
 import { ScrollArea } from '@components/scrollArea';
-import { BlockSelector } from './subcomponents/Instantiator';
+import { BlockInstantiator } from '@/panels/blocks/subcomponents/Instantiator';
 import autoAnimate from '@formkit/auto-animate';
-import { GlobalSettings } from '@/panels/blocks/subcomponents/GlobalSettings';
+import { BlockGlobalSettings } from '@/panels/blocks/subcomponents/GlobalSettings';
 import { RRLogo } from '@components/RRLogo';
 import { ScaffoldingBlock } from '@/blocks/Scaffolding';
 import HtmlManager from '@/panels/blocks/managers/HtmlManager';
@@ -296,8 +296,8 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         }}
       >
         <h2 className='PanelHeading'>Newsletter Designer</h2>
-        <BlockSelector addBlock={addBlock} />
-        <GlobalSettings
+        <BlockInstantiator addBlock={addBlock} />
+        <BlockGlobalSettings
           blocks={blocks}
           debouncedHistoryUpdate={debouncedCreateHistory}
           setBlocks={setBlocks}

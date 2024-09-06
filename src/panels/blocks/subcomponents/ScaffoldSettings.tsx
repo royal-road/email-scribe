@@ -1,8 +1,10 @@
-import { Button } from '../../../ui/button';
+import { Button } from '@/components/ui/button';
 import { Settings2 } from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from '../../../ui/popover';
-// import Form from "@rjsf/core";
-// import validator from "@rjsf/validator-ajv8";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import React from 'react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { BlockState } from '..';

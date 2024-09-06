@@ -1,4 +1,4 @@
-import { BlockMetadata } from '../../../../blocks/setup/Types';
+import { BlockMetadata } from '@/blocks/setup/Types';
 import useFitText from 'use-fit-text';
 export default function BlockMeta(meta: BlockMetadata) {
   const { fontSize, ref } = useFitText();

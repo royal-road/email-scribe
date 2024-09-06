@@ -17,7 +17,7 @@ import InputPopover from '@components/InputPopover';
 import { LexicalWidget } from '@components/textAreaWidget';
 import { ColorPickerWidget } from '@components/ColorWidget';
 
-interface GlobalSettingsProps {
+interface BlockGlobalSettingsProps {
   blocks: BlockState[];
   setBlocks: React.Dispatch<React.SetStateAction<BlockState[]>>;
   indexOfSelectedBlocks: number[];
@@ -27,7 +27,7 @@ interface GlobalSettingsProps {
   debouncedHistoryUpdate: (blocks: BlockState[]) => void;
 }
 
-export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
+export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
   blocks,
   setBlocks,
   indexOfSelectedBlocks,

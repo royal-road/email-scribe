@@ -10,11 +10,13 @@ import { useTemplateManager } from '../hooks/template';
 import { propNameToTitle } from '@/blocks/parser/utils';
 import { BlockFilter } from '@components/BlockFilter';
 
-interface BlockSelectorProps {
+interface BlockInstantiatorProps {
   addBlock: (type: BlockInterface) => void;
 }
 
-export const BlockSelector: React.FC<BlockSelectorProps> = ({ addBlock }) => {
+export const BlockInstantiator: React.FC<BlockInstantiatorProps> = ({
+  addBlock,
+}) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   // const isMd = useMediaQuery('(max-width: 1124px)');
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
