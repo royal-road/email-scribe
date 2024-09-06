@@ -1,7 +1,7 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import sass from 'sass';
-// https://vitejs.dev/config/
+import path from 'path';
 
 // @ts-ignore
 export default ({ mode }) => {
@@ -19,20 +19,14 @@ export default ({ mode }) => {
         },
       },
     },
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+        '@components': path.resolve(__dirname, './src/components/ui'),
+        '@hooks': path.resolve(__dirname, './src/hooks'),
+        '@lib': path.resolve(__dirname, './lib'),
+        '@api': path.resolve(__dirname, './api'),
+      },
+    },
   });
 };
-
-// export default defineConfig({
-//   mode: process.env.NODE_ENV,
-//   base: `/${import.meta.env.VITE_BASE_PATH}`,
-//   plugins: [react()],
-// css: {
-//   preprocessorOptions: {
-//     scss: {
-//       implementation: sass,
-//       quietDeps: true,
-//       warnRuleAsWarning: false,
-//     },
-//   },
-// },
-// });
