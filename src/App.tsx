@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { BlocksPanel, CollapsibleFocusProps } from './panels/blocks';
 import PreviewPanel from './panels/preview';
 import { useTheme } from './hooks/useTheme';
-import './styles/styles.scss';
+import './styles.scss';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { UndoRedoProvider } from './UndoRedoContext';
 

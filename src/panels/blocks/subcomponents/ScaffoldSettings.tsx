@@ -1,15 +1,11 @@
 // This file is not used in the project, but it might be needed down the line.
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@components/button';
 import { Settings2 } from 'lucide-react';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/popover';
 import React from 'react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { BlockState } from '..';
+import { BlockState } from '@/panels/blocks';
 
 interface BlockScaffoldSettingsProps {
   scaffoldSettings: BlockState;
