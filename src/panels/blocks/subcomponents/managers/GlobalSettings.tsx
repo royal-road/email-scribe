@@ -1,19 +1,15 @@
 import { Button } from '@components/button';
 import { Settings2, Trash, Trash2 } from 'lucide-react';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '../../../../ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@components/popover';
 // import Form from "@rjsf/core";
 // import validator from "@rjsf/validator-ajv8";
 import React, { useCallback, useEffect, useState } from 'react';
-import { useMediaQuery } from '../../../../../hooks/useMediaQuery';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { BlockState } from '../..';
 import debounce from 'debounce';
 import { RegistryWidgetsType, RJSFSchema, UiSchema } from '@rjsf/utils';
 import validator from '@rjsf/validator-ajv8';
-import { BlockConfig } from '../../../../../blocks/setup/Base';
+import { BlockConfig } from '@/blocks/setup/Base';
 import Form from '@rjsf/core';
 import { ScrollArea } from '@components/scrollArea';
 import { FileUploadWidget } from '@components/fileUploadWidget';

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { BlocksPanel, CollapsibleFocusProps } from './components/panels/blocks';
-import PreviewPanel from './components/panels/preview';
+import { BlocksPanel, CollapsibleFocusProps } from './panels/blocks';
+import PreviewPanel from './panels/preview';
 import { useTheme } from './hooks/useTheme';
 import './styles/styles.scss';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';

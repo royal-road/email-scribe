@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { ConcreteBlockClass } from '../../../../blocks/setup/Base';
-import { parseTemplate } from '../../../../blocks/parser';
+import { ConcreteBlockClass } from '@/blocks/setup/Base';
+import { parseTemplate } from '@/blocks/parser';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 const BASE_PATH = import.meta.env.VITE_BASE_PATH as string;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Breakpoints } from './BreakpointToggleGroup';
-import { useMediaQuery } from '../../../../hooks/useMediaQuery';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { prepareHtmlForPreview } from './utils/prepareForPreview';
 import { CollapsibleFocusProps } from '../../blocks';
 

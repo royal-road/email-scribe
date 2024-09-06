@@ -125,8 +125,8 @@ $breakpoints: (
   @include generate-color-classes(background);
   @include generate-color-classes(text);
 
-  @import '/src/components/panels/blocks/styles';
-  @import '/src/components/panels/preview/styles';
+  @import '/src/panels/blocks/styles';
+  @import '/src/panels/preview/styles';
   @import '/src/components/ui/button/styles';
   @import '/src/components/ui/collapsible/styles';
   @import '/src/components/ui/popover/styles';

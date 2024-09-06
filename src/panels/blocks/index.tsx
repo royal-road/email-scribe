@@ -1,17 +1,17 @@
 import { BlockRenderer } from './subcomponents/Renderer';
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { BlockInterface } from '../../../blocks/setup/Types';
+import { BlockInterface } from '@/blocks/setup/Types';
 import debounce from 'debounce';
 import { ScrollArea } from '@components/scrollArea';
 import { BlockSelector } from './subcomponents/Instantiator';
 import autoAnimate from '@formkit/auto-animate';
 import { BlockGlobalSettings } from './subcomponents/managers/GlobalSettings';
 import { RRLogo } from '@components/RRLogo';
-import { ScaffoldingBlock } from '../../../blocks/Scaffolding';
+import { ScaffoldingBlock } from '@/blocks/Scaffolding';
 import HtmlManager from './subcomponents/HtmlManager';
 import PresetManager from './subcomponents/PresetManager';
 import SelectionPanel from './subcomponents/SelectionManager';
-import { useEditorStore } from '../../../hooks/undoRedoStore';
+import { useEditorStore } from '@/hooks/undoRedoStore';
 
 export interface BlockState {
   instance: BlockInterface;

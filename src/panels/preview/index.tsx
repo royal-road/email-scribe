@@ -2,7 +2,7 @@ import PreviewPanelHeader from './subcomponents/Header';
 import PreviewPanelBody from './subcomponents/Body';
 import { useState } from 'react';
 import { CollapsibleFocusProps } from '../blocks';
-import { useKeyboardShortcuts } from '../../../hooks/keyboardShortcuts';
+import { useKeyboardShortcuts } from '@/hooks/keyboardShortcuts';
 
 interface PreviewPanelProps {
   htmlToPreview: string;
