@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import { X } from 'lucide-react';
-import { cn } from '../../../../lib/utils';
-import { Button } from '../button';
+import { cn } from '@lib/utils';
+import { Button } from '@components/button';
 
 // - So, popover gets appended to body by default, but that causes css issues since it has to
 //  be encapsulated within .newsletterDesigner.

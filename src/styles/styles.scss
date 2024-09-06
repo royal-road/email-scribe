@@ -127,15 +127,15 @@ $breakpoints: (
 
   @import '/src/panels/blocks/styles';
   @import '/src/panels/preview/styles';
-  @import '/src/components/ui/button/styles';
-  @import '/src/components/ui/collapsible/styles';
-  @import '/src/components/ui/popover/styles';
-  @import '/src/components/ui/scrollArea/styles';
-  @import '/src/components/ui/RRLogo/styles';
-  @import '/src/components/ui/BlockFilter/styles';
-  @import '/src/components/ui/switch/styles';
-  @import '/src/components/ui/toggle/styles';
-  @import '/src/components/ui/textAreaWidget/styles';
+  @import '/src/components/button/styles';
+  @import '/src/components/collapsible/styles';
+  @import '/src/components/popover/styles';
+  @import '/src/components/scrollArea/styles';
+  @import '/src/components/RRLogo/styles';
+  @import '/src/components/BlockFilter/styles';
+  @import '/src/components/switch/styles';
+  @import '/src/components/toggle/styles';
+  @import '/src/components/textAreaWidget/styles';
 
   *,
   *::before,

@@ -1,9 +1,9 @@
 // src/components/ui/Collapsible/index.tsx
 
-import * as React from "react";
-import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
+import * as React from 'react';
+import * as CollapsiblePrimitive from '@radix-ui/react-collapsible';
 
-import { cn } from "../../../../lib/utils";
+import { cn } from '@lib/utils';
 
 const Collapsible = React.forwardRef<
   React.ElementRef<typeof CollapsiblePrimitive.Root>,
@@ -11,11 +11,11 @@ const Collapsible = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CollapsiblePrimitive.Root
     ref={ref}
-    className={cn("CollapsibleRoot", className || "")}
+    className={cn('CollapsibleRoot', className || '')}
     {...props}
   />
 ));
-Collapsible.displayName = "Collapsible";
+Collapsible.displayName = 'Collapsible';
 
 const CollapsibleTrigger = React.forwardRef<
   React.ElementRef<typeof CollapsiblePrimitive.Trigger>,
@@ -23,7 +23,7 @@ const CollapsibleTrigger = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CollapsiblePrimitive.Trigger
     ref={ref}
-    className={cn("CollapsibleIconButton", className || "")}
+    className={cn('CollapsibleIconButton', className || '')}
     {...props}
   />
 ));
@@ -35,7 +35,7 @@ const CollapsibleContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CollapsiblePrimitive.Content
     ref={ref}
-    className={cn("CollapsibleContent", className || "")}
+    className={cn('CollapsibleContent', className || '')}
     {...props}
   />
 ));
