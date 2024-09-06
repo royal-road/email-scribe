@@ -1,11 +1,9 @@
 import { Button } from '@components/button';
 import { Settings2, Trash, Trash2 } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@components/popover';
-// import Form from "@rjsf/core";
-// import validator from "@rjsf/validator-ajv8";
 import React, { useCallback, useEffect, useState } from 'react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
-import { BlockState } from '../..';
+import { BlockState } from '@/panels/blocks';
 import debounce from 'debounce';
 import { RegistryWidgetsType, RJSFSchema, UiSchema } from '@rjsf/utils';
 import validator from '@rjsf/validator-ajv8';
@@ -19,7 +17,7 @@ import InputPopover from '@components/InputPopover';
 import { LexicalWidget } from '@components/textAreaWidget';
 import { ColorPickerWidget } from '@components/ColorWidget';
 
-interface BlockGlobalSettingsProps {
+interface GlobalSettingsProps {
   blocks: BlockState[];
   setBlocks: React.Dispatch<React.SetStateAction<BlockState[]>>;
   indexOfSelectedBlocks: number[];
@@ -29,7 +27,7 @@ interface BlockGlobalSettingsProps {
   debouncedHistoryUpdate: (blocks: BlockState[]) => void;
 }
 
-export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
+export const GlobalSettings: React.FC<GlobalSettingsProps> = ({
   blocks,
   setBlocks,
   indexOfSelectedBlocks,

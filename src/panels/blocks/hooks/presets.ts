@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Preset } from '../subcomponents/PresetManager';
+import { Preset } from '../managers/PresetManager';
 
 const API_URL = import.meta.env.VITE_API_URL as string;
 const BASE_PATH = import.meta.env.VITE_BASE_PATH as string;

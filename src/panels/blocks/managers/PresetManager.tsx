@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 import { Button } from '@components/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@components/popover';
-import { usePresetManager } from '../hooks/presets';
-import { BlockAttribute, BlockState } from '..';
-import { jsonToBlocks } from './utils/blockInstancer';
+import { usePresetManager } from '@/panels/blocks/hooks/presets';
+import { BlockAttribute, BlockState } from '@/panels/blocks';
+import { jsonToBlocks } from '@/panels/blocks/utils/blockInstancer';
 import InputPopover from '@components/InputPopover';
 import { ScrollArea } from '@components/scrollArea';
 import { ConfirmButton } from '@components/ConfirmButton';
@@ -16,7 +16,7 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import { handleExport, handleImport } from './utils/importExport';
+import { handleExport, handleImport } from '../utils/importExport';
 
 export interface Preset {
   presetName: string;

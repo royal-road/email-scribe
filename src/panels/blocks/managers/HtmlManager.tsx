@@ -1,8 +1,8 @@
 import { Clipboard, Check, Save } from 'lucide-react';
 import { Button } from '@components/button';
 import { useState, useEffect } from 'react';
-import { sanitizeHtml } from './utils/cleanHTML';
-import { handleExportHtml } from './utils/importExport';
+import { sanitizeHtml } from '@/panels/blocks/utils/cleanHTML';
+import { handleExportHtml } from '@/panels/blocks/utils/importExport';
 
 export default function HtmlManager({ getHtml }: { getHtml: () => string }) {
   const [justCopied, setJustCopied] = useState(false);

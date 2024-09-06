@@ -1,6 +1,6 @@
-import { BlockAttribute, BlockState } from '../..';
-import { Preset } from '../PresetManager';
-import { jsonToBlocks } from './blockInstancer';
+import { BlockAttribute, BlockState } from '@/panels/blocks';
+import { Preset } from '@/panels/blocks/managers/PresetManager';
+import { jsonToBlocks } from '@/panels/blocks/utils/blockInstancer';
 
 export const handleExport = (preset: Preset) => {
   const blob = new Blob([JSON.stringify(preset)], {

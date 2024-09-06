@@ -1,6 +1,6 @@
-import { BlockAttributes } from '..';
+import { BlockAttributes } from '@/panels/blocks';
 
-function SelectionPanel({
+function SelectionManager({
   blockCount,
   blockAttributes,
   setCollapsibleSelectedState,
@@ -72,4 +72,4 @@ function SelectionPanel({
   );
 }
 
-export default SelectionPanel;
+export default SelectionManager;

@@ -5,12 +5,12 @@ import debounce from 'debounce';
 import { ScrollArea } from '@components/scrollArea';
 import { BlockSelector } from './subcomponents/Instantiator';
 import autoAnimate from '@formkit/auto-animate';
-import { BlockGlobalSettings } from './subcomponents/managers/GlobalSettings';
+import { GlobalSettings } from '@/panels/blocks/subcomponents/GlobalSettings';
 import { RRLogo } from '@components/RRLogo';
 import { ScaffoldingBlock } from '@/blocks/Scaffolding';
-import HtmlManager from './subcomponents/HtmlManager';
-import PresetManager from './subcomponents/PresetManager';
-import SelectionPanel from './subcomponents/SelectionManager';
+import HtmlManager from '@/panels/blocks/managers/HtmlManager';
+import PresetManager from '@/panels/blocks/managers/PresetManager';
+import SelectionManager from '@/panels/blocks/managers/SelectionManager';
 import { useEditorStore } from '@/hooks/undoRedoStore';
 
 export interface BlockState {
@@ -297,7 +297,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       >
         <h2 className='PanelHeading'>Newsletter Designer</h2>
         <BlockSelector addBlock={addBlock} />
-        <BlockGlobalSettings
+        <GlobalSettings
           blocks={blocks}
           debouncedHistoryUpdate={debouncedCreateHistory}
           setBlocks={setBlocks}
@@ -309,7 +309,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             .map((id) => blocks.findIndex((block) => block.instance.id === id))}
         />
       </div>
-      <SelectionPanel
+      <SelectionManager
         blockCount={blocks.length}
         blockAttributes={blockAttributes}
         setCollapsibleSelectedState={setCollapsibleSelectedState}
