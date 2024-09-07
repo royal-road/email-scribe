@@ -8,7 +8,7 @@ import { libInjectCss } from 'vite-plugin-lib-inject-css';
 export default ({ mode }: { mode: string }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
-  const isLibraryBuild = process.env.VITE_BUILD_TYPE === 'library';
+  const isLibraryBuild = mode === 'library';
 
   return defineConfig({
     base: `/${process.env.VITE_BASE_PATH}`,
