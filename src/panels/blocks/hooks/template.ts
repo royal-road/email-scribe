@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { ConcreteBlockClass } from '@/parser/setup/Base';
 import { parseTemplate } from '@/parser';
-import { EmailScribeConfigProps } from '@/App';
+import { EmailScribeConfigProps } from '@/EmailScribe';
 
 const fetchTemplate = async (
   templateId: string,

@@ -1,6 +1,6 @@
 // src/index.ts
 
-export { EmailScribe } from './App';
-export type { EmailScribeProps } from './App';
+export { EmailScribe } from './EmailScribe';
+export type { EmailScribeProps } from './EmailScribe';
 
 export { useTheme } from './hooks/useTheme';

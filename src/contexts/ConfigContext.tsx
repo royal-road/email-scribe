@@ -1,4 +1,4 @@
-import { EmailScribeConfigProps } from '@/App';
+import { EmailScribeConfigProps } from '@/EmailScribe';
 import React, { createContext, useContext } from 'react';
 
 const ConfigContext = createContext<EmailScribeConfigProps | undefined>(

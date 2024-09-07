@@ -12,7 +12,7 @@ import {
   setInlineStyle,
 } from '@/parser/utils/parseHelpers';
 import { camelToTitleCase } from '@lib/utils';
-import { EmailScribeConfigProps } from '@/App';
+import { EmailScribeConfigProps } from '@/EmailScribe';
 
 export function parseTemplate(
   content: string,

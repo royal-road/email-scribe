@@ -12,7 +12,7 @@ import HtmlManager from '@/panels/blocks/managers/HtmlManager';
 import PresetManager from '@/panels/blocks/managers/PresetManager';
 import SelectionManager from '@/panels/blocks/managers/SelectionManager';
 import { useEditorStore } from '@/hooks/undoRedoStore';
-import { EmailScribeUIProps } from '@/App';
+import { EmailScribeUIProps } from '@/EmailScribe';
 
 export interface BlockState {
   instance: BlockInterface;

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Preset } from '../managers/PresetManager';
-import { EmailScribeConfigProps } from '@/App';
+import { EmailScribeConfigProps } from '@/EmailScribe';
 
 const apiFetch = async (url: string, options?: RequestInit) => {
   const response = await fetch(url, options);
