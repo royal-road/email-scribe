@@ -4,6 +4,7 @@ import sass from 'sass';
 import path from 'path';
 import dts from 'vite-plugin-dts';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
+import pkg from './package.json';
 
 export default ({ mode }: { mode: string }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
@@ -25,7 +26,7 @@ export default ({ mode }: { mode: string }) => {
       ? {
           lib: {
             entry: path.resolve(__dirname, 'src/index.ts'),
-            name: 'email-scribe',
+            name: pkg.name,
             fileName: (format) => `index.${format}.js`,
             formats: ['es', 'umd'],
           },

@@ -1,6 +1,6 @@
 # Email Scribe
 
-A feature-rich, embeddable email editor (<350kb gzipped), designed for creating modular, email-safe designs. This semi-WYSIWYG editor allows you to build emails using pre-existing template modules, ensuring compatibility across various email clients.
+A feature-rich, embeddable email editor (<285kb gzipped), designed for creating modular, email-safe designs. This semi-WYSIWYG editor allows you to build emails using pre-existing template modules, ensuring compatibility across various email clients.
 ![Email Editor](docs/Primary.png)
 
 ## Key Features
@@ -10,7 +10,6 @@ A feature-rich, embeddable email editor (<350kb gzipped), designed for creating 
 <div align="center"><img src="docs/AddModules.png" width="500" alt="Add Block"></div>
 
 - **Embeddable SPA**: Completely isolated CSS to prevent conflicts with parent application styles that builds to a single js+css.
-
 
 - **Export and Import**: Save your work as JSON, import previously saved designs, and save/load from server.
 
@@ -68,7 +67,6 @@ VITE_TEMPLATE_ID=Template1,Template2,Template3
 ```
 
 (These vars are used for build, client querying as well as mock server)
-
 
 ## Project Structure
 
