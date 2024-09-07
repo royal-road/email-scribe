@@ -12,6 +12,7 @@ node_modules
 dist
 dist-static
 *.local
+email-scribe-test
 
 
 # Editor directories and files
