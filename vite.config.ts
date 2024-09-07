@@ -4,7 +4,7 @@ import sass from 'sass';
 import path from 'path';
 import dts from 'vite-plugin-dts';
 
-export default ({ mode }) => {
+export default ({ mode }: { mode: string }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
   const isLibraryBuild = process.env.VITE_BUILD_TYPE === 'library';
