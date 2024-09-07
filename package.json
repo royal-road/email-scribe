@@ -18,6 +18,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -41,6 +44,7 @@
     "@rjsf/utils": "5.20.0",
     "@rjsf/validator-ajv8": "5.20.0",
     "@tanstack/react-query": "^5.52.2",
+    "ajv": "^8.17.1",
     "debounce": "^2.1.0",
     "handlebars": "^4.7.8",
     "lexical": "^0.17.1",

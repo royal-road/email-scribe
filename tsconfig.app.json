@@ -13,6 +13,8 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    "typeRoots": ["./dist/index.d.ts", "node_modules/@types"],
+    "declaration": true,
 
     /* Linting */
     "strict": true,
@@ -30,5 +32,6 @@
       "@api/*": ["server/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "./index.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
