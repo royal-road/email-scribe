@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { type ErrorRequestHandler } from 'express';
 import cors from 'cors';
 import path from 'path';
 import { handleUpload } from './routes/upload';
@@ -8,13 +8,19 @@ import {
   handlePresetLoad,
   handlePresetDelete,
 } from './routes/presets';
+import dotenv from 'dotenv';
 
 const app = express();
 const port = 3002;
+const errorHandler: ErrorRequestHandler = (err, req, res) => {
+  console.error(err);
+  res.status(500).json({ message: 'Internal Server Error' });
+};
 
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
+dotenv.config({ path: path.join(process.cwd(), '..', '.env') });
 
 // // Debugging middleware
 // app.use((req, res, next) => {
@@ -28,11 +34,14 @@ const router = express.Router();
 // Serve static files from the 'public' directory
 router.use(
   '/uploads',
-  express.static(path.join(process.cwd(), 'public', 'uploads'))
+  express.static(path.join(process.cwd(), '..', 'public', 'uploads'))
 );
 
 // Serve template files
-router.use('/templates', express.static(path.join(process.cwd(), 'Templates')));
+router.use(
+  '/templates',
+  express.static(path.join(process.cwd(), '..', 'Templates'))
+);
 
 // API Routes
 router.post('/upload', handleUpload);
@@ -42,11 +51,11 @@ router.get('/preset', handlePresetLoad);
 router.delete('/preset', handlePresetDelete);
 
 // Serve the SPA static files
-router.use(express.static(path.join(process.cwd(), 'dist')));
+router.use(express.static(path.join(process.cwd(), '..', 'dist')));
 
 // Catch-all route to serve the SPA for client-side routing
 router.get('*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
+  res.sendFile(path.join(process.cwd(), '..', 'dist', 'index.html'));
 });
 
 // Mount the router under /newsletter-builder
@@ -60,10 +69,8 @@ app.use((req, res) => {
 });
 
 // Error handler
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ message: 'Internal Server Error' });
-});
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
