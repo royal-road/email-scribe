@@ -4,7 +4,7 @@ import PreviewPanel from './panels/preview';
 import { useTheme } from './hooks/useTheme';
 import './styles.scss';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { UndoRedoProvider } from './UndoRedoContext';
+import { UndoRedoProvider } from './contexts/UndoRedoContext';
 
 const queryClient = new QueryClient();
 

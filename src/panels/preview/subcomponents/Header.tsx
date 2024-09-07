@@ -4,7 +4,7 @@ import { MoonStar, Redo2, Sun, Undo2 } from 'lucide-react';
 import BreakpointToggleGroup, {
   Breakpoints,
 } from '@/panels/preview/subcomponents/BreakpointToggleGroup';
-import { useUndoRedo } from '@/UndoRedoContext';
+import { useUndoRedo } from '@/contexts/UndoRedoContext';
 
 export interface PreviewPanelHeaderProps {
   bp: Breakpoints;

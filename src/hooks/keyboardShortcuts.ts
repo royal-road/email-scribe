@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useUndoRedo } from '../UndoRedoContext';
+import { useUndoRedo } from '../contexts/UndoRedoContext';
 
 export const useKeyboardShortcuts = () => {
   const { undo, redo, canUndo, canRedo } = useUndoRedo();
