@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from 'react';
-import { useEditorStore } from './hooks/undoRedoStore';
+import { useEditorStore } from '../hooks/undoRedoStore';
 
 interface UndoRedoContextType {
   undo: () => void;
