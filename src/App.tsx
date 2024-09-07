@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { BlocksPanel, CollapsibleFocusProps } from './panels/blocks';
 import PreviewPanel from './panels/preview';
 import { useTheme } from './hooks/useTheme';
@@ -6,8 +6,14 @@ import './styles.scss';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { UndoRedoProvider } from './contexts/UndoRedoContext';
 import { ConfigProvider } from './contexts/ConfigContext';
+// import { Pencil } from 'lucide-react';
 
 const queryClient = new QueryClient();
+
+export interface EmailScribeUIProps {
+  iconComponent?: ReactNode;
+  title?: string;
+}
 
 export interface EmailScribeProps {
   apiUrl: string;
@@ -15,7 +21,7 @@ export interface EmailScribeProps {
   templatesToFetch: string[];
 }
 
-export function EmailScribe(config: EmailScribeProps) {
+export function EmailScribe(props: EmailScribeProps & EmailScribeUIProps) {
   const theme = useTheme();
   const [html, setHtml] = useState('');
   const [blockToFocus, setBlockToFocus] =
@@ -23,7 +29,13 @@ export function EmailScribe(config: EmailScribeProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ConfigProvider config={config}>
+      <ConfigProvider
+        config={{
+          apiUrl: props.apiUrl,
+          basePath: props.basePath,
+          templatesToFetch: props.templatesToFetch,
+        }}
+      >
         <UndoRedoProvider>
           <div
             id='newsletterDesignerRoot'
@@ -34,6 +46,10 @@ export function EmailScribe(config: EmailScribeProps) {
               <BlocksPanel
                 onUpdateFinalHtml={setHtml}
                 blockToFocus={blockToFocus}
+                UIProps={{
+                  iconComponent: props.iconComponent,
+                  title: props.title,
+                }}
               />
               <PreviewPanel
                 htmlToPreview={html}
@@ -50,9 +66,11 @@ export function EmailScribe(config: EmailScribeProps) {
 function App() {
   return (
     <EmailScribe
-      apiUrl='http://localhost:3002'
-      basePath='email-scribe'
-      templatesToFetch={['Boxed-01', 'Promotion-01', 'All-in-one']}
+      apiUrl={import.meta.env.VITE_API_URL}
+      basePath={import.meta.env.VITE_BASE_PATH}
+      templatesToFetch={import.meta.env.VITE_TEMPLATE_ID.split(',')}
+      // iconComponent={<Pencil size={48} style={{ marginBottom: '0.5rem' }} />}
+      // title='Email Designer'
     />
   );
 }

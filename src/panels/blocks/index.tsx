@@ -12,6 +12,7 @@ import HtmlManager from '@/panels/blocks/managers/HtmlManager';
 import PresetManager from '@/panels/blocks/managers/PresetManager';
 import SelectionManager from '@/panels/blocks/managers/SelectionManager';
 import { useEditorStore } from '@/hooks/undoRedoStore';
+import { EmailScribeUIProps } from '@/App';
 
 export interface BlockState {
   instance: BlockInterface;
@@ -27,6 +28,7 @@ export interface CollapsibleFocusProps {
 interface BlockPanelProps {
   onUpdateFinalHtml: (html: string) => void;
   blockToFocus: CollapsibleFocusProps | null;
+  UIProps: EmailScribeUIProps;
 }
 
 export interface BlockAttribute {
@@ -42,6 +44,7 @@ export interface BlockAttributes {
 export const BlocksPanel: React.FC<BlockPanelProps> = ({
   onUpdateFinalHtml,
   blockToFocus,
+  UIProps,
 }) => {
   const [blocks, setBlocks] = useState<BlockState[]>([]);
   const [blockAttributes, setBlockAttributes] = useState<BlockAttributes>({});
@@ -283,7 +286,11 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 
   return (
     <div className='BlocksPanel'>
-      <RRLogo style={{ width: '4rem', marginBottom: '2rem' }} />
+      {UIProps.iconComponent ? (
+        UIProps.iconComponent
+      ) : (
+        <RRLogo style={{ width: '4rem', marginBottom: '2rem' }} />
+      )}
       <div
         style={{
           display: 'flex',
@@ -295,7 +302,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           justifyContent: 'space-between',
         }}
       >
-        <h2 className='PanelHeading'>Newsletter Designer</h2>
+        <h2 className='PanelHeading'>{UIProps.title || 'Email Scribe'}</h2>
         <BlockInstantiator addBlock={addBlock} />
         <BlockGlobalSettings
           blocks={blocks}
