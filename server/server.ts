@@ -20,12 +20,12 @@ const errorHandler: ErrorRequestHandler = (err, req, res) => {
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
-dotenv.config({ path: path.join(process.cwd(), '..', '.env') });
+dotenv.config({ path: path.join(process.cwd(), '..', '.env.static') });
 
-// // Debugging middleware
+// Debugging middleware
 // app.use((req, res, next) => {
 //   console.log(`Received request: ${req.method} ${req.url}`);
-//   console.log('Headers:', req.headers);
+//   // console.log('Headers:', req.headers);
 //   next();
 // });
 
@@ -48,11 +48,11 @@ router.get('/preset', handlePresetLoad);
 router.delete('/preset', handlePresetDelete);
 
 // Serve the SPA static files
-router.use(express.static(path.join(process.cwd(), 'dist')));
+router.use(express.static(path.join(process.cwd(), '..', 'dist-static')));
 
 // Catch-all route to serve the SPA for client-side routing
 router.get('*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), '..', 'dist', 'index.html'));
+  res.sendFile(path.join(process.cwd(), '..', 'dist-static', 'index.html'));
 });
 
 // Mount the router under /newsletter-builder

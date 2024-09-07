@@ -3,9 +3,10 @@ import react from '@vitejs/plugin-react-swc';
 import sass from 'sass';
 import path from 'path';
 
-// @ts-ignore
 export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
+
+  const isLibraryBuild = process.env.VITE_BUILD_TYPE === 'library';
 
   return defineConfig({
     base: `/${process.env.VITE_BASE_PATH}`,
@@ -19,25 +20,30 @@ export default ({ mode }) => {
         },
       },
     },
-    build: {
-      lib: {
-        entry: path.resolve(__dirname, 'src/index.ts'),
-        name: 'EmailScribe',
-        fileName: (format) => `email-scribe.${format}.js`,
-        formats: ['es', 'umd'],
-      },
-      rollupOptions: {
-        external: ['react', 'react-dom'],
-        output: {
-          globals: {
-            react: 'React',
-            'react-dom': 'ReactDOM',
+    build: isLibraryBuild
+      ? {
+          lib: {
+            entry: path.resolve(__dirname, 'src/index.ts'),
+            name: 'EmailScribe',
+            fileName: (format) => `email-scribe.${format}.js`,
+            formats: ['es', 'umd'],
           },
+          rollupOptions: {
+            external: ['react', 'react-dom'],
+            output: {
+              globals: {
+                react: 'React',
+                'react-dom': 'ReactDOM',
+              },
+            },
+          },
+          emptyOutDir: true,
+          sourcemap: true,
+        }
+      : {
+          outDir: 'dist-static',
+          emptyOutDir: true,
         },
-      },
-      emptyOutDir: true,
-      sourcemap: true,
-    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
