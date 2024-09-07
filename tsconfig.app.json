@@ -27,7 +27,7 @@
       "@components/*": ["src/components/*"],
       "@hooks/*": ["src/hooks/*"],
       "@lib/*": ["lib/*"],
-      "@api/*": ["api/*"]
+      "@api/*": ["server/*"]
     }
   },
   "include": ["src"]
