@@ -12,12 +12,12 @@ import {
   setInlineStyle,
 } from '@/parser/utils/parseHelpers';
 import { camelToTitleCase } from '@lib/utils';
-import { EmailScribeProps } from '@/App';
+import { EmailScribeConfigProps } from '@/App';
 
 export function parseTemplate(
   content: string,
   templateName: string,
-  config: EmailScribeProps
+  config: EmailScribeConfigProps
 ) {
   const parser = new DOMParser();
   try {
@@ -45,7 +45,7 @@ interface SchemaBundle {
 function parseModule(
   node: Element,
   templateName: string,
-  config: EmailScribeProps
+  config: EmailScribeConfigProps
 ): ConcreteBlockClass {
   const schemaBundle: SchemaBundle = {
     schema: { type: 'object', properties: {}, required: [] },

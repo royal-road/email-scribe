@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { ConcreteBlockClass } from '@/parser/setup/Base';
 import { parseTemplate } from '@/parser';
-import { EmailScribeProps } from '@/App';
+import { EmailScribeConfigProps } from '@/App';
 
 const fetchTemplate = async (
   templateId: string,
@@ -21,14 +21,17 @@ const fetchTemplate = async (
 
 const processTemplate = async (
   templateId: string,
-  config: EmailScribeProps
+  config: EmailScribeConfigProps
 ): Promise<ConcreteBlockClass[]> => {
   const TEMPLATE_ENDPOINT = `${config.apiUrl}/${config.basePath}/templates`;
   const templateContent = await fetchTemplate(templateId, TEMPLATE_ENDPOINT);
   return parseTemplate(templateContent, templateId, config);
 };
 
-export const useTemplate = (templateId: string, config: EmailScribeProps) => {
+export const useTemplate = (
+  templateId: string,
+  config: EmailScribeConfigProps
+) => {
   return useQuery<ConcreteBlockClass[], Error>({
     queryKey: ['template', templateId],
     queryFn: () => processTemplate(templateId, config),
@@ -38,7 +41,7 @@ export const useTemplate = (templateId: string, config: EmailScribeProps) => {
 
 export const useTemplates = (
   templateIds: string[],
-  config: EmailScribeProps
+  config: EmailScribeConfigProps
 ) => {
   return useQuery<ConcreteBlockClass[][], Error>({
     queryKey: ['templates', ...templateIds],
@@ -53,7 +56,7 @@ export const useTemplates = (
   });
 };
 
-export const useTemplateManager = (config: EmailScribeProps) => {
+export const useTemplateManager = (config: EmailScribeConfigProps) => {
   const templateIds = config.templatesToFetch || [];
   const singleTemplateQuery = useTemplate(templateIds[0] || '', config);
 

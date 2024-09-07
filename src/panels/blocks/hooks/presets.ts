@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Preset } from '../managers/PresetManager';
-import { EmailScribeProps } from '@/App';
+import { EmailScribeConfigProps } from '@/App';
 
 const apiFetch = async (url: string, options?: RequestInit) => {
   const response = await fetch(url, options);
@@ -69,7 +69,7 @@ export const useSavePreset = (PRESET_ENDPOINT: string) => {
 
 // Custom hook to manage presets
 // Custom hook to manage presets
-export const usePresetManager = (config: EmailScribeProps) => {
+export const usePresetManager = (config: EmailScribeConfigProps) => {
   const PRESETS_ENDPOINT = `${config.apiUrl}/${config.basePath}/presets`;
   const PRESET_ENDPOINT = `${config.apiUrl}/${config.basePath}/preset`;
   const presetsQuery = usePresets(PRESETS_ENDPOINT);

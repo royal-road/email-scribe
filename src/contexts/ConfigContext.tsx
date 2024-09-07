@@ -1,10 +1,12 @@
-import { EmailScribeProps } from '@/App';
+import { EmailScribeConfigProps } from '@/App';
 import React, { createContext, useContext } from 'react';
 
-const ConfigContext = createContext<EmailScribeProps | undefined>(undefined);
+const ConfigContext = createContext<EmailScribeConfigProps | undefined>(
+  undefined
+);
 
 export const ConfigProvider: React.FC<{
-  config: EmailScribeProps;
+  config: EmailScribeConfigProps;
   children: React.ReactNode;
 }> = ({ config, children }) => {
   return (

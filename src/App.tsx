@@ -15,13 +15,15 @@ export interface EmailScribeUIProps {
   title?: string;
 }
 
-export interface EmailScribeProps {
+export interface EmailScribeConfigProps {
   apiUrl: string;
   basePath: string;
   templatesToFetch: string[];
 }
 
-export function EmailScribe(props: EmailScribeProps & EmailScribeUIProps) {
+export function EmailScribe(
+  props: EmailScribeConfigProps & EmailScribeUIProps
+) {
   const theme = useTheme();
   const [html, setHtml] = useState('');
   const [blockToFocus, setBlockToFocus] =
