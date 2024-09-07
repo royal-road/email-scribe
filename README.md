@@ -1,4 +1,4 @@
-# Email Editor SPA
+# Email Scribe
 
 A feature-rich, embeddable email editor (<350kb gzipped), designed for creating modular, email-safe designs. This semi-WYSIWYG editor allows you to build emails using pre-existing template modules, ensuring compatibility across various email clients.
 ![Email Editor](docs/Primary.png)
