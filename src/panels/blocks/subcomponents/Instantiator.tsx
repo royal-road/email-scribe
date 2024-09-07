@@ -9,6 +9,7 @@ import { BlockInterface } from '@/parser/setup/Types';
 import { useTemplateManager } from '@/panels/blocks/hooks/template';
 import { propNameToTitle } from '@/parser/utils/parseHelpers';
 import { BlockFilter } from '@components/BlockFilter';
+import { useConfig } from '@/contexts/ConfigContext';
 
 interface BlockInstantiatorProps {
   addBlock: (type: BlockInterface) => void;
@@ -17,15 +18,14 @@ interface BlockInstantiatorProps {
 export const BlockInstantiator: React.FC<BlockInstantiatorProps> = ({
   addBlock,
 }) => {
+  const config = useConfig();
   const isMobile = useMediaQuery('(max-width: 768px)');
   // const isMd = useMediaQuery('(max-width: 1124px)');
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [searchInput, setSearchInput] = useState('');
   const [activeTags, setActiveTags] = useState<string[]>([]);
 
-  const { multipleTemplateQuery } = useTemplateManager(
-    import.meta.env.VITE_TEMPLATE_ID.split(',')
-  ); // Assuming 'AIO' is your template ID
+  const { multipleTemplateQuery } = useTemplateManager(config); // Assuming 'AIO' is your template ID
 
   const handleTouchStart = (index: number) => {
     setActiveIndex(index);
@@ -111,9 +111,9 @@ export const BlockInstantiator: React.FC<BlockInstantiatorProps> = ({
               activeTags={activeTags}
               setActiveTags={setActiveTags}
               setSearchValue={setSearchInput}
-              currentTemplates={(
-                import.meta.env.VITE_TEMPLATE_ID.split(',') as string[]
-              ).map((template) => propNameToTitle(template))}
+              currentTemplates={config.templatesToFetch.map((template) =>
+                propNameToTitle(template)
+              )}
             />
 
             <ScrollArea
@@ -146,11 +146,7 @@ export const BlockInstantiator: React.FC<BlockInstantiatorProps> = ({
                         // fontWeight: 'bold',
                       }}
                     >
-                      {propNameToTitle(
-                        import.meta.env.VITE_TEMPLATE_ID.split(',')[
-                          templateIndex
-                        ]
-                      )}
+                      {propNameToTitle(config.templatesToFetch[templateIndex])}
                     </h4>
                     {/* <div
                       style={{

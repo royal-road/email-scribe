@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
 import { WidgetProps } from '@rjsf/utils';
+import { useConfig } from '@/contexts/ConfigContext';
 
 export const FileUploadWidget: React.FC<WidgetProps> = (props) => {
   const { onChange, options, id } = props;
+  const { apiUrl, basePath } = useConfig();
   const handleFileUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
@@ -17,13 +19,10 @@ export const FileUploadWidget: React.FC<WidgetProps> = (props) => {
       }
 
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_BASE_PATH}/upload`,
-          {
-            method: 'POST',
-            body: formData,
-          }
-        );
+        const response = await fetch(`${apiUrl}/${basePath}/upload`, {
+          method: 'POST',
+          body: formData,
+        });
 
         if (!response.ok) {
           throw new Error('File upload failed');

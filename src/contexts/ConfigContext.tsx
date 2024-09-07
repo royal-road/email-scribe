@@ -1,0 +1,21 @@
+import { EmailScribeProps } from '@/App';
+import React, { createContext, useContext } from 'react';
+
+const ConfigContext = createContext<EmailScribeProps | undefined>(undefined);
+
+export const ConfigProvider: React.FC<{
+  config: EmailScribeProps;
+  children: React.ReactNode;
+}> = ({ config, children }) => {
+  return (
+    <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>
+  );
+};
+
+export const useConfig = () => {
+  const context = useContext(ConfigContext);
+  if (context === undefined) {
+    throw new Error('useConfig must be used within a ConfigProvider');
+  }
+  return context;
+};

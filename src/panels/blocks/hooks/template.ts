@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { ConcreteBlockClass } from '@/parser/setup/Base';
 import { parseTemplate } from '@/parser';
+import { EmailScribeProps } from '@/App';
 
-const API_URL = import.meta.env.VITE_API_URL as string;
-const BASE_PATH = import.meta.env.VITE_BASE_PATH as string;
-const TEMPLATE_ENDPOINT = `${API_URL}/${BASE_PATH}/templates`;
-
-const fetchTemplate = async (templateId: string): Promise<string> => {
+const fetchTemplate = async (
+  templateId: string,
+  TEMPLATE_ENDPOINT: string
+): Promise<string> => {
   const response = await fetch(TEMPLATE_ENDPOINT + `/${templateId}`, {
     method: 'GET',
     headers: {
@@ -20,25 +20,32 @@ const fetchTemplate = async (templateId: string): Promise<string> => {
 };
 
 const processTemplate = async (
-  templateId: string
+  templateId: string,
+  config: EmailScribeProps
 ): Promise<ConcreteBlockClass[]> => {
-  const templateContent = await fetchTemplate(templateId);
-  return parseTemplate(templateContent, templateId);
+  const TEMPLATE_ENDPOINT = `${config.apiUrl}/${config.basePath}/templates`;
+  const templateContent = await fetchTemplate(templateId, TEMPLATE_ENDPOINT);
+  return parseTemplate(templateContent, templateId, config);
 };
 
-export const useTemplate = (templateId: string) => {
+export const useTemplate = (templateId: string, config: EmailScribeProps) => {
   return useQuery<ConcreteBlockClass[], Error>({
     queryKey: ['template', templateId],
-    queryFn: () => processTemplate(templateId),
+    queryFn: () => processTemplate(templateId, config),
     enabled: !!templateId,
   });
 };
 
-export const useTemplates = (templateIds: string[]) => {
+export const useTemplates = (
+  templateIds: string[],
+  config: EmailScribeProps
+) => {
   return useQuery<ConcreteBlockClass[][], Error>({
     queryKey: ['templates', ...templateIds],
     queryFn: async () => {
-      const templatePromises = templateIds.map((id) => processTemplate(id));
+      const templatePromises = templateIds.map((id) =>
+        processTemplate(id, config)
+      );
       const templates = await Promise.all(templatePromises);
       return templates;
     },
@@ -46,10 +53,11 @@ export const useTemplates = (templateIds: string[]) => {
   });
 };
 
-export const useTemplateManager = (templateIds: string[] = []) => {
-  const singleTemplateQuery = useTemplate(templateIds[0] || '');
+export const useTemplateManager = (config: EmailScribeProps) => {
+  const templateIds = config.templatesToFetch || [];
+  const singleTemplateQuery = useTemplate(templateIds[0] || '', config);
 
-  const multipleTemplateQuery = useTemplates(templateIds || []);
+  const multipleTemplateQuery = useTemplates(templateIds || [], config);
 
   return {
     singleTemplateQuery,

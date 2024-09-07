@@ -17,6 +17,7 @@ import {
   Upload,
 } from 'lucide-react';
 import { handleExport, handleImport } from '../utils/importExport';
+import { useConfig } from '@/contexts/ConfigContext';
 
 export interface Preset {
   presetName: string;
@@ -39,15 +40,16 @@ const PresetManager: React.FC<PresetManagerProps> = ({
   setBlockAttributes,
   addToHistory,
 }) => {
-  const { presetsQuery, usePreset, savePreset, deletePreset } =
-    usePresetManager();
+  const config = useConfig();
+  const { presetsQuery, usePreset, savePreset, deletePreset, presetEndpoint } =
+    usePresetManager(config);
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
   const [selectedPresetName, setSelectedPresetName] = React.useState<
     string | null
   >(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const selectedPreset = usePreset(selectedPresetName || '');
+  const selectedPreset = usePreset(selectedPresetName || '', presetEndpoint);
 
   React.useEffect(() => {
     try {

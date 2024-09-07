@@ -1,10 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Preset } from '../managers/PresetManager';
-
-const API_URL = import.meta.env.VITE_API_URL as string;
-const BASE_PATH = import.meta.env.VITE_BASE_PATH as string;
-const PRESETS_ENDPOINT = `${API_URL}/${BASE_PATH}/presets`;
-const PRESET_ENDPOINT = `${API_URL}/${BASE_PATH}/preset`;
+import { EmailScribeProps } from '@/App';
 
 const apiFetch = async (url: string, options?: RequestInit) => {
   const response = await fetch(url, options);
@@ -15,7 +11,7 @@ const apiFetch = async (url: string, options?: RequestInit) => {
 };
 
 // Fetch all presets (list)
-export const usePresets = () => {
+export const usePresets = (PRESETS_ENDPOINT: string) => {
   return useQuery<string[]>({
     queryKey: ['presets'],
     queryFn: () => apiFetch(PRESETS_ENDPOINT),
@@ -23,7 +19,7 @@ export const usePresets = () => {
 };
 
 // Fetch a single preset
-export const usePreset = (presetName: string) => {
+export const usePreset = (presetName: string, PRESET_ENDPOINT: string) => {
   return useQuery<Preset>({
     queryKey: ['preset', presetName],
     queryFn: () =>
@@ -34,7 +30,7 @@ export const usePreset = (presetName: string) => {
   });
 };
 
-export const useDeletePreset = () => {
+export const useDeletePreset = (PRESET_ENDPOINT: string) => {
   const queryClient = useQueryClient();
 
   return useMutation<Preset, Error, string>({
@@ -52,7 +48,7 @@ export const useDeletePreset = () => {
 };
 
 // Save a preset
-export const useSavePreset = () => {
+export const useSavePreset = (PRESET_ENDPOINT: string) => {
   const queryClient = useQueryClient();
 
   return useMutation<Preset, Error, Preset>({
@@ -72,14 +68,19 @@ export const useSavePreset = () => {
 };
 
 // Custom hook to manage presets
-export const usePresetManager = () => {
-  const presetsQuery = usePresets();
-  const savePreset = useSavePreset();
-  const deletePreset = useDeletePreset();
+// Custom hook to manage presets
+export const usePresetManager = (config: EmailScribeProps) => {
+  const PRESETS_ENDPOINT = `${config.apiUrl}/${config.basePath}/presets`;
+  const PRESET_ENDPOINT = `${config.apiUrl}/${config.basePath}/preset`;
+  const presetsQuery = usePresets(PRESETS_ENDPOINT);
+  const savePreset = useSavePreset(PRESET_ENDPOINT);
+  const deletePreset = useDeletePreset(PRESET_ENDPOINT);
+
   return {
     presetsQuery,
     usePreset,
     savePreset,
     deletePreset,
+    presetEndpoint: PRESET_ENDPOINT,
   };
 };

@@ -12,15 +12,22 @@ import {
   setInlineStyle,
 } from '@/parser/utils/parseHelpers';
 import { camelToTitleCase } from '@lib/utils';
+import { EmailScribeProps } from '@/App';
 
-export function parseTemplate(content: string, templateName: string) {
+export function parseTemplate(
+  content: string,
+  templateName: string,
+  config: EmailScribeProps
+) {
   const parser = new DOMParser();
   try {
     const dom = parser.parseFromString(content, 'text/html');
     const modules: ConcreteBlockClass[] = [];
 
     dom.body.querySelectorAll('[data-module]').forEach((node) => {
-      modules.push(parseModule(node, templateName) as ConcreteBlockClass);
+      modules.push(
+        parseModule(node, templateName, config) as ConcreteBlockClass
+      );
     });
 
     return modules;
@@ -35,13 +42,17 @@ interface SchemaBundle {
   defaults: Record<string, unknown>;
 }
 
-function parseModule(node: Element, templateName: string): ConcreteBlockClass {
+function parseModule(
+  node: Element,
+  templateName: string,
+  config: EmailScribeProps
+): ConcreteBlockClass {
   const schemaBundle: SchemaBundle = {
     schema: { type: 'object', properties: {}, required: [] },
     uiSchema: {},
     defaults: {},
   };
-  const templateUrlPrefix = `${import.meta.env.VITE_API_URL}/${import.meta.env.VITE_BASE_PATH}/templates/${templateName}/`;
+  const templateUrlPrefix = `${config.apiUrl}/${config.basePath}/templates/${templateName}/`;
   const counters = {
     singleLine: 0,
     multiLine: 0,
