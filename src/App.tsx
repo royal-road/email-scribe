@@ -21,9 +21,11 @@ export interface EmailScribeConfigProps {
   templatesToFetch: string[];
 }
 
-export function EmailScribe(
-  props: EmailScribeConfigProps & EmailScribeUIProps
-) {
+export interface EmailScribeProps
+  extends EmailScribeConfigProps,
+    EmailScribeUIProps {}
+
+export function EmailScribe(props: EmailScribeProps) {
   const theme = useTheme();
   const [html, setHtml] = useState('');
   const [blockToFocus, setBlockToFocus] =
