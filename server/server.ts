@@ -20,7 +20,7 @@ const errorHandler: ErrorRequestHandler = (err, req, res) => {
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
-dotenv.config({ path: path.join(process.cwd(), '..', '.env.static') });
+dotenv.config({ path: path.join(process.cwd(), '..', '.env') });
 
 // Debugging middleware
 // app.use((req, res, next) => {
