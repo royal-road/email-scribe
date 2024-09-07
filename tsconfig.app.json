@@ -13,14 +13,14 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-    "typeRoots": ["./dist/index.d.ts", "node_modules/@types"],
-    "declaration": true,
 
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+
+    "typeRoots": ["./dist/index.d.ts", "node_modules/@types"],
 
     /* Paths */
     "baseUrl": ".",
@@ -32,6 +32,5 @@
       "@api/*": ["server/*"]
     }
   },
-  "include": ["src", "./index.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", "./index.ts"]
 }

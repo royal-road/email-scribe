@@ -11,7 +11,6 @@ export default ({ mode }: { mode: string }) => {
 
   return defineConfig({
     base: `/${process.env.VITE_BASE_PATH}`,
-    plugins: [react(), dts()],
     css: {
       preprocessorOptions: {
         scss: {
@@ -25,8 +24,8 @@ export default ({ mode }: { mode: string }) => {
       ? {
           lib: {
             entry: path.resolve(__dirname, 'src/index.ts'),
-            name: 'EmailScribe',
-            fileName: (format) => `email-scribe.${format}.js`,
+            name: 'email-scribe',
+            fileName: (format) => `index.${format}.js`,
             formats: ['es', 'umd'],
           },
           rollupOptions: {
@@ -54,5 +53,9 @@ export default ({ mode }: { mode: string }) => {
         '@api': path.resolve(__dirname, './api'),
       },
     },
+    plugins: [
+      react(),
+      dts({ tsconfigPath: './tsconfig.app.json', rollupTypes: true }),
+    ],
   });
 };

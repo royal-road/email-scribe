@@ -5,13 +5,14 @@
   "private": false,
   "version": "1.0.0",
   "type": "module",
-  "main": "./dist/email-scribe.umd.js",
-  "module": "./dist/email-scribe.es.js",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/email-scribe.es.js",
-      "require": "./dist/email-scribe.umd.js"
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
     },
     "./dist/style.css": "./dist/style.css"
   },
@@ -23,7 +24,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
     "build:lib": "vite build --mode library",
     "build:static": "vite build --mode static",
     "prepublishOnly": "npm run build:lib",
