@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react-swc';
 import sass from 'sass';
 import path from 'path';
 import dts from 'vite-plugin-dts';
+import { libInjectCss } from 'vite-plugin-lib-inject-css';
 
 export default ({ mode }: { mode: string }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
@@ -55,6 +56,7 @@ export default ({ mode }: { mode: string }) => {
     },
     plugins: [
       react(),
+      libInjectCss(),
       dts({ tsconfigPath: './tsconfig.app.json', rollupTypes: true }),
     ],
   });
