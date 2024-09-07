@@ -15,8 +15,7 @@ dist-ssr
 public/uploads
 public/presets
 .env
-Templates/*
-!Templates/readme*
+
 
 # Editor directories and files
 .vscode/*
