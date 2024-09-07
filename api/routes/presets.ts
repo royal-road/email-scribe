@@ -56,6 +56,17 @@ export async function handlePresetList(
 ): Promise<void> {
   try {
     const presetsDir = join(process.cwd(), 'public', 'presets');
+
+    try {
+      await readdir(presetsDir);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+        res.status(200).json([]);
+        return;
+      }
+      throw error;
+    }
+
     const files = await readdir(presetsDir, { withFileTypes: true });
     const presets = files
       .filter((file) => file.isFile() && file.name.endsWith('.json'))
@@ -64,7 +75,7 @@ export async function handlePresetList(
     res.status(200).json(presets);
   } catch (error) {
     console.error('Error listing presets:', error);
-    res.status(500).json({ message: 'No Presets.' });
+    res.status(500).json({ message: 'Error listing presets' });
   }
 }
 
