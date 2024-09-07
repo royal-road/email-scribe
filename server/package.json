@@ -8,6 +8,9 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
+  "scripts": {
+    "start": "bun run server.ts"
+  },
   "dependencies": {
     "@types/express": "^4.17.21",
     "express": "^4.19.2",
