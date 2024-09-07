@@ -56,8 +56,12 @@ export default ({ mode }: { mode: string }) => {
     },
     plugins: [
       react(),
-      libInjectCss(),
-      dts({ tsconfigPath: './tsconfig.app.json', rollupTypes: true }),
+      ...(isLibraryBuild
+        ? [
+            libInjectCss(),
+            dts({ tsconfigPath: './tsconfig.app.json', rollupTypes: true }),
+          ]
+        : []),
     ],
   });
 };
