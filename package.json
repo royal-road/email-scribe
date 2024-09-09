@@ -1,7 +1,10 @@
 {
   "name": "email-scribe",
   "description": "Email Scribe is a feature-rich, embeddable email editor (<320kb gzipped), designed for creating modular, email-safe designs. This semi-WYSIWYG editor allows you to build emails using pre-existing template modules, ensuring compatibility across various email clients.",
-  "gitRepository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/royal-road/email-scribe"
+  },
   "private": false,
   "version": "1.0.0",
   "type": "module",
