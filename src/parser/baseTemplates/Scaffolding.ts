@@ -83,7 +83,7 @@ const htmlTemplate = `
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <!--<![endif]-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>*|MC:SUBJECT|*</title>
+  <title>Title</title>
   <style type="text/css">
     .ReadMsgBody { width: 100%; background-color: {{{mainBgColor}}}; }
     .ExternalClass { width: 100%; background-color: {{{mainBgColor}}}; }
