@@ -76,6 +76,8 @@ Refer to the [server](https://github.com/royal-road/email-scribe/tree/main/serve
 
 ### Setup
 
+Note: All bun commands can be replaced with your preferred package manager/runtime environment
+
 - Clone the [repo](https://github.com/royal-road/email-scribe)
 - Run `bun i` in root as well as in server directory.
 - Extract your templates in `server/Templates` folder.
@@ -93,9 +95,11 @@ Refer to the [server](https://github.com/royal-road/email-scribe/tree/main/serve
 - `bun run build:static` followed by `bun run serve` in server directory (or use your preferred compatible server implementation).
 - To embed this SPA in your project, include the compiled JS and CSS files in your projects.
 
-(All bun commands can be replaced with your preferred package manager/runtime environment)
-
 ## Project Structure
 
 The project is a React SPA (Single Page Application) that uses Tanstack Query for data fetching, Zustand for state management, Radix components for UI, Handlebars for templating alognside other minor packages for various tasks.
 ![Project Structure](docs/ProjectStructure.png)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

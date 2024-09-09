@@ -6,6 +6,7 @@
     "url": "https://github.com/royal-road/email-scribe"
   },
   "private": false,
+  "license": "MIT",
   "version": "1.0.0",
   "type": "module",
   "main": "./dist/index.umd.js",
