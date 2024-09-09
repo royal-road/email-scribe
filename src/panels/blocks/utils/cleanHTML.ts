@@ -12,6 +12,7 @@ export function sanitizeHtml(
   htmlString: string,
   classesToRemove: string[] = defaultClassesToRemove
 ): string {
+  console.log('UnsanitizedString: ', htmlString);
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, 'text/html');
 
@@ -56,6 +57,5 @@ export function sanitizeHtml(
   return serializer
     .serializeToString(doc)
     .replace(/<\/?parsererror>/g, '') // Remove any parser error tags
-    .replace(/xmlns="http:\/\/www\.w3\.org\/1999\/xhtml"/g, '') // Remove default xmlns attribute
     .trim();
 }
