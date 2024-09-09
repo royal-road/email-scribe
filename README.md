@@ -28,51 +28,74 @@ A feature-rich, embeddable email editor (<285kb gzipped), designed for creating 
   - Wraps blocks in uniquely identified templates
   - Facilitates iterative data population on the server
 
-<div align="center"><img src="docs/SSR.png" width="500" alt="SSR Support"></div>
+<!-- <div align="center"><img src="docs/SSR.png" width="500" alt="SSR Support"></div> -->
 
-## How to run
+## Using as a React Component
 
-- Clone the repo
-- Run `bun i`
-- Extract your templates in `Templates` folder
-  - The folder structure should be like `Templates/xyzTemplate/` and `index.html` should be inside it alongside any images it needs. They'll be used relatively.
-  - Suggested/Tested template: [Matah Responsive Email Set](https://themeforest.net/item/matah-responsive-email-set/10569882)
+Info: This is the client-side aspect of the editor. At the very least, you'll need to implement a server that serves templates and handles image uploads (A fully functional example server is included in git repo of the project, check next section for more details).
 
-### Development
+```jsx
+import { EmailScribe } from 'email-scribe';
+function App() {
+  return (
+    <div style={{ width: '100vw', height: '100vh' }}>
+      <EmailScribe
+        apiUrl='http://localhost:3002'
+        basePath='email-scribe'
+        templatesToFetch={['Boxed-01', 'Promotion-01', 'All-in-one']}
+        iconComponent={<img src='./assets/someLogo.png' />}
+        title='Embedded Email Scribe'
+      />
+    </div>
+  );
+}
+```
 
-- First run `bun run serve` to start the server (for image uploads, template serving, and preset management)
-- Then in a new terminal, run `bun run dev`
+### Props
 
-### Production
-
-- `bun run build` followed by `bun run serve` (or your preferred server).
-
-(All bun commands can be replaced with your preferred package manager/runtime environment)
+| Prop             | Description                                         | Optional |
+| ---------------- | --------------------------------------------------- | -------- |
+| apiUrl           | API calls start with this url                       | No       |
+| basePath         | API calls become: `apiUrl/basePath/route`           | No       |
+| templatesToFetch | Array of template names to fetch (purchased by you) | No       |
+| iconComponent    | Custom icon component. Can be React Node.           | Yes      |
+| title            | Title for the editor                                | Yes      |
 
 ## API and Server Requirements
 
-The application comes with a mock Express server that handles image uploads, template serving, and preset management. For production use, you'll need to implement similar endpoints:
+The application comes with an Express server that handles image uploads, template serving, and preset management. For production use, you'll need to implement similar endpoints:
 
 - `/upload`: POST endpoint for image uploads (with optional resizing)
 - `/templates`: GET endpoint to serve email templates
-- `/preset`: GET, POST, DELETE endpoints for managing presets
-- `/presets`: GET endpoint to list all presets
+- `/preset`: GET, POST, DELETE endpoints for managing presets (can be ignored if not needed)
+- `/presets`: GET endpoint to list all presets (same as above)
 
-Refer to the `api/routes` directory and `server.ts` for detailed implementation. The `.env.example` file outlines necessary environment variables:
+Refer to the [server](https://github.com/royal-road/email-scribe/tree/main/server) directory and [server.ts](https://github.com/royal-road/email-scribe/blob/main/server/server.ts) for detailed implementation. Note the `.env.example` file for defaults.
 
-```
-VITE_API_URL=https://your-api-url.com
-VITE_BASE_PATH=newsletter-builder
-VITE_TEMPLATE_ID=Template1,Template2,Template3
-```
+## Using as a Standalone Application/Static build
 
-(These vars are used for build, client querying as well as mock server)
+### Setup
+
+- Clone the [repo](https://github.com/royal-road/email-scribe)
+- Run `bun i` in root as well as in server directory.
+- Extract your templates in `server/Templates` folder.
+  - The folder structure should be like `server/Templates/xyzTemplate/` and `index.html` should be inside it alongside any resources embedded into templates placed relatively.
+  - Suggested/Tested template: [Matah Responsive Email Set](https://themeforest.net/item/matah-responsive-email-set/10569882).
+- Copy .env.example to .env and adjust as needed.
+
+### Development
+
+- First cd into server and run `bun run serve` to start the server (for image uploads, template serving, and preset management)
+- Then in a new terminal in root directory, run `bun run dev`
+
+### Production
+
+- `bun run build:static` followed by `bun run serve` in server directory (or use your preferred compatible server implementation).
+- To embed this SPA in your project, include the compiled JS and CSS files in your projects.
+
+(All bun commands can be replaced with your preferred package manager/runtime environment)
 
 ## Project Structure
 
 The project is a React SPA (Single Page Application) that uses Tanstack Query for data fetching, Zustand for state management, Radix components for UI, Handlebars for templating alognside other minor packages for various tasks.
 ![Project Structure](docs/ProjectStructure.png)
-
-## Embedding
-
-To embed this SPA in your project, include the compiled JS and CSS files. Ensure your server implements the required API endpoints as described in the API section.
