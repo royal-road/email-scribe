@@ -13,6 +13,13 @@ import PresetManager from '@/panels/blocks/managers/PresetManager';
 import SelectionManager from '@/panels/blocks/managers/SelectionManager';
 import { useEditorStore } from '@/hooks/undoRedoStore';
 import { EmailScribeUIProps } from '@/EmailScribe';
+import { Collapsible } from '@/components/collapsible';
+import {
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@radix-ui/react-collapsible';
+import { Button } from '@/components/button';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export interface BlockState {
   instance: BlockInterface;
@@ -59,6 +66,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   });
   const { createHistory, history } = useEditorStore();
   const isInitialMount = useRef(true);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
     createHistory(blocks);
@@ -329,39 +337,83 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           {UIProps.title || 'Email Scribe'}
         </h2>
       </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          height: '3rem',
-          gap: '0.5rem',
-          width: '100%',
-          justifyContent: 'space-between',
-        }}
-      >
-        <input
-          type='text'
-          placeholder='Subject/Title'
-          value={blocks[0].data['subject'] as string}
-          onChange={(e) => {
-            updateBlockData(0, { subject: e.target.value });
+      <Collapsible open={settingsOpen} onOpenChange={setSettingsOpen}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            height: '3rem',
+            gap: '0.5rem',
+            width: '100%',
+            justifyContent: 'space-between',
           }}
-          style={{ flex: 1, height: '3rem', padding: '0 1rem' }}
-        />
-        <BlockInstantiator addBlock={addBlock} />
-        <BlockGlobalSettings
-          blocks={blocks}
-          debouncedHistoryUpdate={debouncedCreateHistory}
-          setBlocks={setBlocks}
-          removeBlocks={removeBlocks}
-          getSsr={getIsSSR}
-          setSsr={setSSR}
-          indexOfSelectedBlocks={Object.keys(blockAttributes)
-            .filter((id) => blockAttributes[id].isSelected)
-            .map((id) => blocks.findIndex((block) => block.instance.id === id))}
-        />
-      </div>
+        >
+          <input
+            type='text'
+            placeholder='Subject/Title'
+            value={blocks[0].data['subject'] as string}
+            onChange={(e) => {
+              updateBlockData(0, { subject: e.target.value });
+            }}
+            style={{
+              flex: 3,
+              height: '3rem',
+              padding: '0 1rem',
+              minWidth: '180px',
+            }}
+          />
+          <CollapsibleTrigger asChild>
+            <Button>{settingsOpen ? <ChevronUp /> : <ChevronDown />}</Button>
+          </CollapsibleTrigger>
+          <BlockInstantiator addBlock={addBlock} />
+          <BlockGlobalSettings
+            blocks={blocks}
+            debouncedHistoryUpdate={debouncedCreateHistory}
+            setBlocks={setBlocks}
+            removeBlocks={removeBlocks}
+            getSsr={getIsSSR}
+            setSsr={setSSR}
+            indexOfSelectedBlocks={Object.keys(blockAttributes)
+              .filter((id) => blockAttributes[id].isSelected)
+              .map((id) =>
+                blocks.findIndex((block) => block.instance.id === id)
+              )}
+          />
+        </div>
+        <CollapsibleContent>
+          {/* A label and input for id (from scaffoldsettings as well) then a label textArea for PlainText  */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '1rem',
+            }}
+            className='CollapsibleRepository'
+          >
+            <label htmlFor='id'>ID</label>
+            <input
+              type='text'
+              id='id'
+              value={blocks[0].data['id'] as string}
+              onChange={(e) => {
+                updateBlockData(0, { id: e.target.value });
+              }}
+              style={{ marginBottom: '1rem' }}
+            />
+            <label htmlFor='plainText'>Plain Text Version</label>
+            <textarea
+              id='plainText'
+              value={blocks[0].data['plainText'] as string}
+              onChange={(e) => {
+                updateBlockData(0, { plainText: e.target.value });
+              }}
+              style={{ height: '15rem', resize: 'vertical' }}
+            />
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
+
       <SelectionManager
         blockCount={blocks.length}
         blockAttributes={blockAttributes}
@@ -387,7 +439,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         <div ref={animateParent}>
           {blocks.map(
             (block, index) =>
-              index > 0 && ( // Hide the scaffold block
+              index > 0 && ( // Hide the sold block
                 <BlockRenderer
                   isTop={index === 1}
                   isBottom={index === blocks.length - 1}
