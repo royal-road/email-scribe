@@ -46,17 +46,23 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   blockToFocus,
   UIProps,
 }) => {
-  const [blocks, setBlocks] = useState<BlockState[]>([]);
-  const [blockAttributes, setBlockAttributes] = useState<BlockAttributes>({});
-  const { createHistory, history } = useEditorStore();
-  const [scaffoldSettings] = useState<BlockState>(() => {
-    const instance = new ScaffoldingBlock() as BlockInterface;
-    return {
+  const instance = new ScaffoldingBlock() as BlockInterface;
+  const [blocks, setBlocks] = useState<BlockState[]>([
+    {
       instance,
       data: instance.formData,
       cachedHtml: instance.generateHTML(instance.id),
-    };
+    },
+  ]);
+  const [blockAttributes, setBlockAttributes] = useState<BlockAttributes>({
+    [instance.id]: { isOpen: false, isSelected: false, isSsr: false },
   });
+  const { createHistory, history } = useEditorStore();
+  const isInitialMount = useRef(true);
+
+  useEffect(() => {
+    createHistory(blocks);
+  }, []);
 
   const debouncedCreateHistory = debounce((blocks: BlockState[]) => {
     // console.log(blocks, blockAttributes);
@@ -109,8 +115,12 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   }, [blockToFocus]);
 
   useEffect(() => {
-    setBlocks(history);
-    // setBlockAttributes(history.attributes);
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      setBlocks(history);
+      // setBlockAttributes(history.attributes);
+    }
   }, [history]);
 
   const toggleCollapsibleOpen = (blockId: string) => {
@@ -151,8 +161,15 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   const animateParent = useRef(null);
 
   const updateRenderedHtml = () => {
-    const blockContent: string[] = [];
-    blocks.map((block) => {
+    if (blocks.length === 0) {
+      // Handle the case when there are no blocks
+      onUpdateFinalHtml('');
+      return '';
+    }
+
+    const [firstBlock, ...restBlocks] = blocks;
+
+    const blockContent: string[] = restBlocks.map((block) => {
       let html = block.cachedHtml;
       const isSsr = getIsSSR(block.instance.id);
       if (isSsr) {
@@ -160,16 +177,20 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         const suffix = `</div>`;
         html = `${prefix}${html}${suffix}`;
       }
-      blockContent.push(html);
+      return html;
     });
+
     const finHtml = blockContent.join('');
-    scaffoldSettings.instance.updateFormData({
-      ...scaffoldSettings.data,
+
+    // Update the first block's form data
+    firstBlock.instance.updateFormData({
+      ...firstBlock.data,
       blocks: finHtml,
     });
-    const finalHtml = scaffoldSettings.instance.generateHTML(
-      scaffoldSettings.instance.id
-    );
+
+    // Generate the final HTML using the first block's instance
+    const finalHtml = firstBlock.instance.generateHTML(firstBlock.instance.id);
+
     // console.log("final html", finalHtml);
     onUpdateFinalHtml(finalHtml);
     return finalHtml;
@@ -177,7 +198,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 
   useEffect(() => {
     updateRenderedHtml();
-  }, [blocks, scaffoldSettings]);
+  }, [blocks]);
 
   const updateBlockData = useCallback(
     debounce((index: number, newData: object) => {
@@ -319,7 +340,15 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           justifyContent: 'space-between',
         }}
       >
-        <h2 className='PanelHeading'>{UIProps.title || 'Email Scribe'}</h2>
+        <input
+          type='text'
+          placeholder='Subject/Title'
+          value={blocks[0].data['subject'] as string}
+          onChange={(e) => {
+            updateBlockData(0, { subject: e.target.value });
+          }}
+          style={{ flex: 1, height: '3rem', padding: '0 1rem' }}
+        />
         <BlockInstantiator addBlock={addBlock} />
         <BlockGlobalSettings
           blocks={blocks}
@@ -356,33 +385,36 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           </div>
         )}
         <div ref={animateParent}>
-          {blocks.map((block, index) => (
-            <BlockRenderer
-              isTop={index === 0}
-              isBottom={index === blocks.length - 1}
-              onDelete={() => removeBlock(index)}
-              onUp={() => moveBlock(index, 'up')}
-              onDown={() => moveBlock(index, 'down')}
-              key={`block${block.instance.id}`}
-              id={block.instance.id}
-              block={block.instance}
-              data={block.data}
-              isOpen={blockAttributes[block.instance.id]?.isOpen}
-              isSelected={blockAttributes[block.instance.id]?.isSelected}
-              toggleSelect={(id: string) => {
-                setCollapsibleSelectedState(
-                  id,
-                  !blockAttributes[id].isSelected
-                );
-              }}
-              toggleOpen={() => toggleCollapsibleOpen(block.instance.id)}
-              onChange={(newData) => updateBlockData(index, newData)}
-              inSelectionMode={Object.keys(blockAttributes).some(
-                (id) => blockAttributes[id].isSelected
-              )}
-              isSsr={blockAttributes[block.instance.id]?.isSsr}
-            />
-          ))}
+          {blocks.map(
+            (block, index) =>
+              index > 0 && ( // Hide the scaffold block
+                <BlockRenderer
+                  isTop={index === 1}
+                  isBottom={index === blocks.length - 1}
+                  onDelete={() => removeBlock(index)}
+                  onUp={() => moveBlock(index, 'up')}
+                  onDown={() => moveBlock(index, 'down')}
+                  key={`block${block.instance.id}`}
+                  id={block.instance.id}
+                  block={block.instance}
+                  data={block.data}
+                  isOpen={blockAttributes[block.instance.id]?.isOpen}
+                  isSelected={blockAttributes[block.instance.id]?.isSelected}
+                  toggleSelect={(id: string) => {
+                    setCollapsibleSelectedState(
+                      id,
+                      !blockAttributes[id].isSelected
+                    );
+                  }}
+                  toggleOpen={() => toggleCollapsibleOpen(block.instance.id)}
+                  onChange={(newData) => updateBlockData(index, newData)}
+                  inSelectionMode={Object.keys(blockAttributes).some(
+                    (id) => blockAttributes[id].isSelected
+                  )}
+                  isSsr={blockAttributes[block.instance.id]?.isSsr}
+                />
+              )
+          )}
         </div>
       </ScrollArea>
       <PresetManager
