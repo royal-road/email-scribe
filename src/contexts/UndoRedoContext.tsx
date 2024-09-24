@@ -23,7 +23,7 @@ export const UndoRedoProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         undo,
         redo,
-        canUndo: pastStates.length !== 0,
+        canUndo: pastStates.length > 2,
         canRedo: futureStates.length !== 0,
       }}
     >
