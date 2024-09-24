@@ -286,11 +286,28 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
 
   return (
     <div className='BlocksPanel'>
-      {UIProps.iconComponent ? (
-        UIProps.iconComponent
-      ) : (
-        <RRLogo style={{ width: '4rem', marginBottom: '2rem' }} />
-      )}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '1rem',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: '1rem',
+        }}
+      >
+        {UIProps.iconComponent ? (
+          UIProps.iconComponent
+        ) : (
+          <RRLogo style={{ width: '4rem' }} />
+        )}
+        <div
+          style={{ width: '1px', height: '2rem', background: 'white' }}
+        ></div>
+        <h2 className='PanelHeading' style={{ margin: 0 }}>
+          {UIProps.title || 'Email Scribe'}
+        </h2>
+      </div>
       <div
         style={{
           display: 'flex',
