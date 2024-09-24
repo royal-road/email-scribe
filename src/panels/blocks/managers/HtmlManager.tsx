@@ -71,7 +71,7 @@ export default function HtmlManager({ getHtml }: { getHtml: () => string }) {
           left: '0.5rem',
         }}
       >
-        HTML
+        Actions
       </h6>
       <div
         className='PresetManager'
