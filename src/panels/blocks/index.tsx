@@ -331,7 +331,11 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           <RRLogo style={{ width: '4rem' }} />
         )}
         <div
-          style={{ width: '1px', height: '2rem', background: 'white' }}
+          style={{
+            width: '1px',
+            height: '2rem',
+            background: 'var(--foreground)',
+          }}
         ></div>
         <h2 className='PanelHeading' style={{ margin: 0 }}>
           {UIProps.title || 'Email Scribe'}
@@ -344,7 +348,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             flexDirection: 'row',
             alignItems: 'center',
             height: '3rem',
-            gap: '0.5rem',
+            gap: '0.2rem',
             width: '100%',
             justifyContent: 'space-between',
           }}
