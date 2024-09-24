@@ -418,6 +418,8 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         </div>
       </ScrollArea>
       <PresetManager
+        key={blocks[0].data['subject'] as string}
+        presetTitle={blocks[0].data['subject'] as string}
         getBlocks={() => JSON.stringify(blocks)}
         setBlocks={setBlocks}
         getBlockAttributes={() => JSON.stringify(blockAttributesArray())}

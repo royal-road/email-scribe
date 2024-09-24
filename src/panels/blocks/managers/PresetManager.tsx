@@ -31,6 +31,7 @@ interface PresetManagerProps {
   getBlockAttributes: () => string;
   setBlockAttributes: (openStates: Record<string, BlockAttribute>) => void;
   addToHistory: (entry: BlockState[]) => void;
+  presetTitle: string;
 }
 
 const PresetManager: React.FC<PresetManagerProps> = ({
@@ -39,6 +40,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
   getBlockAttributes,
   setBlockAttributes,
   addToHistory,
+  presetTitle,
 }) => {
   const config = useConfig();
   const { presetsQuery, usePreset, savePreset, deletePreset, presetEndpoint } =
@@ -104,6 +106,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
           triggerText='Export'
           icon={<Upload />}
           placeholder='Enter preset name'
+          defaultValue={presetTitle}
           onSubmit={(presetName) =>
             handleExport({
               presetName,
@@ -133,6 +136,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
           triggerText='Save'
           placeholder='Enter preset name'
           onSubmit={handleSavePreset}
+          defaultValue={presetTitle}
         />
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger asChild>
