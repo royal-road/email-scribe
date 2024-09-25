@@ -8,7 +8,7 @@ function App() {
       basePath={import.meta.env.VITE_BASE_PATH}
       templatesToFetch={import.meta.env.VITE_TEMPLATE_ID.split(',')}
       ctaOne={{
-        label: 'Save',
+        label: 'Download Preset Json',
         icon: <Save />,
         action: (subject, id, plainText, html, preset) => {
           stringtoJsonDownload(preset, 'preset.json');
