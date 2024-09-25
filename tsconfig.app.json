@@ -30,5 +30,5 @@
       "@api/*": ["server/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "server/public/testPreset.ts"]
 }

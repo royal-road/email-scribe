@@ -92,14 +92,16 @@ const PresetManager: React.FC<PresetManagerProps> = ({
   }, [selectedPreset.data, setBlocks, setBlockAttributes]);
 
   useEffect(() => {
-    if (preloadPreset) {
-      handleJsonImport(
-        preloadPreset,
-        setBlocks,
-        setBlockAttributes,
-        addToHistory
-      );
-    }
+    setTimeout(() => {
+      if (preloadPreset) {
+        handleJsonImport(
+          preloadPreset,
+          setBlocks,
+          setBlockAttributes,
+          addToHistory
+        );
+      }
+    }, 1000);
   }, [preloadPreset]);
 
   const handleSavePreset = (presetName: string) => {
