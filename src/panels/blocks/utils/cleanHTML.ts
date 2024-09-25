@@ -12,7 +12,6 @@ export function sanitizeHtml(
   htmlString: string,
   classesToRemove: string[] = defaultClassesToRemove
 ): string {
-  console.log('UnsanitizedString: ', htmlString);
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, 'text/html');
 

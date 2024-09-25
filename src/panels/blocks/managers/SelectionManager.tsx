@@ -26,7 +26,7 @@ function SelectionManager({
     >
       <button
         className='link-text'
-        disabled={blockCount === 0}
+        disabled={blockCount === 1}
         onClick={() => {
           Object.keys(blockAttributes).forEach((id) => {
             setCollapsibleSelectedState(id, true);
@@ -37,7 +37,7 @@ function SelectionManager({
       </button>
       <button
         className='link-text'
-        disabled={blockCount === 0}
+        disabled={blockCount === 1}
         onClick={() => {
           Object.keys(blockAttributes).forEach((id) => {
             setCollapsibleSelectedState(id, false);
@@ -48,7 +48,7 @@ function SelectionManager({
       </button>
       <button
         className='link-text'
-        disabled={blockCount === 0}
+        disabled={blockCount === 1}
         onClick={() => {
           Object.keys(blockAttributes).forEach((id) => {
             setCollapsibleState(id, true);
@@ -59,7 +59,7 @@ function SelectionManager({
       </button>
       <button
         className='link-text'
-        disabled={blockCount === 0}
+        disabled={blockCount === 1}
         onClick={() => {
           Object.keys(blockAttributes).forEach((id) => {
             setCollapsibleState(id, false);

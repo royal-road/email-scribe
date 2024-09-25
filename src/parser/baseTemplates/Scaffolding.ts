@@ -15,6 +15,9 @@ const meta: BlockMetadata = {
 const schema = {
   type: 'object',
   properties: {
+    subject: { type: 'string' },
+    plainText: { type: 'string' },
+    id: { type: 'string' },
     mainBgColor: { type: 'string' },
     fontFamily: { type: 'string' },
     textColor: { type: 'string' },
@@ -24,6 +27,9 @@ const schema = {
     blocks: { type: 'string' },
   },
   required: [
+    'subject',
+    'plainText',
+    'id',
     'mainBgColor',
     'fontFamily',
     'textColor',
@@ -35,6 +41,17 @@ const schema = {
 };
 
 const uiSchema = {
+  subject: {
+    'ui:widget': 'text',
+    'ui:title': 'Subject',
+  },
+  plainText: {
+    'ui:widget': 'text',
+    'ui:title': 'Plain Text Version',
+  },
+  id: {
+    'ui:widget': 'text',
+  },
   mainBgColor: {
     'ui:widget': 'color',
     'ui:title': 'Main Background Color',
@@ -65,6 +82,9 @@ const uiSchema = {
 };
 
 const defaultValues = {
+  subject: 'Email Subject',
+  plainText: 'Email Plain Text',
+  id: uuidv4(),
   mainBgColor: '#eceff3',
   fontFamily: "'Open Sans', Arial, sans-serif",
   textColor: '#7f8c8d',
@@ -83,7 +103,7 @@ const htmlTemplate = `
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <!--<![endif]-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Title</title>
+  <title>{{{subject}}}</title>
   <style type="text/css">
     .ReadMsgBody { width: 100%; background-color: {{{mainBgColor}}}; }
     .ExternalClass { width: 100%; background-color: {{{mainBgColor}}}; }
