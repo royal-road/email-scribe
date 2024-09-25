@@ -10,9 +10,31 @@ import { ConfigProvider } from './contexts/ConfigContext';
 
 const queryClient = new QueryClient();
 
+export interface CTAProps {
+  label?: string;
+  icon?: ReactNode;
+  action?(
+    subject: string,
+    id: string,
+    plainText: string,
+    html: string,
+    preset: string
+  ): void;
+  hidden?: boolean;
+}
+
+export enum PresetMode {
+  Default,
+  LocalOnly,
+  RemoteOnly,
+}
+
 export interface EmailScribeUIProps {
   iconComponent?: ReactNode;
+  presetMode?: PresetMode;
   title?: string;
+  ctaOne?: CTAProps;
+  ctaTwo?: CTAProps;
 }
 
 export interface EmailScribeConfigProps {
@@ -51,8 +73,11 @@ export function EmailScribe(props: EmailScribeProps) {
                 onUpdateFinalHtml={setHtml}
                 blockToFocus={blockToFocus}
                 UIProps={{
+                  presetMode: props.presetMode,
                   iconComponent: props.iconComponent,
                   title: props.title,
+                  ctaOne: props.ctaOne,
+                  ctaTwo: props.ctaTwo,
                 }}
               />
               <PreviewPanel

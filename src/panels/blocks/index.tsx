@@ -8,11 +8,11 @@ import autoAnimate from '@formkit/auto-animate';
 import { BlockGlobalSettings } from '@/panels/blocks/subcomponents/GlobalSettings';
 import { RRLogo } from '@components/RRLogo';
 import { ScaffoldingBlock } from '@/parser/baseTemplates/Scaffolding';
-import HtmlManager from '@/panels/blocks/managers/HtmlManager';
-import PresetManager from '@/panels/blocks/managers/PresetManager';
+import ActionManager from '@/panels/blocks/managers/ActionsManager';
+import PresetManager, { Preset } from '@/panels/blocks/managers/PresetManager';
 import SelectionManager from '@/panels/blocks/managers/SelectionManager';
 import { useEditorStore } from '@/hooks/undoRedoStore';
-import { EmailScribeUIProps } from '@/EmailScribe';
+import { EmailScribeUIProps, PresetMode } from '@/EmailScribe';
 import { Collapsible } from '@/components/collapsible';
 import {
   CollapsibleContent,
@@ -66,7 +66,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   });
   const { createHistory, history } = useEditorStore();
   const isInitialMount = useRef(true);
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(true);
 
   useEffect(() => {
     createHistory(blocks);
@@ -474,6 +474,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         </div>
       </ScrollArea>
       <PresetManager
+        presetMode={UIProps.presetMode || PresetMode.Default}
         key={blocks[0].data['subject'] as string}
         presetTitle={blocks[0].data['subject'] as string}
         getBlocks={() => JSON.stringify(blocks)}
@@ -482,8 +483,21 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         setBlockAttributes={setBlockAttributes}
         addToHistory={createHistory}
       />
-      <HtmlManager
+      <ActionManager
         getHtml={() => (blocks.length > 0 ? updateRenderedHtml() : '')}
+        getScaffold={() => ({
+          id: blocks[0].data['id'] as string,
+          subject: blocks[0].data['subject'] as string,
+          plainText: blocks[0].data['plainText'] as string,
+        })}
+        getPreset={() =>
+          ({
+            presetName: blocks[0].data['subject'] as string,
+            blockState: JSON.stringify(blocks),
+            blockAttributes: JSON.stringify(blockAttributesArray()),
+          }) as Preset
+        }
+        UIProps={UIProps}
       />
     </div>
   );

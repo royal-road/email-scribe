@@ -1,4 +1,5 @@
-import { EmailScribe } from '@/EmailScribe';
+import { EmailScribe, PresetMode } from '@/EmailScribe';
+import { Save } from 'lucide-react';
 
 function App() {
   return (
@@ -8,6 +9,16 @@ function App() {
       templatesToFetch={import.meta.env.VITE_TEMPLATE_ID.split(',')}
       // iconComponent={<Pencil size={48} style={{ marginBottom: '0.5rem' }} />}
       // title='Email Designer'
+      ctaOne={{
+        label: 'Save',
+        icon: <Save />,
+        action: (subject, id, plainText, html) => {
+          console.log('Save', subject, id, plainText, html);
+        },
+        hidden: false,
+      }}
+      ctaTwo={{ hidden: true }}
+      presetMode={PresetMode.RemoteOnly}
     />
   );
 }
