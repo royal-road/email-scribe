@@ -36,6 +36,7 @@ interface BlockPanelProps {
   onUpdateFinalHtml: (html: string) => void;
   blockToFocus: CollapsibleFocusProps | null;
   UIProps: EmailScribeUIProps;
+  preloadPreset?: string;
 }
 
 export interface BlockAttribute {
@@ -52,6 +53,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   onUpdateFinalHtml,
   blockToFocus,
   UIProps,
+  preloadPreset,
 }) => {
   const instance = new ScaffoldingBlock() as BlockInterface;
   const [blocks, setBlocks] = useState<BlockState[]>([
@@ -474,6 +476,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         </div>
       </ScrollArea>
       <PresetManager
+        preloadPreset={preloadPreset}
         presetMode={UIProps.presetMode || PresetMode.Default}
         key={blocks[0].data['subject'] as string}
         presetTitle={blocks[0].data['subject'] as string}

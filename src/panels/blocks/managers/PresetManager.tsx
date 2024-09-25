@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button } from '@components/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@components/popover';
 import { usePresetManager } from '@/panels/blocks/hooks/presets';
@@ -16,7 +16,11 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
-import { handleExport, handleImport } from '../utils/importExport';
+import {
+  handleExport,
+  handleFileImport,
+  handleJsonImport,
+} from '../utils/importExport';
 import { useConfig } from '@/contexts/ConfigContext';
 import { PresetMode } from '@/EmailScribe';
 
@@ -34,6 +38,7 @@ interface PresetManagerProps {
   addToHistory: (entry: BlockState[]) => void;
   presetTitle: string;
   presetMode: PresetMode;
+  preloadPreset?: string;
 }
 
 const PresetManager: React.FC<PresetManagerProps> = ({
@@ -44,6 +49,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
   addToHistory,
   presetTitle,
   presetMode,
+  preloadPreset,
 }) => {
   const config = useConfig();
   const { presetsQuery, usePreset, savePreset, deletePreset, presetEndpoint } =
@@ -84,6 +90,17 @@ const PresetManager: React.FC<PresetManagerProps> = ({
       console.error(e);
     }
   }, [selectedPreset.data, setBlocks, setBlockAttributes]);
+
+  useEffect(() => {
+    if (preloadPreset) {
+      handleJsonImport(
+        preloadPreset,
+        setBlocks,
+        setBlockAttributes,
+        addToHistory
+      );
+    }
+  }, [preloadPreset]);
 
   const handleSavePreset = (presetName: string) => {
     const blockState = getBlocks();
@@ -128,21 +145,26 @@ const PresetManager: React.FC<PresetManagerProps> = ({
             >
               <Download /> Import
             </Button>
-          </>
-        )}
-
-        {(presetMode === PresetMode.RemoteOnly ||
-          presetMode === PresetMode.Default) && (
-          <>
             <input
               type='file'
               ref={fileInputRef}
               style={{ display: 'none' }}
               accept='.json'
               onChange={(event) =>
-                handleImport(event, setBlocks, setBlockAttributes, addToHistory)
+                handleFileImport(
+                  event,
+                  setBlocks,
+                  setBlockAttributes,
+                  addToHistory
+                )
               }
             />
+          </>
+        )}
+
+        {(presetMode === PresetMode.RemoteOnly ||
+          presetMode === PresetMode.Default) && (
+          <>
             <InputPopover
               icon={<CloudUpload />}
               triggerText='Save'

@@ -16,7 +16,37 @@ export const handleExport = (preset: Preset) => {
   URL.revokeObjectURL(url);
 };
 
-export const handleImport = (
+const processPresetData = (
+  preset: Preset,
+  setBlocks: (blocks: BlockState[]) => void,
+  setOpenStates: (openStates: Record<string, BlockAttribute>) => void,
+  addToHistory: (entry: BlockState[]) => void
+) => {
+  const blockState = jsonToBlocks(JSON.stringify(preset));
+  const blockAttributes = JSON.parse(
+    preset.blockAttributes
+  ) as BlockAttribute[];
+
+  if (blockState) {
+    blockState.forEach((block) => {
+      block.cachedHtml = block.instance.generateHTML(block.instance.id);
+    });
+
+    setBlocks(blockState);
+
+    const ids = blockState.map((block) => block.instance.id);
+    const openStates: Record<string, BlockAttribute> = {};
+    ids.forEach((id, index) => {
+      openStates[id] = blockAttributes[index];
+    });
+
+    setOpenStates(openStates);
+    addToHistory(blockState);
+  }
+};
+
+// Function to handle file import
+export const handleFileImport = (
   event: React.ChangeEvent<HTMLInputElement>,
   setBlocks: (blocks: BlockState[]) => void,
   setOpenStates: (openStates: Record<string, BlockAttribute>) => void,
@@ -28,28 +58,26 @@ export const handleImport = (
     reader.onload = (e) => {
       const content = e.target?.result as string;
       const preset = JSON.parse(content) as Preset;
-      const blockState = jsonToBlocks(content);
-      const blockAttributes = JSON.parse(
-        preset.blockAttributes
-      ) as BlockAttribute[];
-      if (blockState) {
-        blockState.forEach((block) => {
-          block.cachedHtml = block.instance.generateHTML(block.instance.id);
-        });
-        setBlocks(blockState);
-        const ids = blockState.map((block) => block.instance.id);
-        const openStates: Record<string, BlockAttribute> = {};
-        let index = 0;
-        ids?.forEach((id) => {
-          openStates[id] = blockAttributes[index];
-          index++;
-        });
-        setOpenStates(openStates);
-        addToHistory(blockState);
-      }
+      processPresetData(preset, setBlocks, setOpenStates, addToHistory);
     };
     reader.readAsText(file);
     event.target.value = '';
+  }
+};
+
+// Function to handle JSON import
+export const handleJsonImport = (
+  jsonData: string,
+  setBlocks: (blocks: BlockState[]) => void,
+  setOpenStates: (openStates: Record<string, BlockAttribute>) => void,
+  addToHistory: (entry: BlockState[]) => void
+) => {
+  try {
+    const preset = JSON.parse(jsonData) as Preset;
+    processPresetData(preset, setBlocks, setOpenStates, addToHistory);
+  } catch (error) {
+    console.error('Error parsing JSON:', error);
+    // Handle error (e.g., show error message to user)
   }
 };
 

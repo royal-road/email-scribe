@@ -41,6 +41,7 @@ export interface EmailScribeConfigProps {
   apiUrl: string;
   basePath: string;
   templatesToFetch: string[];
+  preloadPreset?: string;
 }
 
 export interface EmailScribeProps
@@ -70,6 +71,7 @@ export function EmailScribe(props: EmailScribeProps) {
           >
             <div className='container'>
               <BlocksPanel
+                preloadPreset={props.preloadPreset}
                 onUpdateFinalHtml={setHtml}
                 blockToFocus={blockToFocus}
                 UIProps={{
