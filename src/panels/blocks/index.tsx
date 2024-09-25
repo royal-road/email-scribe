@@ -144,6 +144,12 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   };
 
   const setCollapsibleState = (blockId: string, open: boolean) => {
+    if (
+      blockAttributes[blockId] === undefined ||
+      blocks[0].instance.id === blockId
+    ) {
+      return;
+    }
     setBlockAttributes((prev) => ({
       ...prev,
       [blockId]: { ...prev[blockId], isOpen: open },
@@ -155,6 +161,12 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   };
 
   const setSSR = (blockId: string, ssr: string | false) => {
+    if (
+      blockAttributes[blockId] === undefined ||
+      blocks[0].instance.id === blockId
+    ) {
+      return;
+    }
     setBlockAttributes((prev) => ({
       ...prev,
       [blockId]: { ...prev[blockId], isSsr: ssr },
@@ -162,6 +174,12 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   };
 
   const setCollapsibleSelectedState = (blockId: string, selected: boolean) => {
+    if (
+      blockAttributes[blockId] === undefined ||
+      blocks[0].instance.id === blockId
+    ) {
+      return;
+    }
     setBlockAttributes((prev) => ({
       ...prev,
       [blockId]: { ...prev[blockId], isSelected: selected },
