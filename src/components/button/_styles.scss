@@ -9,12 +9,17 @@
   border-radius: var(--radius);
   text-align: center;
 
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition:
+    color 0.15s ease-in-out,
+    background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
 
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 0 4px var(--ring);
   }
 
   &:disabled {
@@ -31,7 +36,9 @@
   @include button-base;
 
   &--default {
-    background-color: var(--foreground);
+    background-color: var(
+      --foreground
+    ) !important; // !important to override bootstrap messing with this scoped style
     color: var(--background);
 
     &:hover {
