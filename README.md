@@ -30,36 +30,77 @@ A feature-rich, embeddable email editor (<250kb gzipped), designed for creating 
 
 <!-- <div align="center"><img src="docs/SSR.png" width="500" alt="SSR Support"></div> -->
 
+Certainly! I'll update the README to include the new props and example. Here's an updated version of the README section:
+
 ## Using as a React Component
 
 Info: This is the client-side aspect of the editor. At the very least, you'll need to implement a server that serves templates and handles image uploads (A fully functional example server is included in git repo of the project, check next section for more details).
 
 ```jsx
-import { EmailScribe } from 'email-scribe';
+import { EmailScribe, PresetMode } from 'email-scribe';
+import { Save } from 'lucide-react';
+
 function App() {
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
-      <EmailScribe
-        apiUrl='http://localhost:3002'
-        basePath='email-scribe'
-        templatesToFetch={['Boxed-01', 'Promotion-01', 'All-in-one']}
-        iconComponent={<img src='./assets/someLogo.png' />}
-        title='Embedded Email Scribe'
-      />
-    </div>
+    <EmailScribe
+      apiUrl={import.meta.env.VITE_API_URL}
+      basePath={import.meta.env.VITE_BASE_PATH}
+      templatesToFetch={import.meta.env.VITE_TEMPLATE_ID.split(',')}
+      ctaOne={{
+        label: 'Download Preset Json',
+        icon: <Save />,
+        action: (subject, id, plainText, html, preset) => {
+          stringtoJsonDownload(preset, 'preset.json');
+        },
+        hidden: false,
+      }}
+      ctaTwo={{ hidden: true }}
+      presetMode={PresetMode.Default}
+      preloadPreset={JSON.stringify(presetTest)}
+    />
   );
+}
+
+function stringtoJsonDownload(data: string, filename: string) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' }));
+  a.download = filename;
+  a.click();
 }
 ```
 
 ### Props
 
-| Prop             | Description                                         | Optional |
-| ---------------- | --------------------------------------------------- | -------- |
-| apiUrl           | API calls start with this url                       | No       |
-| basePath         | API calls become: `apiUrl/basePath/route`           | No       |
-| templatesToFetch | Array of template names to fetch (purchased by you) | No       |
-| iconComponent    | Custom icon component. Can be React Node.           | Yes      |
-| title            | Title for the editor                                | Yes      |
+| Prop             | Description                                         | Type       | Optional |
+| ---------------- | --------------------------------------------------- | ---------- | -------- |
+| apiUrl           | API calls start with this url                       | string     | No       |
+| basePath         | API calls become: `apiUrl/basePath/route`           | string     | No       |
+| templatesToFetch | Array of template names to fetch (purchased by you) | string[]   | No       |
+| iconComponent    | Custom icon component. Can be React Node.           | ReactNode  | Yes      |
+| title            | Title for the editor                                | string     | Yes      |
+| preloadPreset    | Preset to load initially                            | string     | Yes      |
+| presetMode       | Mode for preset handling                            | PresetMode | Yes      |
+| ctaOne           | Configuration for the first CTA button              | CTAProps   | Yes      |
+| ctaTwo           | Configuration for the second CTA button             | CTAProps   | Yes      |
+
+### CTAProps
+
+| Prop   | Description                                    | Type                                                                                   | Optional |
+| ------ | ---------------------------------------------- | -------------------------------------------------------------------------------------- | -------- |
+| label  | Label for the CTA button                       | string                                                                                 | Yes      |
+| icon   | Icon component for the CTA button              | ReactNode                                                                              | Yes      |
+| action | Function to execute when CTA button is clicked | (subject: string, id: string, plainText: string, html: string, preset: string) => void | Yes      |
+| hidden | Whether to hide the CTA button                 | boolean                                                                                | Yes      |
+
+Action parameters can be used to extract all useful data from the editor to be used in your application.
+
+### PresetMode
+
+An enum with the following values:
+
+- `PresetMode.Default`
+- `PresetMode.LocalOnly`
+- `PresetMode.RemoteOnly`
 
 ## API and Server Requirements
 

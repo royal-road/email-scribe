@@ -36,9 +36,7 @@
   @include button-base;
 
   &--default {
-    background-color: var(
-      --foreground
-    ) !important; // !important to override bootstrap messing with this scoped style
+    background-color: var(--foreground);
     color: var(--background);
 
     &:hover {
