@@ -19,7 +19,8 @@ import {
   CollapsibleTrigger,
 } from '@radix-ui/react-collapsible';
 import { Button } from '@/components/button';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, RefreshCcw } from 'lucide-react';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface BlockState {
   instance: BlockInterface;
@@ -368,7 +369,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             flexDirection: 'row',
             alignItems: 'center',
             height: '3rem',
-            gap: '0.2rem',
+            gap: '0.3rem',
             width: '100%',
             justifyContent: 'space-between',
           }}
@@ -388,7 +389,18 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             }}
           />
           <CollapsibleTrigger asChild>
-            <Button>{settingsOpen ? <ChevronUp /> : <ChevronDown />}</Button>
+            <Button
+              size='icon'
+              style={{
+                padding: 0,
+                minWidth: '3rem',
+                maxWidth: '3rem',
+                minHeight: '3rem',
+                maxHeight: '3rem',
+              }}
+            >
+              {settingsOpen ? <ChevronUp /> : <ChevronDown />}
+            </Button>
           </CollapsibleTrigger>
           <BlockInstantiator addBlock={addBlock} />
           <BlockGlobalSettings
@@ -416,15 +428,37 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             className='CollapsibleRepository'
           >
             <label htmlFor='id'>ID</label>
-            <input
-              type='text'
-              id='id'
-              value={blocks[0].data['id'] as string}
-              onChange={(e) => {
-                updateBlockData(0, { id: e.target.value });
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                gap: '0.2rem',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: '1rem',
               }}
-              style={{ marginBottom: '1rem' }}
-            />
+            >
+              <input
+                type='text'
+                id='id'
+                value={blocks[0].data['id'] as string}
+                onChange={(e) => {
+                  updateBlockData(0, { id: e.target.value });
+                }}
+                style={{ flex: 1, height: '2.5rem' }}
+              />
+              <Button
+                size='icon'
+                onClick={() =>
+                  updateBlockData(0, {
+                    id: uuidv4(),
+                  })
+                }
+                title='Generate new ID (Use when creating new template using old preset as base)'
+              >
+                <RefreshCcw />
+              </Button>
+            </div>
             <label htmlFor='plainText'>Plain Text Version</label>
             <textarea
               id='plainText'
