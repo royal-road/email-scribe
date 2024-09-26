@@ -1,5 +1,12 @@
-export const injectHoverScript = (doc: Document, zoomFactor: number) => {
+export const injectHoverScript = (
+  doc: Document,
+  zoomFactor: number,
+  nonce?: string
+) => {
   const script = doc.createElement('script');
+  if (nonce) {
+    script.setAttribute('nonce', nonce);
+  }
   script.textContent = `
     (function() {
       let hoverBox = document.createElement('div');

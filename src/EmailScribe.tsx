@@ -42,6 +42,7 @@ export interface EmailScribeConfigProps {
   basePath: string;
   templatesToFetch: string[];
   preloadPreset?: string;
+  nonce?: string;
 }
 
 export interface EmailScribeProps
@@ -85,6 +86,7 @@ export function EmailScribe(props: EmailScribeProps) {
               <PreviewPanel
                 htmlToPreview={html}
                 setBlockToFocus={setBlockToFocus}
+                nonce={props.nonce}
               />
             </div>
           </div>

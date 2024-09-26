@@ -8,6 +8,7 @@ interface PreviewPanelBodyProps {
   htmlToPreview: string;
   breakpoint: Breakpoints['breakpoint'];
   setBlockToFocus: (blockToFocus: CollapsibleFocusProps | null) => void;
+  nonce?: string;
 }
 
 const breakpointSettings = {
@@ -20,6 +21,7 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
   htmlToPreview,
   breakpoint,
   setBlockToFocus,
+  nonce,
 }) => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -35,7 +37,8 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
         const preparedHtml = prepareHtmlForPreview(
           htmlToPreview,
           breakpoint,
-          isMobile
+          isMobile,
+          nonce
         );
         // Write the modified HTML to the iframe
         doc.open();

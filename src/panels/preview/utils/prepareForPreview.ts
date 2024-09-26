@@ -3,7 +3,8 @@ import { injectHoverScript } from '@/panels/preview/utils/injectBoundingBox';
 export const prepareHtmlForPreview = (
   htmlToPreview: string,
   breakpoint: string,
-  isMobile: boolean
+  isMobile: boolean,
+  nonce?: string
 ): string => {
   const parser = new DOMParser();
   let htmlDoc;
@@ -56,6 +57,6 @@ export const prepareHtmlForPreview = (
       zoom: ${zoomFactor};
     }
   `;
-  injectHoverScript(htmlDoc, zoomFactor);
+  injectHoverScript(htmlDoc, zoomFactor, nonce);
   return htmlDoc.documentElement.outerHTML;
 };

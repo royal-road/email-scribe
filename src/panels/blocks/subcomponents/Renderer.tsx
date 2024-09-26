@@ -159,7 +159,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({
                 onChange(e.formData);
               }
             }}
-            liveValidate={true}
+            // liveValidate={true}
             className={`blockForm ${isSsr ? 'disabled' : ''}`}
             children={true}
             onError={(e) => console.error(e)}

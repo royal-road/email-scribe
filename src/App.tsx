@@ -18,6 +18,7 @@ function App() {
       ctaTwo={{ hidden: true }}
       presetMode={PresetMode.Default}
       preloadPreset={JSON.stringify(presetTest)}
+      nonce='123'
     />
   );
 }

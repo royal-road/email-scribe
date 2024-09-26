@@ -7,10 +7,12 @@ import { useKeyboardShortcuts } from '@/hooks/keyboardShortcuts';
 interface PreviewPanelProps {
   htmlToPreview: string;
   setBlockToFocus: (blockToFocus: CollapsibleFocusProps | null) => void;
+  nonce?: string;
 }
 export const PreviewPanel: React.FC<PreviewPanelProps> = ({
   htmlToPreview,
   setBlockToFocus,
+  nonce,
 }) => {
   useKeyboardShortcuts();
   const [breakpoint, setBreakpoint] = useState<'mobile' | 'tablet' | 'desktop'>(
@@ -25,6 +27,7 @@ export const PreviewPanel: React.FC<PreviewPanelProps> = ({
         htmlToPreview={htmlToPreview}
         breakpoint={breakpoint}
         setBlockToFocus={setBlockToFocus}
+        nonce={nonce}
       />
     </div>
   );
