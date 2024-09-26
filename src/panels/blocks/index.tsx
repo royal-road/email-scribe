@@ -190,7 +190,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   const animateParent = useRef(null);
 
   const updateRenderedHtml = () => {
-    if (blocks.length === 0) {
+    if (blocks.length <= 1) {
       // Handle the case when there are no blocks
       onUpdateFinalHtml('');
       return '';
@@ -218,9 +218,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     });
 
     // Generate the final HTML using the first block's instance
-    const finalHtml = firstBlock.instance.generateHTML(firstBlock.instance.id);
-
-    // console.log("final html", finalHtml);
+    const finalHtml = firstBlock.instance.generateHTML();
     onUpdateFinalHtml(finalHtml);
     return finalHtml;
   };
