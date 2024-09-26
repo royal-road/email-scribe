@@ -528,7 +528,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
       <PresetManager
         preloadPreset={preloadPreset}
         presetMode={UIProps.presetMode || PresetMode.Default}
-        key={blocks[0].data['subject'] as string}
+        // key={blocks[0].data['subject'] as string}  // Commenting this causes the popup name to NOT match the subject, but leaving it causes re-rendering of the entire panel (and re-preloading of the preset that destroys the current state).
         presetTitle={blocks[0].data['subject'] as string}
         getBlocks={() => JSON.stringify(blocks)}
         setBlocks={setBlocks}

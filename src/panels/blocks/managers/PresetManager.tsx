@@ -59,6 +59,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
     string | null
   >(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [donePreloading, setDonePreloading] = React.useState(false);
 
   const selectedPreset = usePreset(selectedPresetName || '', presetEndpoint);
 
@@ -93,7 +94,8 @@ const PresetManager: React.FC<PresetManagerProps> = ({
 
   useEffect(() => {
     setTimeout(() => {
-      if (preloadPreset) {
+      if (preloadPreset && !donePreloading) {
+        setDonePreloading(true);
         handleJsonImport(
           preloadPreset,
           setBlocks,
@@ -101,7 +103,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
           addToHistory
         );
       }
-    }, 1000);
+    }, 10);
   }, [preloadPreset]);
 
   const handleSavePreset = (presetName: string) => {
