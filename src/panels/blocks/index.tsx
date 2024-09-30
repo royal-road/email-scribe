@@ -520,13 +520,13 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
                   toggleSelect={(id: string) => {
                     setCollapsibleSelectedState(
                       id,
-                      !blockAttributes[id].isSelected
+                      !blockAttributes[id]?.isSelected
                     );
                   }}
                   toggleOpen={() => toggleCollapsibleOpen(block.instance.id)}
                   onChange={(newData) => updateBlockData(index, newData)}
                   inSelectionMode={Object.keys(blockAttributes).some(
-                    (id) => blockAttributes[id].isSelected
+                    (id) => blockAttributes[id]?.isSelected
                   )}
                   isSsr={blockAttributes[block.instance.id]?.isSsr}
                 />
