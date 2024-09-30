@@ -375,10 +375,15 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           <input
             type='text'
             placeholder='Subject/Title'
-            value={blocks[0].data['subject'] as string}
+            value={
+              UIProps.ABTestMode == 'None' || UIProps.ABTestMode == 'A'
+                ? (blocks[0].data['subject'] as string)
+                : '(Set in Editor A)'
+            }
             onChange={(e) => {
               updateBlockData(0, { subject: e.target.value });
             }}
+            disabled={UIProps.ABTestMode == 'B'}
             style={{
               flex: 3,
               height: '3rem',
@@ -425,38 +430,42 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             }}
             className='CollapsibleRepository'
           >
-            <label htmlFor='id'>ID</label>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                gap: '0.2rem',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginBottom: '1rem',
-              }}
-            >
-              <input
-                type='text'
-                id='id'
-                value={blocks[0].data['id'] as string}
-                onChange={(e) => {
-                  updateBlockData(0, { id: e.target.value });
-                }}
-                style={{ flex: 1, height: '2.5rem' }}
-              />
-              <Button
-                size='icon'
-                onClick={() =>
-                  updateBlockData(0, {
-                    id: uuidv4(),
-                  })
-                }
-                title='Generate new ID (Use when creating new template using old preset as base)'
-              >
-                <RefreshCcw />
-              </Button>
-            </div>
+            {UIProps.ABTestMode == 'None' && (
+              <>
+                <label htmlFor='id'>ID</label>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '0.2rem',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginBottom: '1rem',
+                  }}
+                >
+                  <input
+                    type='text'
+                    id='id'
+                    value={blocks[0].data['id'] as string}
+                    onChange={(e) => {
+                      updateBlockData(0, { id: e.target.value });
+                    }}
+                    style={{ flex: 1, height: '2.5rem' }}
+                  />
+                  <Button
+                    size='icon'
+                    onClick={() =>
+                      updateBlockData(0, {
+                        id: uuidv4(),
+                      })
+                    }
+                    title='Generate new ID (Use when creating new template using old preset as base)'
+                  >
+                    <RefreshCcw />
+                  </Button>
+                </div>
+              </>
+            )}
             <label htmlFor='plainText'>Plain Text Version</label>
             <textarea
               id='plainText'
@@ -536,22 +545,24 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         setBlockAttributes={setBlockAttributes}
         addToHistory={createHistory}
       />
-      <ActionManager
-        getHtml={() => (blocks.length > 0 ? updateRenderedHtml() : '')}
-        getScaffold={() => ({
-          id: blocks[0].data['id'] as string,
-          subject: blocks[0].data['subject'] as string,
-          plainText: blocks[0].data['plainText'] as string,
-        })}
-        getPreset={() =>
-          ({
-            presetName: blocks[0].data['subject'] as string,
-            blockState: JSON.stringify(blocks),
-            blockAttributes: JSON.stringify(blockAttributesArray()),
-          }) as Preset
-        }
-        UIProps={UIProps}
-      />
+      {UIProps.ctaOne?.hidden && UIProps.ctaTwo?.hidden ? null : (
+        <ActionManager
+          getHtml={() => (blocks.length > 0 ? updateRenderedHtml() : '')}
+          getScaffold={() => ({
+            id: blocks[0].data['id'] as string,
+            subject: blocks[0].data['subject'] as string,
+            plainText: blocks[0].data['plainText'] as string,
+          })}
+          getPreset={() =>
+            ({
+              presetName: blocks[0].data['subject'] as string,
+              blockState: JSON.stringify(blocks),
+              blockAttributes: JSON.stringify(blockAttributesArray()),
+            }) as Preset
+          }
+          UIProps={UIProps}
+        />
+      )}
     </div>
   );
 };

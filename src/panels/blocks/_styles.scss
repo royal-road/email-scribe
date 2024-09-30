@@ -361,6 +361,11 @@ textarea,
     border-color: color-mix(in srgb, var(--foreground) 90%, transparent);
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--foreground) 10%, transparent);
   }
+  &:disabled {
+    background-color: var(--muted-background);
+    color: var(--muted-foreground);
+    cursor: not-allowed;
+  }
 }
 
 .editorInput {

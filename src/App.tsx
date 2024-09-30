@@ -20,6 +20,7 @@ function App() {
       preloadPreset={JSON.stringify(presetTest)}
       nonce='123'
       scribeId='scribeA'
+      ABTestMode='B'
     />
   );
 }

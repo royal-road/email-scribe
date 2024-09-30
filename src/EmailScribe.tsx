@@ -6,6 +6,7 @@ import './styles.scss';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { UndoRedoProvider } from './contexts/UndoRedoContext';
 import { ConfigProvider } from './contexts/ConfigContext';
+import './panels/blocks/utils/emailScribeGlobals';
 // import { Pencil } from 'lucide-react';
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ export enum PresetMode {
 }
 
 export interface EmailScribeUIProps {
+  ABTestMode?: 'None' | 'A' | 'B';
   iconComponent?: ReactNode;
   presetMode?: PresetMode;
   title?: string;
@@ -82,6 +84,7 @@ export function EmailScribe(props: EmailScribeProps) {
                   title: props.title,
                   ctaOne: props.ctaOne,
                   ctaTwo: props.ctaTwo,
+                  ABTestMode: props.ABTestMode ?? 'None',
                   scribeId: props.scribeId,
                 }}
               />
