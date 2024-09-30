@@ -11,7 +11,7 @@ import { ScaffoldingBlock } from '@/parser/baseTemplates/Scaffolding';
 import ActionManager from '@/panels/blocks/managers/ActionsManager';
 import PresetManager, { Preset } from '@/panels/blocks/managers/PresetManager';
 import SelectionManager from '@/panels/blocks/managers/SelectionManager';
-import { useEditorStore } from '@/hooks/undoRedoStore';
+import { useUndoRedo } from '@/contexts/UndoRedoContext';
 import { EmailScribeUIProps, PresetMode } from '@/EmailScribe';
 import { Collapsible } from '@/components/collapsible';
 import {
@@ -67,6 +67,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   const [blockAttributes, setBlockAttributes] = useState<BlockAttributes>({
     [instance.id]: { isOpen: false, isSelected: false, isSsr: false },
   });
+  const { useEditorStore } = useUndoRedo();
   const { createHistory, history } = useEditorStore();
   const isInitialMount = useRef(true);
   const [settingsOpen, setSettingsOpen] = useState(true);

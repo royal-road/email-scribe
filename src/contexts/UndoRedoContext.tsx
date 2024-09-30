@@ -1,32 +1,39 @@
-import React, { createContext, useContext } from 'react';
-import { useEditorStore } from '../hooks/undoRedoStore';
+import React, { createContext, useContext, useMemo } from 'react';
+import { createEditorStore } from '../hooks/undoRedoStore';
 
 interface UndoRedoContextType {
   undo: () => void;
   redo: () => void;
   canUndo: boolean;
   canRedo: boolean;
+  useEditorStore: ReturnType<typeof createEditorStore>;
 }
 
 const UndoRedoContext = createContext<UndoRedoContextType | undefined>(
   undefined
 );
 
-export const UndoRedoProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const UndoRedoProvider: React.FC<{
+  children: React.ReactNode;
+  scribeId: string;
+}> = ({ children, scribeId }) => {
+  const useEditorStore = useMemo(() => createEditorStore(scribeId), [scribeId]);
   const { undo, redo, pastStates, futureStates } =
     useEditorStore.temporal.getState();
-  // console.log('pastStates', pastStates.length, futureStates.length);
+
+  const value = useMemo(
+    () => ({
+      undo,
+      redo,
+      canUndo: pastStates.length > 2,
+      canRedo: futureStates.length !== 0,
+      useEditorStore,
+    }),
+    [undo, redo, pastStates.length, futureStates.length, useEditorStore]
+  );
+
   return (
-    <UndoRedoContext.Provider
-      value={{
-        undo,
-        redo,
-        canUndo: pastStates.length > 2,
-        canRedo: futureStates.length !== 0,
-      }}
-    >
+    <UndoRedoContext.Provider value={value}>
       {children}
     </UndoRedoContext.Provider>
   );

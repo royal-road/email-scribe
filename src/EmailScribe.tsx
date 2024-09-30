@@ -67,7 +67,7 @@ export function EmailScribe(props: EmailScribeProps) {
           templatesToFetch: props.templatesToFetch,
         }}
       >
-        <UndoRedoProvider>
+        <UndoRedoProvider scribeId={props.scribeId}>
           <div
             id='newsletterDesignerRoot'
             data-theme={theme}
