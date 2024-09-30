@@ -117,7 +117,7 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
         style={{
           width: `${dimensions.width}px`,
           height: `${dimensions.height}px`,
-          maxWidth: '100%',
+          maxWidth: isMobile ? '100' : '75vw',
           maxHeight: '100%',
           minHeight: '40rem',
           transition: 'all 0.3s ease',
