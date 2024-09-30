@@ -414,7 +414,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             getSsr={getIsSSR}
             setSsr={setSSR}
             indexOfSelectedBlocks={Object.keys(blockAttributes)
-              .filter((id) => blockAttributes[id].isSelected)
+              .filter((id) => blockAttributes[id]?.isSelected)
               .map((id) =>
                 blocks.findIndex((block) => block.instance.id === id)
               )}
