@@ -69,36 +69,64 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
   }, [htmlToPreview, breakpoint, isMobile]);
 
   useEffect(() => {
+    const containerElement = containerRef.current;
+    if (!containerElement) return;
+
     const updateDimensions = () => {
-      if (containerRef.current) {
-        const containerWidth = containerRef.current.clientWidth;
-        const containerHeight = containerRef.current.clientHeight;
-        let { width, height } = breakpointSettings[breakpoint];
+      const containerWidth = containerElement.clientWidth - (isMobile ? 0 : 20);
+      const containerHeight = containerElement.clientHeight;
+      let { width, height } = breakpointSettings[breakpoint];
 
-        // For desktop, always use landscape orientation
-        if (breakpoint === 'desktop') {
-          if (width < height) {
-            [width, height] = [height, width];
-          }
-        }
-
-        const aspectRatio = width / height;
-
-        let newWidth = Math.min(width, containerWidth);
-        let newHeight = newWidth / aspectRatio;
-
-        if (newHeight > containerHeight) {
-          newHeight = containerHeight;
-          newWidth = newHeight * aspectRatio;
-        }
-
-        setDimensions({ width: newWidth, height: newHeight });
+      // For desktop, always use landscape orientation
+      if (breakpoint === 'desktop' && width < height) {
+        [width, height] = [height, width];
       }
+
+      const aspectRatio = width / height;
+
+      let newWidth = Math.min(width, containerWidth);
+      let newHeight = newWidth / aspectRatio;
+
+      if (newHeight > containerHeight) {
+        newHeight = containerHeight;
+        newWidth = newHeight * aspectRatio;
+      }
+
+      setDimensions({ width: newWidth, height: newHeight });
     };
 
-    updateDimensions();
+    // ResizeObserver
+    const resizeObserver = new ResizeObserver(updateDimensions);
+    resizeObserver.observe(containerElement);
+
+    // MutationObserver
+    const mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.type === 'attributes' &&
+          mutation.attributeName === 'style'
+        ) {
+          updateDimensions();
+        }
+      });
+    });
+    mutationObserver.observe(containerElement, { attributes: true });
+
+    // Fallback interval
+    const intervalId = setInterval(updateDimensions, 2500);
+
+    // Window resize event
     window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
+
+    // Initial update
+    updateDimensions();
+
+    return () => {
+      resizeObserver.disconnect();
+      mutationObserver.disconnect();
+      clearInterval(intervalId);
+      window.removeEventListener('resize', updateDimensions);
+    };
   }, [breakpoint]);
 
   return (
@@ -117,10 +145,10 @@ export const PreviewPanel: React.FC<PreviewPanelBodyProps> = ({
         style={{
           width: `${dimensions.width}px`,
           height: `${dimensions.height}px`,
-          maxWidth: isMobile ? '100' : '75vw',
+          maxWidth: '100%',
           maxHeight: '100%',
           minHeight: '40rem',
-          transition: 'all 0.3s ease',
+          transition: 'all 0.1s ease',
           boxShadow: '0 0 10px rgba(0,0,0,0.1)',
         }}
       >
