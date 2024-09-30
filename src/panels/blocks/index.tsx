@@ -545,24 +545,22 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
         setBlockAttributes={setBlockAttributes}
         addToHistory={createHistory}
       />
-      {UIProps.ctaOne?.hidden && UIProps.ctaTwo?.hidden ? null : (
-        <ActionManager
-          getHtml={() => (blocks.length > 0 ? updateRenderedHtml() : '')}
-          getScaffold={() => ({
-            id: blocks[0].data['id'] as string,
-            subject: blocks[0].data['subject'] as string,
-            plainText: blocks[0].data['plainText'] as string,
-          })}
-          getPreset={() =>
-            ({
-              presetName: blocks[0].data['subject'] as string,
-              blockState: JSON.stringify(blocks),
-              blockAttributes: JSON.stringify(blockAttributesArray()),
-            }) as Preset
-          }
-          UIProps={UIProps}
-        />
-      )}
+      <ActionManager
+        getHtml={() => (blocks.length > 0 ? updateRenderedHtml() : '')}
+        getScaffold={() => ({
+          id: blocks[0].data['id'] as string,
+          subject: blocks[0].data['subject'] as string,
+          plainText: blocks[0].data['plainText'] as string,
+        })}
+        getPreset={() =>
+          ({
+            presetName: blocks[0].data['subject'] as string,
+            blockState: JSON.stringify(blocks),
+            blockAttributes: JSON.stringify(blockAttributesArray()),
+          }) as Preset
+        }
+        UIProps={UIProps}
+      />
     </div>
   );
 };
