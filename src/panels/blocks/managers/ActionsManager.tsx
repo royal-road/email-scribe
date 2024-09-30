@@ -52,6 +52,21 @@ export default function ActionManager({
     navigator.clipboard.writeText(sanitizeHtml(jsonState));
   };
 
+  useEffect(() => {
+    window.emailScribeDataRetrievers = window.emailScribeDataRetrievers || {};
+    window.emailScribeDataRetrievers[UIProps.scribeId] = () => ({
+      subject: getScaffold().subject,
+      id: getScaffold().id,
+      plainText: getScaffold().plainText,
+      html: getHtml(),
+      preset: JSON.stringify(getPreset()),
+    });
+
+    return () => {
+      delete window.emailScribeDataRetrievers[UIProps.scribeId];
+    };
+  }, [UIProps.scribeId, getHtml, getScaffold, getPreset]);
+
   return (
     <div
       className='ActionsManager'

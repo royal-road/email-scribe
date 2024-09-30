@@ -35,6 +35,7 @@ export interface EmailScribeUIProps {
   title?: string;
   ctaOne?: CTAProps;
   ctaTwo?: CTAProps;
+  scribeId: string;
 }
 
 export interface EmailScribeConfigProps {
@@ -81,6 +82,7 @@ export function EmailScribe(props: EmailScribeProps) {
                   title: props.title,
                   ctaOne: props.ctaOne,
                   ctaTwo: props.ctaTwo,
+                  scribeId: props.scribeId,
                 }}
               />
               <PreviewPanel

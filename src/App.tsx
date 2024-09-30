@@ -19,6 +19,7 @@ function App() {
       presetMode={PresetMode.Default}
       preloadPreset={JSON.stringify(presetTest)}
       nonce='123'
+      scribeId='scribeA'
     />
   );
 }
