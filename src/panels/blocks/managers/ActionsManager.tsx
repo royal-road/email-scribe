@@ -153,7 +153,7 @@ export default function ActionManager({
                 style={{ display: 'flex', gap: '0.5rem', width: '100%' }}
                 variant='default'
                 onClick={() =>
-                  UIProps.ctaOne?.action!(
+                  UIProps.ctaTwo?.action!(
                     getScaffold().subject,
                     getScaffold().id,
                     getScaffold().plainText,
@@ -162,7 +162,7 @@ export default function ActionManager({
                   )
                 }
               >
-                {UIProps.ctaOne?.label} {UIProps.ctaOne?.icon}
+                {UIProps.ctaTwo?.label} {UIProps.ctaTwo?.icon}
               </Button>
             ) : (
               <Button
