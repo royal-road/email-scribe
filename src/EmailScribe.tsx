@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { BlocksPanel, CollapsibleFocusProps } from './panels/blocks';
 import PreviewPanel from './panels/preview';
 import { useTheme } from './hooks/useTheme';
@@ -57,6 +57,7 @@ export function EmailScribe(props: EmailScribeProps) {
   const [html, setHtml] = useState('');
   const [blockToFocus, setBlockToFocus] =
     useState<CollapsibleFocusProps | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -66,12 +67,14 @@ export function EmailScribe(props: EmailScribeProps) {
           basePath: props.basePath,
           templatesToFetch: props.templatesToFetch,
         }}
+        containerRef={containerRef}
       >
         <UndoRedoProvider scribeId={props.scribeId}>
           <div
-            id='newsletterDesignerRoot'
+            id={`newsletterDesignerRoot-${props.scribeId}`}
             data-theme={theme}
             className='newsletterDesigner bg-background text-foreground'
+            ref={containerRef}
           >
             <div className='container'>
               <BlocksPanel

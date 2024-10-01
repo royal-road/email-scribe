@@ -3,6 +3,7 @@ import * as PopoverPrimitive from '@radix-ui/react-popover';
 import { X } from 'lucide-react';
 import { cn } from '@lib/utils';
 import { Button } from '@components/button';
+import { useConfig } from '@/contexts/ConfigContext';
 
 // - So, popover gets appended to body by default, but that causes css issues since it has to
 //  be encapsulated within .newsletterDesigner.
@@ -10,7 +11,7 @@ import { Button } from '@components/button';
 // not avaliable on the first render, making it so the popover is missing UI.
 // - Hence, I've added this state and useEffect to reInitialize popover with right container once
 // it's available.
-const spaClassName = '.newsletterDesigner';
+// const spaClassName = '.newsletterDesigner';
 const Popover = PopoverPrimitive.Root;
 
 const PopoverTrigger = PopoverPrimitive.Trigger;
@@ -22,13 +23,14 @@ const PopoverContent = React.forwardRef<
   }
 >(({ className, showClose = true, children, ...props }, ref) => {
   const [container, setContainer] = React.useState<HTMLElement | null>(null);
-
+  const determinedContainer = useConfig().containerRef?.current;
   React.useEffect(() => {
-    const spaContainer = document.querySelector(spaClassName);
-    if (spaContainer) {
-      setContainer(spaContainer as HTMLElement);
-    }
-  }, []);
+    // const spaContainer = document.querySelector(spaClassName);
+    // if (spaContainer) {
+    //   setContainer(spaContainer as HTMLElement);
+    // }
+    if (determinedContainer) setContainer(determinedContainer);
+  }, [determinedContainer]);
 
   if (!container) {
     return null; // Or return a loading state

@@ -1,16 +1,21 @@
 import { EmailScribeConfigProps } from '@/EmailScribe';
 import React, { createContext, useContext } from 'react';
 
-const ConfigContext = createContext<EmailScribeConfigProps | undefined>(
-  undefined
-);
+type ConfigContextType = EmailScribeConfigProps & {
+  containerRef?: React.RefObject<HTMLDivElement>;
+};
+
+const ConfigContext = createContext<ConfigContextType | undefined>(undefined);
 
 export const ConfigProvider: React.FC<{
   config: EmailScribeConfigProps;
+  containerRef?: React.RefObject<HTMLDivElement>;
   children: React.ReactNode;
-}> = ({ config, children }) => {
+}> = ({ config, children, containerRef }) => {
   return (
-    <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>
+    <ConfigContext.Provider value={{ ...config, containerRef }}>
+      {children}
+    </ConfigContext.Provider>
   );
 };
 
