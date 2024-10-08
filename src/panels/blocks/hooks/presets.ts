@@ -2,7 +2,14 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Preset } from '../managers/PresetManager';
 import { EmailScribeConfigProps } from '@/EmailScribe';
 
-const apiFetch = async (url: string, options?: RequestInit) => {
+const apiFetch = async (
+  url: string,
+  options?: RequestInit,
+  shouldQuery: boolean = true
+) => {
+  if (!shouldQuery) {
+    return;
+  }
   const response = await fetch(url, options);
   if (!response.ok) {
     throw new Error(`API call failed: ${response.statusText}`);
@@ -11,10 +18,13 @@ const apiFetch = async (url: string, options?: RequestInit) => {
 };
 
 // Fetch all presets (list)
-export const usePresets = (PRESETS_ENDPOINT: string) => {
+export const usePresets = (
+  PRESETS_ENDPOINT: string,
+  shouldQuery: boolean = true
+) => {
   return useQuery<string[]>({
     queryKey: ['presets'],
-    queryFn: () => apiFetch(PRESETS_ENDPOINT),
+    queryFn: () => apiFetch(PRESETS_ENDPOINT, { method: 'GET' }, shouldQuery),
   });
 };
 
@@ -69,10 +79,13 @@ export const useSavePreset = (PRESET_ENDPOINT: string) => {
 
 // Custom hook to manage presets
 // Custom hook to manage presets
-export const usePresetManager = (config: EmailScribeConfigProps) => {
+export const usePresetManager = (
+  config: EmailScribeConfigProps,
+  shouldQuery: boolean = true
+) => {
   const PRESETS_ENDPOINT = `${config.apiUrl}/${config.basePath}/presets`;
   const PRESET_ENDPOINT = `${config.apiUrl}/${config.basePath}/preset`;
-  const presetsQuery = usePresets(PRESETS_ENDPOINT);
+  const presetsQuery = usePresets(PRESETS_ENDPOINT, shouldQuery);
   const savePreset = useSavePreset(PRESET_ENDPOINT);
   const deletePreset = useDeletePreset(PRESET_ENDPOINT);
 

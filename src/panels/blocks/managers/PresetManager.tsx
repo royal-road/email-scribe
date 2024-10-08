@@ -52,8 +52,12 @@ const PresetManager: React.FC<PresetManagerProps> = ({
   preloadPreset,
 }) => {
   const config = useConfig();
+  // Only use preset query (within presetManager) if remote only or default
   const { presetsQuery, usePreset, savePreset, deletePreset, presetEndpoint } =
-    usePresetManager(config);
+    usePresetManager(
+      config,
+      presetMode === PresetMode.RemoteOnly || presetMode === PresetMode.Default
+    );
   const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
   const [selectedPresetName, setSelectedPresetName] = React.useState<
     string | null
