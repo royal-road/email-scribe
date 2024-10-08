@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { ScrollArea } from '../scrollArea';
 
 interface BlockFilterProps {
   tags: string[];
@@ -58,19 +59,28 @@ export const BlockFilter: React.FC<BlockFilterProps> = ({
           className='search-input'
         />
       </div>
-      <div className='tags'>
-        {tags
-          .sort((a, b) => a.localeCompare(b))
-          .map((tag) => (
-            <span
-              key={tag}
-              className={`tag ${currentTemplates.includes(tag) ? 'template' : ''} ${activeTags.includes(tag) ? 'active' : ''}`}
-              onClick={() => handleTagClick(tag)}
-            >
-              {tag}
-            </span>
-          ))}
-      </div>
+      <ScrollArea
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        <div className='tags'>
+          {tags
+            .sort((a, b) => a.localeCompare(b))
+            .map((tag) => (
+              <span
+                key={tag}
+                className={`tag ${currentTemplates.includes(tag) ? 'template' : ''} ${activeTags.includes(tag) ? 'active' : ''}`}
+                onClick={() => handleTagClick(tag)}
+              >
+                {tag}
+              </span>
+            ))}
+        </div>
+      </ScrollArea>
     </div>
   );
 };

@@ -424,3 +424,7 @@ input[type='color'] {
     padding: 0;
   }
 }
+
+.filteredBlockContainer:has(> div:empty) {
+  display: none !important;
+}

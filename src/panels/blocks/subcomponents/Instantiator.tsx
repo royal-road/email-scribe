@@ -127,6 +127,7 @@ export const BlockInstantiator: React.FC<BlockInstantiatorProps> = ({
               {multipleTemplateQuery.data.map((template, templateIndex) => {
                 return (
                   <div
+                    className='filteredBlockContainer'
                     style={{
                       display: 'flex',
                       flexDirection: 'column',
@@ -183,13 +184,13 @@ export const BlockInstantiator: React.FC<BlockInstantiatorProps> = ({
                                 .includes(searchInput.toLowerCase()))
                         );
 
-                        if (filteredModules.length === 0) {
-                          return (
-                            <div className='no-results-message'>
-                              No modules match the selected tags.
-                            </div>
-                          );
-                        }
+                        // if (filteredModules.length === 0) {
+                        //   return (
+                        //     <div className='no-results-message'>
+                        //       No modules match the selected tags.
+                        //     </div>
+                        //   );
+                        // }
 
                         return filteredModules.map((moduleClass, index) => {
                           const meta = moduleClass.getMeta();
