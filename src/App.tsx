@@ -1,6 +1,6 @@
 import { EmailScribe, PresetMode } from '@/EmailScribe';
 import { Save } from 'lucide-react';
-import { presetTest } from '../server/public/testPreset';
+// import { presetTest } from '../server/public/testPreset';
 function App() {
   return (
     <EmailScribe
@@ -42,10 +42,9 @@ function App() {
       }}
       ctaTwo={{ hidden: true }}
       presetMode={PresetMode.Default}
-      preloadPreset={JSON.stringify(presetTest)}
+      // preloadPreset={JSON.stringify(presetTest)}
       nonce='123'
       scribeId='scribeA'
-      ABTestMode='B'
     />
   );
 }

@@ -162,7 +162,7 @@ function handleSize(node: Element, schemaBundle: SchemaBundle): void {
 }
 
 function handleColor(node: Element, schemaBundle: SchemaBundle): void {
-  handleStyleAttribute(node, schemaBundle, 'data-color', 'color', 'color');
+  handleStyleAttribute(node, schemaBundle, 'data-color', 'color', 'text-color');
 }
 
 function handleBorderColor(node: Element, schemaBundle: SchemaBundle): void {
@@ -224,7 +224,8 @@ function handleStyleAttribute(
       schemaBundle.defaults[propName] = defaultStyleVal;
       schemaBundle.schema.properties[propName] = { type: 'string' };
       schemaBundle.uiSchema[propName] = {
-        'ui:widget': suffix === 'color' ? 'color' : 'text',
+        'ui:widget':
+          suffix === 'text-color' || suffix === 'color' ? 'color' : 'text',
         'ui:title': propNameToTitle(propName),
       };
     }
@@ -272,8 +273,7 @@ function handleLinkAttribute(
       schemaBundle.defaults[propName] = defaultStyleVal;
       schemaBundle.schema.properties[propName] = { type: 'string' };
       schemaBundle.uiSchema[propName] = {
-        'ui:widget':
-          suffix === 'color' || suffix === 'link-color' ? 'color' : 'text',
+        'ui:widget': suffix === 'link-color' ? 'color' : 'text',
         'ui:title': propNameToTitle(
           suffix === 'link-color'
             ? `${el.getAttribute(dataAttr)} color (anchor)`
