@@ -113,7 +113,7 @@ function handleBGColor(node: Element, schemaBundle: SchemaBundle): void {
   elements.forEach((el) => {
     const propName = sanitizePropName(
       el.getAttribute('data-bgcolor') || '',
-      'color'
+      'background-color'
     );
     el.setAttribute('editorid', propName);
     if (!schemaBundle.schema.properties[propName]) {
