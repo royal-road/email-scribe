@@ -42,12 +42,6 @@ export const FileUploadWidget: React.FC<WidgetProps> = (props) => {
     [onChange, options]
   );
 
-  const handleUrlSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onChange(urlInput);
-    setUrlInput('');
-  };
-
   return (
     <div className='FileUploadWidget'>
       <div className='input-toggle'>
@@ -75,15 +69,23 @@ export const FileUploadWidget: React.FC<WidgetProps> = (props) => {
           accept={(options.accept as string) || 'image/*'}
         />
       ) : (
-        <form onSubmit={handleUrlSubmit}>
+        <div className='urlBar'>
           <input
             type='url'
+            id={id}
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
             placeholder='Enter image URL'
           />
-          <button type='submit'>Submit</button>
-        </form>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              onChange(urlInput);
+            }}
+          >
+            Submit
+          </button>
+        </div>
       )}
 
       {props.value && (
