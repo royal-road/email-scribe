@@ -1,3 +1,4 @@
+import { EmailScribeConfigProps } from '@/EmailScribe';
 import { BlockAttribute, BlockState } from '@/panels/blocks';
 import { Preset } from '@/panels/blocks/managers/PresetManager';
 import { jsonToBlocks } from '@/panels/blocks/utils/blockInstancer';
@@ -20,9 +21,10 @@ const processPresetData = (
   preset: Preset,
   setBlocks: (blocks: BlockState[]) => void,
   setOpenStates: (openStates: Record<string, BlockAttribute>) => void,
-  addToHistory: (entry: BlockState[]) => void
+  addToHistory: (entry: BlockState[]) => void,
+  config: EmailScribeConfigProps
 ) => {
-  const blockState = jsonToBlocks(JSON.stringify(preset));
+  const blockState = jsonToBlocks(JSON.stringify(preset), config);
   const blockAttributes = JSON.parse(
     preset.blockAttributes
   ) as BlockAttribute[];
@@ -50,7 +52,8 @@ export const handleFileImport = (
   event: React.ChangeEvent<HTMLInputElement>,
   setBlocks: (blocks: BlockState[]) => void,
   setOpenStates: (openStates: Record<string, BlockAttribute>) => void,
-  addToHistory: (entry: BlockState[]) => void
+  addToHistory: (entry: BlockState[]) => void,
+  config: EmailScribeConfigProps
 ) => {
   const file = event.target.files?.[0];
   if (file) {
@@ -58,7 +61,7 @@ export const handleFileImport = (
     reader.onload = (e) => {
       const content = e.target?.result as string;
       const preset = JSON.parse(content) as Preset;
-      processPresetData(preset, setBlocks, setOpenStates, addToHistory);
+      processPresetData(preset, setBlocks, setOpenStates, addToHistory, config);
     };
     reader.readAsText(file);
     event.target.value = '';
@@ -70,11 +73,12 @@ export const handleJsonImport = (
   jsonData: string,
   setBlocks: (blocks: BlockState[]) => void,
   setOpenStates: (openStates: Record<string, BlockAttribute>) => void,
-  addToHistory: (entry: BlockState[]) => void
+  addToHistory: (entry: BlockState[]) => void,
+  config: EmailScribeConfigProps
 ) => {
   try {
     const preset = JSON.parse(jsonData) as Preset;
-    processPresetData(preset, setBlocks, setOpenStates, addToHistory);
+    processPresetData(preset, setBlocks, setOpenStates, addToHistory, config);
   } catch (error) {
     console.error('Error parsing JSON:', error);
     // Handle error (e.g., show error message to user)

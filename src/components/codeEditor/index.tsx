@@ -58,7 +58,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       // const root = $getRoot();
       const result = $getRoot().getTextContent();
       if (result === value) return;
-      onChange(result);
+      const cleanedResult = result.replace(/&nbsp;/g, ' ');
+      onChange(cleanedResult);
     });
   };
   return (

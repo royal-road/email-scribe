@@ -33,6 +33,7 @@ export interface BlockMetadata {
   id: string;
   tags: string[]; // In case we want to add tag based filtering
   group: string; // To group blocks in the UI
+  templateName?: string;
 }
 
 export interface BlockInterface {

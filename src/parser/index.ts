@@ -14,6 +14,11 @@ import {
 import { camelToTitleCase } from '@lib/utils';
 import { EmailScribeConfigProps } from '@/EmailScribe';
 
+interface SchemaBundle {
+  schema: RJSFSchema;
+  uiSchema: UiSchema;
+  defaults: Record<string, unknown>;
+}
 export function parseTemplates(
   content: string,
   templateName: string,
@@ -36,10 +41,12 @@ export function parseTemplates(
   }
 }
 
-interface SchemaBundle {
-  schema: RJSFSchema;
-  uiSchema: UiSchema;
-  defaults: Record<string, unknown>;
+export function parseTemplate(
+  content: string,
+  templateName: string,
+  config: EmailScribeConfigProps
+): ConcreteBlockClass {
+  return parseTemplates(content, templateName, config)[0];
 }
 
 function parseModule(
@@ -47,7 +54,7 @@ function parseModule(
   templateName: string,
   config: EmailScribeConfigProps
 ): ConcreteBlockClass {
-  const defaultHtml = node.outerHTML;
+  const untemplatedHtml = node.outerHTML;
   const schemaBundle: SchemaBundle = {
     schema: { type: 'object', properties: {}, required: [] },
     uiSchema: {},
@@ -83,6 +90,7 @@ function parseModule(
     tags: [propNameToTitle(templateName), ...moduleTagFinder(moduleName || '')],
     group: moduleName || 'Dynamic Blocks',
     thumbnailUrl: `${templateUrlPrefix}thumbnails/${node.getAttribute('data-thumb')}`,
+    templateName: templateName,
   };
 
   return class DynamicBlock extends BaseBlock {
@@ -92,7 +100,7 @@ function parseModule(
         uiSchema: schemaBundle.uiSchema,
         defaultValues: schemaBundle.defaults,
         meta: meta,
-        defaultHtml: defaultHtml,
+        defaultHtml: untemplatedHtml,
       });
     }
     static override getMeta(): BlockMetadata {

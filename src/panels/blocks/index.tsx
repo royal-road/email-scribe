@@ -21,6 +21,8 @@ import {
 import { Button } from '@/components/button';
 import { ChevronDown, ChevronUp, RefreshCcw } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
+import { parseTemplate } from '@/parser';
+import { useConfig } from '@/contexts/ConfigContext';
 
 export interface BlockState {
   instance: BlockInterface;
@@ -71,6 +73,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   const { createHistory, history } = useEditorStore();
   const isInitialMount = useRef(true);
   const [settingsOpen, setSettingsOpen] = useState(true);
+  const config = useConfig();
 
   useEffect(() => {
     createHistory(blocks);
@@ -229,11 +232,20 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
   }, [blocks]);
 
   const updateBlockDefaultHtml = (index: number, newHtml: string) => {
+    const newBlockClass = parseTemplate(
+      newHtml,
+      blocks[index].instance.meta.templateName || 'Dynamic',
+      config
+    );
+    const newBlock = new newBlockClass() as BlockInterface;
+    newBlock.id = blocks[index].instance.id;
+    newBlock.updateFormData(blocks[index].data);
+    // newBlock.formData = blocks[index].data;
     setBlocks((prevBlocks) => {
       const newBlocks = prevBlocks.map((block, i) => {
         if (i === index) {
-          block.instance.defaultHtml = newHtml;
-          block.cachedHtml = block.instance.generateHTML(block.instance.id);
+          block.instance = newBlock;
+          block.cachedHtml = newBlock.generateHTML(newBlock.id);
           return block;
         }
         return block;

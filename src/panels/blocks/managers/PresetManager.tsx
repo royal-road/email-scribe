@@ -70,7 +70,7 @@ const PresetManager: React.FC<PresetManagerProps> = ({
   React.useEffect(() => {
     try {
       if (selectedPreset.data && selectedPreset.data.blockState) {
-        const blockState = jsonToBlocks(selectedPreset.data.blockState);
+        const blockState = jsonToBlocks(selectedPreset.data.blockState, config);
         const blockAttributes = JSON.parse(
           selectedPreset.data.blockAttributes
         ) as BlockAttribute[];
@@ -104,7 +104,8 @@ const PresetManager: React.FC<PresetManagerProps> = ({
           preloadPreset,
           setBlocks,
           setBlockAttributes,
-          addToHistory
+          addToHistory,
+          config
         );
       }
     }, 10);
@@ -163,7 +164,8 @@ const PresetManager: React.FC<PresetManagerProps> = ({
                   event,
                   setBlocks,
                   setBlockAttributes,
-                  addToHistory
+                  addToHistory,
+                  config
                 )
               }
             />
