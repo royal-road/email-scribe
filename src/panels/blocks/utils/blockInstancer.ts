@@ -33,12 +33,14 @@ const parsedStatesToInstancedBlocks = (
   config: EmailScribeConfigProps
 ): BlockState[] => {
   return blocks.map((block, index) => {
+    const instancedBlock =
+      index === 0
+        ? scaffoldBlockToInstance(block)
+        : incompleteBlockToInstance(block, config);
     return {
-      ...block,
-      instance:
-        index === 0
-          ? scaffoldBlockToInstance(block)
-          : incompleteBlockToInstance(block, config),
+      instance: instancedBlock,
+      cachedHtml: instancedBlock.generateHTML(instancedBlock.id),
+      data: instancedBlock.formData,
     };
   });
 };
@@ -53,6 +55,7 @@ const incompleteBlockToInstance = (
     config
   );
   const instance = new BlockClass();
+  instance.formData = block.data;
   console.log('Created instance:', instance);
 
   return instance;
