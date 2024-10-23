@@ -54,9 +54,12 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
+    "@lexical/code": "^0.17.1",
+    "@lexical/markdown": "^0.17.1",
     "@lexical/react": "^0.17.1",
     "@lexical/rich-text": "^0.17.1",
     "@radix-ui/react-collapsible": "^1.1.0",
+    "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-popover": "^1.1.1",
     "@radix-ui/react-scroll-area": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",

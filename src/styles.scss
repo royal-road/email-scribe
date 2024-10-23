@@ -130,12 +130,14 @@ $breakpoints: (
   @import '/src/components/button/styles';
   @import '/src/components/collapsible/styles';
   @import '/src/components/popover/styles';
+  @import '/src/components/dialog/styles';
   @import '/src/components/scrollArea/styles';
   @import '/src/components/RRLogo/styles';
   @import '/src/components/BlockFilter/styles';
   @import '/src/components/switch/styles';
   @import '/src/components/toggle/styles';
   @import '/src/components/textAreaWidget/styles';
+  @import '/src/components/codeEditor/styles';
 
   *,
   *::before,

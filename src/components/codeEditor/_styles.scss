@@ -1,0 +1,15 @@
+code {
+  resize: vertical;
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.codeEditorInput {
+  font-family: Menlo, Consolas, Monaco, monospace;
+  background-color: var(--card);
+  color: var(--foreground);
+  border-radius: var(--radius);
+  width: 100%;
+  min-height: 100px;
+}

@@ -1,0 +1,73 @@
+.PlaygroundEditorTheme__textCode {
+  background-color: var(--card);
+  padding: 1px 0.25rem;
+  font-family: Menlo, Consolas, Monaco, monospace;
+  font-size: 94%;
+}
+
+.PlaygroundEditorTheme__code {
+  background-color: var(--card);
+  font-family: Menlo, Consolas, Monaco, monospace;
+  display: block;
+  padding: 8px 8px 8px 52px;
+  line-height: 1.53;
+  font-size: 13px;
+  margin: 0;
+  margin-bottom: 8px;
+  overflow-x: auto;
+  position: relative;
+  tab-size: 2;
+  color: var(--foreground);
+  min-width: max-content;
+}
+
+.PlaygroundEditorTheme__code:before {
+  content: attr(data-gutter);
+  position: absolute;
+  background-color: var(--muted);
+  left: 0;
+  top: 0;
+  border-right: 1px solid var(--border);
+  padding: 8px;
+  color: var(--muted-foreground);
+  white-space: pre-wrap;
+  text-align: right;
+  min-width: 25px;
+}
+
+.PlaygroundEditorTheme__nestedListItem:before,
+.PlaygroundEditorTheme__nestedListItem:after {
+  display: none;
+}
+
+.PlaygroundEditorTheme__tokenComment {
+  color: var(--muted-foreground);
+}
+
+.PlaygroundEditorTheme__tokenPunctuation {
+  color: var(--accent-foreground);
+}
+
+.PlaygroundEditorTheme__tokenProperty {
+  color: var(--primary);
+}
+
+.PlaygroundEditorTheme__tokenSelector {
+  color: var(--destructive);
+}
+
+.PlaygroundEditorTheme__tokenOperator {
+  color: var(--primary);
+}
+
+.PlaygroundEditorTheme__tokenAttr {
+  color: var(--secondary);
+}
+
+.PlaygroundEditorTheme__tokenVariable {
+  color: var(--destructive);
+}
+
+.PlaygroundEditorTheme__tokenFunction {
+  color: var(--primary);
+}
