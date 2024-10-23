@@ -46,7 +46,7 @@ const CodeEditorDialog: React.FC<CodeEditorDialogProps> = ({
   }, [localValue, onChange]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen} modal={false}>
       <DialogTrigger asChild>
         <Button title={triggerText} style={{ gap: '0.5rem', width: '100%' }}>
           {icon}
