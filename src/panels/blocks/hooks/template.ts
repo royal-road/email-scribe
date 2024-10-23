@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { ConcreteBlockClass } from '@/parser/setup/Base';
-import { parseTemplate } from '@/parser';
+import { parseTemplates } from '@/parser';
 import { EmailScribeConfigProps } from '@/EmailScribe';
 
 const fetchTemplate = async (
@@ -25,7 +25,7 @@ const processTemplate = async (
 ): Promise<ConcreteBlockClass[]> => {
   const TEMPLATE_ENDPOINT = `${config.apiUrl}/${config.basePath}/templates`;
   const templateContent = await fetchTemplate(templateId, TEMPLATE_ENDPOINT);
-  return parseTemplate(templateContent, templateId, config);
+  return parseTemplates(templateContent, templateId, config);
 };
 
 export const useTemplate = (

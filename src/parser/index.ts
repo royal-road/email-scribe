@@ -14,7 +14,7 @@ import {
 import { camelToTitleCase } from '@lib/utils';
 import { EmailScribeConfigProps } from '@/EmailScribe';
 
-export function parseTemplate(
+export function parseTemplates(
   content: string,
   templateName: string,
   config: EmailScribeConfigProps
@@ -47,6 +47,7 @@ function parseModule(
   templateName: string,
   config: EmailScribeConfigProps
 ): ConcreteBlockClass {
+  const defaultHtml = node.outerHTML;
   const schemaBundle: SchemaBundle = {
     schema: { type: 'object', properties: {}, required: [] },
     uiSchema: {},
@@ -91,7 +92,7 @@ function parseModule(
         uiSchema: schemaBundle.uiSchema,
         defaultValues: schemaBundle.defaults,
         meta: meta,
-        defaultHtml: node.outerHTML,
+        defaultHtml: defaultHtml,
       });
     }
     static override getMeta(): BlockMetadata {
@@ -99,7 +100,7 @@ function parseModule(
     }
 
     generateHTML(id?: string): string {
-      return templatify(this.defaultHtml, this.formData, id);
+      return templatify(node.outerHTML, this.formData, id);
     }
   } as ConcreteBlockClass;
 }
