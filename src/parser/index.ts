@@ -99,7 +99,7 @@ function parseModule(
     }
 
     generateHTML(id?: string): string {
-      return templatify(node.outerHTML, this.formData, id);
+      return templatify(this.defaultHtml, this.formData, id);
     }
   } as ConcreteBlockClass;
 }

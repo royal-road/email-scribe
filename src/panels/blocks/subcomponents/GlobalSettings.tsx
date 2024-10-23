@@ -16,6 +16,7 @@ import { ConfirmButton } from '@components/ConfirmButton';
 import InputPopover from '@components/InputPopover';
 import { LexicalWidget } from '@components/textAreaWidget';
 import { ColorPickerWidget } from '@components/ColorWidget';
+import CodeEditorDialog from '@/components/CodeEditorDialog';
 
 interface BlockGlobalSettingsProps {
   blocks: BlockState[];
@@ -25,6 +26,7 @@ interface BlockGlobalSettingsProps {
   getSsr: (index: string) => string | false;
   setSsr: (blockId: string, ssr: string | false) => void;
   debouncedHistoryUpdate: (blocks: BlockState[]) => void;
+  updateBlockDefaultHtml: (index: number, value: string) => void;
 }
 
 export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
@@ -35,6 +37,7 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
   getSsr,
   setSsr,
   debouncedHistoryUpdate,
+  updateBlockDefaultHtml,
 }) => {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const [mutualSchema, setMutualSchemas] = useState<Partial<BlockConfig>>({});
@@ -274,30 +277,52 @@ export const BlockGlobalSettings: React.FC<BlockGlobalSettingsProps> = ({
           style={{ width: '100%' }}
           onConfirm={() => removeBlocks(indexOfSelectedBlocks)}
         />
-        {indexOfSelectedBlocks.length === 1 &&
-          getSsr(blocks[indexOfSelectedBlocks[0]]?.instance?.id) === false && (
-            <InputPopover
-              triggerText='Enable SSR'
-              placeholder='Enter Id of SSR block'
-              // Give default value as the Template name and block label
-              defaultValue={`${blocks[indexOfSelectedBlocks[0]]?.instance.meta.tags[0]}_${blocks[indexOfSelectedBlocks[0]]?.instance.meta.label}`}
-              onSubmit={(value) => {
-                setSsr(blocks[indexOfSelectedBlocks[0]]?.instance?.id, value);
-              }}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '0.5rem',
+            width: '100%',
+          }}
+        >
+          {indexOfSelectedBlocks.length === 1 &&
+            getSsr(blocks[indexOfSelectedBlocks[0]]?.instance?.id) ===
+              false && (
+              <InputPopover
+                triggerText='Enable SSR'
+                placeholder='Enter Id of SSR block'
+                // Give default value as the Template name and block label
+                defaultValue={`${blocks[indexOfSelectedBlocks[0]]?.instance.meta.tags[0]}_${blocks[indexOfSelectedBlocks[0]]?.instance.meta.label}`}
+                onSubmit={(value) => {
+                  setSsr(blocks[indexOfSelectedBlocks[0]]?.instance?.id, value);
+                }}
+              />
+            )}
+          {indexOfSelectedBlocks.length === 1 &&
+            getSsr(blocks[indexOfSelectedBlocks[0]]?.instance?.id) !==
+              false && (
+              <Button
+                style={{ width: '100%' }}
+                variant='destructive'
+                onClick={() => {
+                  setSsr(blocks[indexOfSelectedBlocks[0]]?.instance?.id, false);
+                }}
+              >
+                Disable SSR
+              </Button>
+            )}
+          {indexOfSelectedBlocks.length === 1 && (
+            <CodeEditorDialog
+              value={blocks[indexOfSelectedBlocks[0]]?.instance.defaultHtml}
+              triggerText='Edit HTML'
+              title="Edit Block's HTML"
+              onChange={(value) =>
+                updateBlockDefaultHtml(indexOfSelectedBlocks[0], value)
+              }
             />
           )}
-        {indexOfSelectedBlocks.length === 1 &&
-          getSsr(blocks[indexOfSelectedBlocks[0]]?.instance?.id) !== false && (
-            <Button
-              style={{ width: '100%' }}
-              variant='destructive'
-              onClick={() => {
-                setSsr(blocks[indexOfSelectedBlocks[0]]?.instance?.id, false);
-              }}
-            >
-              Disable SSR
-            </Button>
-          )}
+        </div>
       </PopoverContent>
     </Popover>
   );

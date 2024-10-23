@@ -8,6 +8,7 @@ function App() {
       basePath={import.meta.env.VITE_BASE_PATH}
       templatesToFetch={[
         'All-in-one',
+        'Genre-Badge',
         'Checkout',
         'Notification-01',
         'Notification-02',
@@ -32,15 +33,6 @@ function App() {
         'Invite',
         'Container',
       ]}
-      ctaOne={{
-        label: 'Download Preset Json',
-        icon: <Save />,
-        action: (subject, id, plainText, html, preset) => {
-          stringtoJsonDownload(preset, 'preset.json');
-        },
-        hidden: false,
-      }}
-      ctaTwo={{ hidden: true }}
       presetMode={PresetMode.Default}
       // preloadPreset={JSON.stringify(presetTest)}
       nonce='123'

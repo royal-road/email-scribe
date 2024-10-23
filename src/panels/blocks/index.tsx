@@ -228,6 +228,22 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     updateRenderedHtml();
   }, [blocks]);
 
+  const updateBlockDefaultHtml = (index: number, newHtml: string) => {
+    setBlocks((prevBlocks) => {
+      const newBlocks = prevBlocks.map((block, i) => {
+        if (i === index) {
+          block.instance.defaultHtml = newHtml;
+          block.cachedHtml = block.instance.generateHTML(block.instance.id);
+          return block;
+        }
+        return block;
+      });
+      debouncedCreateHistory(newBlocks);
+      return newBlocks;
+    });
+    updateRenderedHtml();
+  };
+
   const updateBlockData = useCallback(
     debounce((index: number, newData: object) => {
       setBlocks((prevBlocks) => {
@@ -419,6 +435,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
               .map((id) =>
                 blocks.findIndex((block) => block.instance.id === id)
               )}
+            updateBlockDefaultHtml={updateBlockDefaultHtml}
           />
         </div>
         <CollapsibleContent>
