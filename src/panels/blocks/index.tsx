@@ -239,7 +239,8 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
     );
     const newBlock = new newBlockClass() as BlockInterface;
     newBlock.id = blocks[index].instance.id;
-    newBlock.updateFormData(blocks[index].data);
+    const combinedData = { ...newBlock.formData, ...blocks[index].data };
+    newBlock.updateFormData(combinedData);
     // newBlock.formData = blocks[index].data;
     setBlocks((prevBlocks) => {
       const newBlocks = prevBlocks.map((block, i) => {

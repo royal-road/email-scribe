@@ -175,39 +175,39 @@ function handleColor(node: Element, schemaBundle: SchemaBundle): void {
 }
 
 function handleBorderColor(node: Element, schemaBundle: SchemaBundle): void {
-  handleStyleAttribute(
+  handleBorders(
     node,
     schemaBundle,
     'data-border-color',
     'border-color',
     'color'
   );
-  handleStyleAttribute(
+  handleBorders(
     node,
     schemaBundle,
     'data-border-top-color',
-    'border-top-color',
+    'border-top',
     'color'
   );
-  handleStyleAttribute(
+  handleBorders(
     node,
     schemaBundle,
     'data-border-right-color',
-    'border-right-color',
+    'border-right',
     'color'
   );
-  handleStyleAttribute(
+  handleBorders(
     node,
     schemaBundle,
     'data-border-bottom-color',
-    'border-bottom-color',
+    'border-bottom',
     'color'
   );
-  handleStyleAttribute(
+  handleBorders(
     node,
     schemaBundle,
     'data-border-left-color',
-    'border-left-color',
+    'border-left',
     'color'
   );
 }
@@ -240,6 +240,35 @@ function handleStyleAttribute(
     }
     const styleDict = parseInlineStyle(el);
     styleDict[styleAttr] = `{{{${propName}}}}`;
+    setInlineStyle(el, styleDict);
+  });
+}
+
+function handleBorders(
+  node: Element,
+  schemaBundle: SchemaBundle,
+  dataAttr: string,
+  styleAttr: string,
+  suffix: string
+): void {
+  const elements = node.querySelectorAll(`[${dataAttr}]`);
+  elements.forEach((el) => {
+    const propName = sanitizePropName(el.getAttribute(dataAttr) || '', suffix);
+    if (!schemaBundle.schema.properties[propName]) {
+      const defaultStyleVal = getDefaultStyleValue(el, styleAttr);
+      if (!defaultStyleVal) {
+        return;
+      }
+      schemaBundle.defaults[propName] = defaultStyleVal;
+      schemaBundle.schema.properties[propName] = { type: 'string' };
+      schemaBundle.uiSchema[propName] = {
+        'ui:widget':
+          suffix === 'text-color' || suffix === 'color' ? 'color' : 'text',
+        'ui:title': propNameToTitle(propName),
+      };
+    }
+    const styleDict = parseInlineStyle(el);
+    styleDict[styleAttr] = `2px solid {{{${propName}}}}`;
     setInlineStyle(el, styleDict);
   });
 }
