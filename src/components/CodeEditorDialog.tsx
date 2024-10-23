@@ -57,7 +57,7 @@ const CodeEditorDialog: React.FC<CodeEditorDialogProps> = ({
         style={{
           width: '90%',
           maxWidth: '90%',
-          maxHeight: '90%',
+          maxHeight: '80vh',
           display: 'flex',
           flexDirection: 'column',
           gap: '0.5rem',
