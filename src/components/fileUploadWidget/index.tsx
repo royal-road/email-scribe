@@ -1,10 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { WidgetProps } from '@rjsf/utils';
 import { useConfig } from '@/contexts/ConfigContext';
 
 export const FileUploadWidget: React.FC<WidgetProps> = (props) => {
   const { onChange, options, id } = props;
   const { apiUrl, basePath } = useConfig();
+  const [inputType, setInputType] = useState<'file' | 'url'>('file');
+  const [urlInput, setUrlInput] = useState(props.value);
+
   const handleFileUpload = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
@@ -39,33 +42,60 @@ export const FileUploadWidget: React.FC<WidgetProps> = (props) => {
     [onChange, options]
   );
 
+  const handleUrlSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    onChange(urlInput);
+    setUrlInput('');
+  };
+
   return (
-    <div>
-      <input
-        id={id}
-        type='file'
-        onChange={handleFileUpload}
-        accept={(options.accept as string) || 'image/*'}
-      />
+    <div className='FileUploadWidget'>
+      <div className='input-toggle'>
+        <button
+          type='button'
+          onClick={() => setInputType('file')}
+          className={inputType === 'file' ? 'active' : ''}
+        >
+          Upload File
+        </button>
+        <button
+          type='button'
+          onClick={() => setInputType('url')}
+          className={inputType === 'url' ? 'active' : ''}
+        >
+          Enter URL
+        </button>
+      </div>
+
+      {inputType === 'file' ? (
+        <input
+          id={id}
+          type='file'
+          onChange={handleFileUpload}
+          accept={(options.accept as string) || 'image/*'}
+        />
+      ) : (
+        <form onSubmit={handleUrlSubmit}>
+          <input
+            type='url'
+            value={urlInput}
+            onChange={(e) => setUrlInput(e.target.value)}
+            placeholder='Enter image URL'
+          />
+          <button type='submit'>Submit</button>
+        </form>
+      )}
+
       {props.value && (
         <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            margin: '1rem',
-            padding: '1rem',
-            borderRadius: 'var(--radius)',
-            border: '1px solid var(--border)',
-          }}
+          className='image-preview'
           onClick={() => {
             const input = document.getElementById(id);
-            if (input) {
+            if (input && inputType === 'file') {
               input.click();
             }
           }}
         >
-          {/* <p>Uploaded file: {props.value}</p> */}
           <img
             src={props.value}
             alt='Uploaded file'

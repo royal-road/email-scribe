@@ -282,6 +282,55 @@
   font-family: $font-family-heading;
 }
 .FileUploadWidget {
+  .input-toggle {
+    display: flex;
+    margin-bottom: 1rem;
+
+    button {
+      flex: 1;
+      padding: 0.5rem;
+      background: var(--background);
+      border: 1px solid var(--border);
+      color: var(--foreground);
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:first-child {
+        border-radius: var(--radius) 0 0 var(--radius);
+      }
+
+      &:last-child {
+        border-radius: 0 var(--radius) var(--radius) 0;
+      }
+
+      &.active {
+        background: var(--primary);
+        color: var(--primary-foreground);
+      }
+    }
+  }
+
+  form {
+    display: flex;
+    gap: 0.5rem;
+
+    input[type='url'] {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      background: var(--primary);
+      color: var(--primary-foreground);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+  }
+
   input[type='file'] {
     &::-webkit-file-upload-button {
       display: none;
@@ -332,6 +381,20 @@
       // background: var(--primary);
     }
     + div:hover {
+      cursor: pointer;
+      background: var(--accent);
+    }
+  }
+  .image-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+
+    &:hover {
       cursor: pointer;
       background: var(--accent);
     }
