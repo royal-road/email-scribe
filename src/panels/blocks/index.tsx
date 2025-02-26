@@ -405,7 +405,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
           <input
             type='text'
             placeholder='Subject/Title'
-            value={
+            defaultValue={
               UIProps.ABTestMode == 'None' || UIProps.ABTestMode == 'A'
                 ? (blocks[0].data['subject'] as string)
                 : '(Set in Editor A)'
@@ -477,7 +477,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
                   <input
                     type='text'
                     id='id'
-                    value={blocks[0].data['id'] as string}
+                    defaultValue={blocks[0].data['id'] as string}
                     onChange={(e) => {
                       updateBlockData(0, { id: e.target.value });
                     }}
@@ -500,7 +500,7 @@ export const BlocksPanel: React.FC<BlockPanelProps> = ({
             <label htmlFor='plainText'>Plain Text Version</label>
             <textarea
               id='plainText'
-              value={blocks[0].data['plainText'] as string}
+              defaultValue={blocks[0].data['plainText'] as string}
               onChange={(e) => {
                 updateBlockData(0, { plainText: e.target.value });
               }}
