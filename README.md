@@ -30,8 +30,6 @@ A feature-rich, embeddable email editor (<250kb gzipped), designed for creating 
 
 <!-- <div align="center"><img src="docs/SSR.png" width="500" alt="SSR Support"></div> -->
 
-Certainly! I'll update the README to include the new props and example. Here's an updated version of the README section:
-
 ## Using as a React Component
 
 Info: This is the client-side aspect of the editor. At the very least, you'll need to implement a server that serves templates and handles image uploads (A fully functional example server is included in git repo of the project, check next section for more details).

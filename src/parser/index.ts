@@ -60,13 +60,15 @@ function parseModule(
     uiSchema: {},
     defaults: {},
   };
-  const templateUrlPrefix = `${config.apiUrl}/${config.basePath}/templates/${templateName}/`;
+  const templateUrlPrefixFull = `${config.apiUrl}/${config.basePath}/templates/${templateName}/`;
+  const templateUrlPrefix = `${templateName}/`;
   const counters = {
     singleLine: 0,
     multiLine: 0,
     img: 0,
   };
   try {
+    console.log('Config: ', config);
     // This Order is IMPORTANT
     handleLinkSize(node, schemaBundle);
     handleBorderColor(node, schemaBundle);
@@ -75,9 +77,22 @@ function parseModule(
     handleLinkColor(node, schemaBundle);
     handleSingleLine(node, schemaBundle, counters);
     handleMultiLine(node, schemaBundle, counters);
-    handleImages(node, schemaBundle, counters, templateUrlPrefix);
+    handleImages(
+      node,
+      schemaBundle,
+      counters,
+      templateUrlPrefixFull,
+      templateUrlPrefix,
+      config.imageUrlPrefix
+    );
     handleBGColor(node, schemaBundle);
-    handleBG(node, schemaBundle, templateUrlPrefix);
+    handleBG(
+      node,
+      schemaBundle,
+      templateUrlPrefixFull,
+      templateUrlPrefix,
+      config.imageUrlPrefix
+    );
   } catch (error) {
     console.error(error);
   }
@@ -89,7 +104,7 @@ function parseModule(
     description: '',
     tags: [propNameToTitle(templateName), ...moduleTagFinder(moduleName || '')],
     group: moduleName || 'Dynamic Blocks',
-    thumbnailUrl: `${templateUrlPrefix}thumbnails/${node.getAttribute('data-thumb')}`,
+    thumbnailUrl: `${templateUrlPrefixFull}thumbnails/${node.getAttribute('data-thumb')}`,
     templateName: templateName,
   };
 
@@ -140,7 +155,9 @@ function handleBGColor(node: Element, schemaBundle: SchemaBundle): void {
 function handleBG(
   node: Element,
   schemaBundle: SchemaBundle,
-  templateUrlPrefix: string
+  templateUrlPrefixFull: string,
+  templateUrlPrefix: string,
+  imageUrlPrefix?: string
 ): void {
   const elements = node.querySelectorAll('[data-bg]');
   elements.forEach((el) => {
@@ -159,7 +176,9 @@ function handleBG(
       schemaBundle.defaults[propName] = isRelativeUrl(
         el.getAttribute('background') || ''
       )
-        ? `${templateUrlPrefix}${el.getAttribute('background')}`
+        ? imageUrlPrefix == null
+          ? `${templateUrlPrefixFull}${el.getAttribute('background')}`
+          : `${imageUrlPrefix}${templateUrlPrefix}${el.getAttribute('background')}`
         : el.getAttribute('background');
     }
     el.setAttribute('background', `{{{${propName}}}}`);
@@ -403,7 +422,9 @@ function handleImages(
   node: Element,
   schemaBundle: SchemaBundle,
   counters: { img: number },
-  templateUrlPrefix: string
+  templateUrlPrefixFull: string,
+  templateUrlPrefix: string,
+  imageUrlPrefix?: string
 ): void {
   const images = node.getElementsByTagName('img');
   Array.from(images).forEach((img) => {
@@ -425,9 +446,11 @@ function handleImages(
       };
       img.setAttribute('editorid', propName);
       schemaBundle.defaults[propName] = isRelativeUrl(
-        img.getAttribute('src') || ''
+        img.getAttribute('src') ?? ''
       )
-        ? `${templateUrlPrefix}${img.getAttribute('src')}`
+        ? imageUrlPrefix == null
+          ? `${templateUrlPrefixFull}${img.getAttribute('src')}`
+          : `${imageUrlPrefix}${templateUrlPrefix}${img.getAttribute('src')}`
         : img.getAttribute('src');
     }
     img.setAttribute('src', `{{{${propName}}}}`);

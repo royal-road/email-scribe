@@ -43,6 +43,7 @@ export interface EmailScribeUIProps {
 export interface EmailScribeConfigProps {
   apiUrl: string;
   basePath: string;
+  imageUrlPrefix?: string;
   templatesToFetch: string[];
   preloadPreset?: string;
   nonce?: string;
@@ -66,6 +67,7 @@ export function EmailScribe(props: EmailScribeProps) {
           apiUrl: props.apiUrl,
           basePath: props.basePath,
           templatesToFetch: props.templatesToFetch,
+          imageUrlPrefix: props.imageUrlPrefix,
         }}
         containerRef={containerRef}
       >

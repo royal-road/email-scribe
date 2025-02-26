@@ -47,12 +47,23 @@ export function propNameToTitle(propName: string): string {
 }
 
 export function isRelativeUrl(url: string): boolean {
-  try {
-    new URL(url);
+  // Check if the URL starts with a protocol or double slashes
+  if (/^([a-z][a-z\d+\-.]*:)?\/\//i.test(url)) {
     return false;
-  } catch {
+  }
+
+  // Check if the URL starts with a slash, hash, or question mark
+  if (/^[/#?]/.test(url)) {
     return true;
   }
+
+  // Check if the URL contains a colon followed by a number (for port)
+  if (/:\d+/.test(url)) {
+    return false;
+  }
+
+  // If none of the above conditions are met, it's likely a relative URL
+  return true;
 }
 
 export function moduleTagFinder(moduleName: string): string[] {
