@@ -68,7 +68,6 @@ function parseModule(
     img: 0,
   };
   try {
-    console.log('Config: ', config);
     // This Order is IMPORTANT
     handleLinkSize(node, schemaBundle);
     handleBorderColor(node, schemaBundle);
